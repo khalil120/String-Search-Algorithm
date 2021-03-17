@@ -1,4 +1,4 @@
-
+	
 public interface Algorithm {
 	
 	//TOBE CHANGED

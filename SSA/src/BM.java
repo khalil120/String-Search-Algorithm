@@ -30,7 +30,7 @@ public class BM implements Algorithm{
 	private String readFromFile() {
 		String data = ""; 
 		try {
-			File myObj = new File("input.txt");
+			File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\input.txt");
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
@@ -54,12 +54,12 @@ public class BM implements Algorithm{
 
 	public int max (int a, int b) { return (a > b)? a: b; } 
 
-	public void nextStep(char [] txt, char [] pat) {
+	public void nextStep() {
 		int s = stateMachine.currentState();
 		search(s);
 	}
 
-	public void prevState(char [] txt, char [] pat) {
+	public void prevState() {
 		int s = stateMachine.prevState();
 		search(s);
 	}
@@ -69,7 +69,7 @@ public class BM implements Algorithm{
 
 		char [] pat = this.pattern.toCharArray();
 		char [] txt = this.input.toCharArray();
-
+ 
 		int badchar[] = new int[NO_OF_CHARS]; 
 
 		badCharTable(pat, patLen, badchar); 
@@ -82,23 +82,23 @@ public class BM implements Algorithm{
 
 			if (j < 0) { 
 				s += (s+patLen < txtLen)? patLen-badchar[txt[s+patLen]] : 1; 
-			} else
+			} else {
 				s += max(1, j - badchar[txt[s+j]]);
-
+			}
 			stateMachine.nextState(s); //update the next state
 		}
 	}
 
 	//manual search
 	public void search(int s) {
-
+ 
 		char [] pat = this.pattern.toCharArray();
 		char [] txt = this.input.toCharArray();
 
 		int badchar[] = new int[NO_OF_CHARS]; 
 
 		badCharTable(pat, patLen, badchar); 
-
+       
 		if(s <= (txtLen - patLen)) {	
 			int j = patLen-1; 
 			stateMachine.nextState(s);
@@ -120,6 +120,30 @@ public class BM implements Algorithm{
 
 	@Override
 	public void pop() {}
+
+	public String getInput() {
+		return input;
+	}
+
+	public void setInput(String input) {
+		this.input = input;
+	}
+
+	public String getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+
+	public BM_State getStateMachine() {
+		return stateMachine;
+	}
+
+	public void setStateMachine(BM_State stateMachine) {
+		this.stateMachine = stateMachine;
+	}
 
 }
 
