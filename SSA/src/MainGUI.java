@@ -3,6 +3,7 @@ import java.awt.Container;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JRadioButton;
 
 
 public class MainGUI {
@@ -31,6 +32,12 @@ public class MainGUI {
     	button2.addActionListener(dob2);
     	frame.add(button2);
 
+    	JRadioButton r1=new JRadioButton("A) Automatic");    
+    	JRadioButton r2=new JRadioButton("B) Manual ");    
+    	r1.setBounds(250,0,100,30);    
+    	r2.setBounds(250,130,100,30); 
+    	frame.add(r1);frame.add(r2); 
+    	
     	frame.setSize(500,500);
     	frame.setLayout(null); 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

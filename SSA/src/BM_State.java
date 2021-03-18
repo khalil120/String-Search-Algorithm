@@ -4,6 +4,7 @@ public class BM_State implements State{
 
 	Stack<Integer> stack;
 	public int index;
+	
 	public BM_State() {
 		stack = new Stack<Integer>();
 		index = 0 ;
@@ -12,11 +13,6 @@ public class BM_State implements State{
 
 	@Override
 	public int currentState() {
-		/*if(!stack.empty()) {
-			 return stack.peek();
-		}
-		else
-			return -1;*/
 		if(index > -1)
 			return stack.get(index-1);
         return -1;

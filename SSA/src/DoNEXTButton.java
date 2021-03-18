@@ -25,22 +25,21 @@ public class DoNEXTButton implements ActionListener {
 
 	public void actionPerformed(ActionEvent ae) {
 		this.bm.nextStep();
-		int i = this.bm.getStateMachine().getIndex() , j = this.bm.getPattern().length()-1;
-		char input = this.bm.getInput().charAt(i);
+		int i = this.bm.getStateMachine().currentState(), j = this.bm.getPattern().length()-1;
+		char input = this.bm.getInput().charAt(i-2);
 		char patt = this.bm.getPattern().charAt(j);
-		//System.out.println("1111111111111 " +patt +"   " + input);
-		if(input == patt ) {
-			this.patarray[j].setBackground(Color.GREEN);
+		while(j > -1) {
+			if(input == patt ) {
+				this.patarray[j].setBackground(Color.GREEN);
+				this.inputarr[i-2].setBackground(Color.GREEN);
+			}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			j--;
-		}else {
-			this.patarray[j].setBackground(Color.RED);
-			j = this.bm.getPattern().length()-1;
-		}
-		try {
-			//System.out.println("sleeping for 1 seconds");
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			i--;
 		}
 	}
 
