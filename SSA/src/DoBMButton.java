@@ -13,7 +13,7 @@ public class DoBMButton implements ActionListener {
 		this.bm = new BM("ABCDABD");
 	}
 	public void actionPerformed(ActionEvent ae) {
-		// showing the input 
+	     // showing the input 
 		String st = bm.getInput();
 		JButton button	=	new	JButton("input");
 		button.setBounds(0,0,150,50);
@@ -61,12 +61,17 @@ public class DoBMButton implements ActionListener {
 		JButton b1	=	new	JButton("PREV");
 		b1.setBounds(200,y+60,150,50);
 		frame2.add(b1);
+		
+		JButton b2	=	new	JButton("RESET");
+		b2.setBounds(400,y+60,150,50);
+		frame2.add(b2);
 		 // should add bad match table to GUI???
 		
 		frame2.setTitle("BM");
 		frame2.setSize(1000,700);
 		frame2.setLayout(null); 
 		frame2.setVisible(true);
-		bm.search();
+		//bm.search(); //automatic search
+		bm.search(5); // manual 
 	}
 }
