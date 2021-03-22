@@ -30,8 +30,8 @@ public class BM implements Algorithm{
 	private String readFromFile() {
 		String data = ""; 
 		try {
-			//File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\input.txt");
-			File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
+			File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\input.txt");
+			//File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
@@ -92,17 +92,15 @@ public class BM implements Algorithm{
 
 	//manual search
 	public void search(int s) {
- 
 		char [] pat = this.pattern.toCharArray();
 		char [] txt = this.input.toCharArray();
 
 		int badchar[] = new int[NO_OF_CHARS]; 
 
 		badCharTable(pat, patLen, badchar); 
-       
-		if(s <= (txtLen - patLen)) {	
+		stateMachine.nextState(s);
+		while(s <= (txtLen - patLen)) {	
 			int j = patLen-1; 
-			stateMachine.nextState(s);
 			while(j >= 0 && pat[j] == txt[s+j])
 				j--;
 
@@ -111,7 +109,6 @@ public class BM implements Algorithm{
 			} else {
 				s += max(1, j - badchar[txt[s+j]]); 
 			}
-
 			stateMachine.nextState(s);
 		}
 	}

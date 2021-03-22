@@ -52,7 +52,8 @@ public class DoNEXTButton implements ActionListener {
 
 		for(i = 0 ; i < this.inputarr.length ;i++)
 			this.inputarr[i].setBackground(Color.WHITE);
-
+		
+		
 		int j = this.bm.getPattern().length()-1;
 		int cur = this.bm.getStateMachine().stack.get(cnt);
 		char input = this.bm.getInput().charAt(cur-2);
@@ -69,6 +70,7 @@ public class DoNEXTButton implements ActionListener {
 				}
 				j--;
 				cur--;
+				
 			}
 		}else {
 			this.patarray[j].setBackground(Color.RED);
