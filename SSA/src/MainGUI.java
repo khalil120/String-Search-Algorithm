@@ -1,46 +1,144 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
-
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 
-public class MainGUI {
-    public MainGUI(){ }//ctor
-    public void State() {
-    	
+public class MainGUI implements ActionListener{
+	
+	private JPanel selectAlg;
+	private JRadioButton r1;
+	private JRadioButton r2;
+	private JRadioButton ra1;
+	private JRadioButton ra2;
+	private JRadioButton rb1;
+	private JRadioButton rb2;
+	private JTextField inputField;
+	private JTextField patField;
+
+    public MainGUI(){ 
+    	selectAlg = new JPanel();
+    	init();
+
     }
-    public static void main(String[] args) {  
+    private void init() {
+
+    	JPanel runType = new JPanel();
+    	JPanel inputPanel = new JPanel();
+    	
+        JLabel algText	=	new	JLabel("CHOOSE ALGORITHM: ");
+        algText.setFont(new Font(algText.getFont().getName(), Font.PLAIN, 18));
+    	selectAlg.add(algText);  	
+    	ra1 = new JRadioButton("A) BM ");    
+    	ra2 = new JRadioButton("B) KMP ");
+    	ButtonGroup G1 = new ButtonGroup();
+    	G1.add(ra1);
+    	G1.add(ra2);
+    	selectAlg.add(ra1);
+    	selectAlg.add(ra2);
+    	selectAlg.setLayout(new BoxLayout(selectAlg, BoxLayout.Y_AXIS));
+    	
+        JLabel typeText	=	new	JLabel("Run Type: ");
+        typeText.setFont(new Font(typeText.getFont().getName(), Font.PLAIN, 18));
+        runType.add(typeText); 
+    	r1 = new JRadioButton("A) Automatic");    
+    	r2 = new JRadioButton("B) Manual ");
+    	ButtonGroup G2 = new ButtonGroup();
+    	G2.add(r1);
+    	G2.add(r2);
+    	runType.add(r1);
+    	runType.add(r2);
+    	runType.setLayout(new BoxLayout(runType, BoxLayout.Y_AXIS));
+    	selectAlg.add(runType);
+    	
+    	JLabel inputlbl	=	new	JLabel("Input: ");
+    	inputlbl.setFont(new Font(inputlbl.getFont().getName(), Font.PLAIN, 18));
+    	inputPanel.add(inputlbl);
+    	rb1 = new JRadioButton("Current File");
+    	rb2 = new JRadioButton("Manual Input");
+    	inputField = new JTextField(30);
+    	JLabel patlbl	=	new	JLabel("Pattern: ");
+    	patlbl.setFont(new Font(patlbl.getFont().getName(), Font.PLAIN, 18));
+    	patField = new JTextField(30);
+    	ButtonGroup G3 = new ButtonGroup();
+    	G3.add(rb1);
+    	G3.add(rb2);
+    	inputPanel.add(rb1);
+    	inputPanel.add(rb2);
+    	inputPanel.add(inputField);
+    	inputPanel.add(patlbl);
+    	inputPanel.add(patField);
+    	inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+    	selectAlg.add(inputPanel);
+    	
+    	JButton start = new JButton("start");
+    	start.addActionListener(this);
+    	start.setBackground(new Color(59, 89, 182));
+    	start.setForeground(Color.WHITE);
+    	start.setFocusPainted(false);
+    	start.setFont(new Font("Tahoma", Font.BOLD, 12));
+    	selectAlg.add(start);
+    	
+
+    }
+    
+    public void show() {
+    	
     	JFrame frame	=	new	JFrame();
+    	frame.setTitle("String Search Algorithms");
     	Container	cp	=	frame.getContentPane();
     	cp.setLayout(new BorderLayout());
     	
-        JButton button	=	new	JButton("CHOOSE ALG");
-    	button.setBounds(0,0,120,100);
-    	frame.add(button);
-    	
-    	JButton button1	=	new	JButton("KMP");
-    	button1.setBounds(140,0,120,100);
-    	DoKMPButton dob1	=	new	DoKMPButton(frame);
-    	button1.addActionListener(dob1);
-    	frame.add(button1);
-    	
-    	JButton button2	=	new	JButton("BM");
-    	button2.setBounds(280,0,120,100);
-    	DoBMButton dob2	=	new	DoBMButton();
-    	button2.addActionListener(dob2);
-    	frame.add(button2);
-
-    	JRadioButton r1=new JRadioButton("A) Automatic");    
-    	JRadioButton r2=new JRadioButton("B) Manual ");    
-    	r1.setBounds(250,0,100,30);    
-    	r2.setBounds(250,130,100,30); 
-    	frame.add(r1);frame.add(r2); 
-    	
+    	frame.add(selectAlg);    	
+    	frame.pack();
     	frame.setSize(500,500);
     	frame.setLayout(null); 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setVisible(true); 
+    	
+    }
+    
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println("clicked!!!");
+		if(ra1.isSelected()) {
+			DoBMButton run;
+			System.out.println("BM");
+			//to be changed - new featuers - BUG HERE will Fix Soon 
+			String pat = patField.getName();
+			if(rb1.isSelected()) {
+				//input from file
+				run = new DoBMButton();
+				run.actionPerformed(null);
+			}else {
+				//input from text
+				/*String str = inputField.getText();
+				run = new DoBMButton();
+				run.actionPerformed(null);
+				*/
+			}
+			
+		}else {
+			System.out.println("KMP");
+		}
+		
+	}
+	
+	
+    public static void main(String[] args) { 
+    	
+    	MainGUI GUI = new MainGUI();
+    	GUI.show();
     }
 }

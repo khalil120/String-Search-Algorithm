@@ -30,7 +30,8 @@ public class BM implements Algorithm{
 	private String readFromFile() {
 		String data = ""; 
 		try {
-			File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\input.txt");
+			//File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\input.txt");
+			File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
