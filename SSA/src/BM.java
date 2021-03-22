@@ -10,7 +10,7 @@ public class BM implements Algorithm{
 	private BM_State stateMachine = new BM_State();
 	private int patLen; 
 	private int txtLen;
-
+	private  boolean searchtype;
 
 	public BM(String input, String pattern) {
 		this.input = input;
@@ -141,6 +141,13 @@ public class BM implements Algorithm{
 
 	public void setStateMachine(BM_State stateMachine) {
 		this.stateMachine = stateMachine;
+	}
+	
+	public boolean isSearchtype() {
+		return searchtype;
+	}
+	public void setSearchtype(boolean searchtype) {
+		this.searchtype = searchtype;
 	}
 
 }

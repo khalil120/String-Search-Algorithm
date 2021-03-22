@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 public class DoBMButton implements ActionListener { 
 	public  JFrame frame2 ;
 	private BM bm;
-
+	
 	public DoBMButton() {
 		this.frame2 = new JFrame();
 		this.bm = new BM("ABCDABD");
@@ -25,7 +25,7 @@ public class DoBMButton implements ActionListener {
 			String ss  = String.valueOf(c);  
 			arr[i] = new JButton(ss);
 			arr[i].setBounds(x,y,width,height);
-			if(x < 800 )
+			if(x < 800 ) // 800?//////////
 				x+=width;
 			else {
 				x = 100;
@@ -74,4 +74,11 @@ public class DoBMButton implements ActionListener {
 		//bm.search(); //automatic search
 		bm.search(5); // manual 
 	}
+	public BM getBm() {
+		return bm;
+	}
+	public void setBm(BM bm) {
+		this.bm = bm;
+	}
+
 }

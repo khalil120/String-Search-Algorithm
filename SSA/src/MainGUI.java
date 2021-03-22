@@ -112,8 +112,8 @@ public class MainGUI implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("clicked!!!");
+		DoBMButton run = new DoBMButton();
 		if(ra1.isSelected()) {
-			DoBMButton run;
 			System.out.println("BM");
 			//to be changed - new featuers - BUG HERE will Fix Soon 
 			String pat = patField.getName();
@@ -132,7 +132,10 @@ public class MainGUI implements ActionListener{
 		}else {
 			System.out.println("KMP");
 		}
-		
+		if(r1.isSelected())
+			 run.getBm().setSearchtype(true);
+		else
+			run.getBm().setSearchtype(false);
 	}
 	
 	

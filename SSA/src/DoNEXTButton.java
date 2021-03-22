@@ -27,11 +27,20 @@ public class DoNEXTButton implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-		//automatic search
-		/*this.bm.nextStep();
-		int i = this.bm.getStateMachine().currentState(), j = this.bm.getPattern().length()-1;
+        if(bm.isSearchtype())
+        	automatic_search();
+        else
+        	manual_search();
+	}
+
+
+	public void automatic_search() {
+		this.bm.nextStep();
+		int i = this.bm.getStateMachine().stack.get(this.bm.getStateMachine().getIndex()-1), j = this.bm.getPattern().length()-1;
+		System.out.println(i );
 		char input = this.bm.getInput().charAt(i-2);
 		char patt = this.bm.getPattern().charAt(j);
+		
 		while(j > -1) {
 			if(input == patt ) {
 				this.patarray[j].setBackground(Color.GREEN);
@@ -44,7 +53,11 @@ public class DoNEXTButton implements ActionListener {
 			}
 			j--;
 			i--;
-		}*/
+		}
+	}
+
+
+	public void manual_search() {
 		//manual search
 		int i;
 		for(i = 0 ; i < this.patarray.length ;i++)
@@ -52,8 +65,8 @@ public class DoNEXTButton implements ActionListener {
 
 		for(i = 0 ; i < this.inputarr.length ;i++)
 			this.inputarr[i].setBackground(Color.WHITE);
-		
-		
+
+
 		int j = this.bm.getPattern().length()-1;
 		int cur = this.bm.getStateMachine().stack.get(cnt);
 		char input = this.bm.getInput().charAt(cur-2);
@@ -70,13 +83,13 @@ public class DoNEXTButton implements ActionListener {
 				}
 				j--;
 				cur--;
-				
+
 			}
 		}else {
 			this.patarray[j].setBackground(Color.RED);
 			this.inputarr[cur-2].setBackground(Color.RED);
 		}
-		cnt++;
+		cnt++; 
 	}
 
 }
