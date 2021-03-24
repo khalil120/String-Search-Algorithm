@@ -4,31 +4,31 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class DoBMButton implements ActionListener { 
+public class DoBMButton  implements ActionListener{
 	public  JFrame frame2 ;
 	private BM bm;
-	
-	public DoBMButton() {
+
+	public DoBMButton(String input,String patt) {
 		this.frame2 = new JFrame();
-		this.bm = new BM("ABCDABD");
+		this.bm = new BM(input, patt);
 	}
 	public void actionPerformed(ActionEvent ae) {
-	     // showing the input 
+		// showing the input 
 		String st = bm.getInput();
 		JButton button	=	new	JButton("input");
 		button.setBounds(0,0,150,50);
 		frame2.add(button);
 		JButton arr[] =  new JButton[st.length()];
-		int x = 100 , y = 0 , width = 50  , height = 50;
+		int x = 200 , y = 0 , width = 50  , height = 50;
 		for(int i = 0 ; i < st.length() ; i++) {
 			char c = st.charAt(i);
 			String ss  = String.valueOf(c);  
 			arr[i] = new JButton(ss);
 			arr[i].setBounds(x,y,width,height);
-			if(x < 800 ) // 800?//////////
+			if(x < 800 )
 				x+=width;
 			else {
-				x = 100;
+				x = 200;
 				y+= height+10;
 			}
 			arr[i].setBackground(Color.WHITE);
@@ -55,24 +55,29 @@ public class DoBMButton implements ActionListener {
 		JButton b	=	new	JButton("NEXT");
 		b.setBounds(0,y+60,150,50);
 		DoNEXTButton donenext	=	new	DoNEXTButton(bm,arr,array);
-    	b.addActionListener(donenext);
+		b.addActionListener(donenext);
 		frame2.add(b);
-     
+
 		JButton b1	=	new	JButton("PREV");
 		b1.setBounds(200,y+60,150,50);
+		DoPREVButton donePREV	=	new	DoPREVButton(bm,arr,array,donenext);
+		b1.addActionListener(donePREV);
 		frame2.add(b1);
-		
+
 		JButton b2	=	new	JButton("RESET");
 		b2.setBounds(400,y+60,150,50);
+		DoRESETButton doneRest	=	new	DoRESETButton(bm,arr,array);
+		b2.addActionListener(doneRest);
 		frame2.add(b2);
-		 // should add bad match table to GUI???
-		
+		// should add bad match table to GUI???
+
 		frame2.setTitle("BM");
 		frame2.setSize(1000,700);
 		frame2.setLayout(null); 
 		frame2.setVisible(true);
-		//bm.search(); //automatic search
-		bm.search(5); // manual 
+
+	    bm.search();
+		
 	}
 	public BM getBm() {
 		return bm;

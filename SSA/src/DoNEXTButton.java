@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,29 +26,24 @@ public class DoNEXTButton implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-        if(bm.isSearchtype())
-        	automatic_search();
-        else
-        	manual_search();
+		if(bm.isSearchtype())
+			automatic_search();
+		else
+			manual_search();
 	}
 
 
 	public void automatic_search() {
 		this.bm.nextStep();
-		int i = this.bm.getStateMachine().stack.get(this.bm.getStateMachine().getIndex()-1), j = this.bm.getPattern().length()-1;
-		System.out.println(i );
+		int i = this.bm.getStateMachine().stack.get(this.bm.getStateMachine().getIndex()-1), 
+				j = this.bm.getPattern().length()-1;
 		char input = this.bm.getInput().charAt(i-2);
 		char patt = this.bm.getPattern().charAt(j);
-		
+
 		while(j > -1) {
 			if(input == patt ) {
 				this.patarray[j].setBackground(Color.GREEN);
 				this.inputarr[i-2].setBackground(Color.GREEN);
-			}
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 			j--;
 			i--;
@@ -68,28 +62,40 @@ public class DoNEXTButton implements ActionListener {
 
 
 		int j = this.bm.getPattern().length()-1;
-		int cur = this.bm.getStateMachine().stack.get(cnt);
-		char input = this.bm.getInput().charAt(cur-2);
-		char patt = this.bm.getPattern().charAt(j);
-		if(input == patt ) {
-			this.patarray[j].setBackground(Color.GREEN);
-			this.inputarr[cur-2].setBackground(Color.GREEN);
-			j--;
-			cur-=3;
-			while(j > -1) {
-				if(input == patt ) {
-					this.patarray[j].setBackground(Color.GREEN);
-					this.inputarr[cur].setBackground(Color.GREEN);
-				}
+		if( cnt < this.bm.getStateMachine().stack.size() ) {
+			int cur = this.bm.getStateMachine().stack.get(cnt);
+			char input = this.bm.getInput().charAt(cur-2);
+			char patt = this.bm.getPattern().charAt(j);
+			if(input == patt ) {
+				this.patarray[j].setBackground(Color.GREEN);
+				this.inputarr[cur-2].setBackground(Color.GREEN);
 				j--;
-				cur--;
+				cur-=3;
+				while(j > -1) {
+					if(input == patt ) {
+						this.patarray[j].setBackground(Color.GREEN);
+						this.inputarr[cur].setBackground(Color.GREEN);
+					}
+					j--;
+					cur--;
 
+				}
+			}else {
+				this.patarray[j].setBackground(Color.RED);
+				this.inputarr[cur-2].setBackground(Color.RED);
 			}
+			cnt++; 
 		}else {
-			this.patarray[j].setBackground(Color.RED);
-			this.inputarr[cur-2].setBackground(Color.RED);
+			cnt = 0;
 		}
-		cnt++; 
+	}
+
+	public int getCnt() {
+		return cnt;
+	}
+
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
 	}
 
 }

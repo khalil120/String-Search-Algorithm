@@ -112,30 +112,39 @@ public class MainGUI implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("clicked!!!");
-		DoBMButton run = new DoBMButton();
+		DoBMButton run;
+		BM bm ;
 		if(ra1.isSelected()) {
 			System.out.println("BM");
 			//to be changed - new featuers - BUG HERE will Fix Soon 
 			String pat = patField.getName();
 			if(rb1.isSelected()) {
 				//input from file
-				run = new DoBMButton();
+				bm = new BM("ABCDABD");
+				String input = bm.getInput();
+				String patt = bm.getPattern();
+				run = new DoBMButton( input, patt);
 				run.actionPerformed(null);
+				if(r1.isSelected())
+					 run.getBm().setSearchtype(true);
+				else
+					run.getBm().setSearchtype(false);
 			}else {
-				//input from text
-				/*String str = inputField.getText();
-				run = new DoBMButton();
+				String text = inputField.getText();
+				String txt = patField.getText();
+				bm = new BM(text,txt);
+				run = new DoBMButton(text,txt);
 				run.actionPerformed(null);
-				*/
+				if(r1.isSelected())
+					 run.getBm().setSearchtype(true);
+				else
+					run.getBm().setSearchtype(false);
 			}
 			
 		}else {
 			System.out.println("KMP");
 		}
-		if(r1.isSelected())
-			 run.getBm().setSearchtype(true);
-		else
-			run.getBm().setSearchtype(false);
+	
 	}
 	
 	

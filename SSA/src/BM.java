@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 
-public class BM implements Algorithm{
+public class BM  implements Algorithm{
 
 	private String input, pattern;
 	private int NO_OF_CHARS = 256;
@@ -25,6 +25,7 @@ public class BM implements Algorithm{
 		this.input = readFromFile();
 		patLen = pattern.length(); 
 		txtLen = input.length();
+		
 	}
 
 	private String readFromFile() {
@@ -149,6 +150,9 @@ public class BM implements Algorithm{
 	public void setSearchtype(boolean searchtype) {
 		this.searchtype = searchtype;
 	}
+
+	
+
 
 }
 
