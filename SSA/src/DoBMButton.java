@@ -54,7 +54,7 @@ public class DoBMButton  implements ActionListener{
 		}
 		JButton b	=	new	JButton("NEXT");
 		b.setBounds(0,y+60,150,50);
-		DoNEXTButton donenext	=	new	DoNEXTButton(bm,arr,array);
+		DoNEXTButton donenext	=	new	DoNEXTButton(bm,arr,array,b);
 		b.addActionListener(donenext);
 		frame2.add(b);
 
@@ -66,7 +66,7 @@ public class DoBMButton  implements ActionListener{
 
 		JButton b2	=	new	JButton("RESET");
 		b2.setBounds(400,y+60,150,50);
-		DoRESETButton doneRest	=	new	DoRESETButton(bm,arr,array);
+		DoRESETButton doneRest	=	new	DoRESETButton(arr,array,donenext);
 		b2.addActionListener(doneRest);
 		frame2.add(b2);
 		// should add bad match table to GUI???

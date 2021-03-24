@@ -28,7 +28,13 @@ public class DoPREVButton implements ActionListener  {
 	}
 
 	private void manual_search() {
+		
 		if( this.next.getCnt()>1) {
+			
+			if(this.next.getCnt() == this.next.getStackSize()) {
+				this.next.getNextBtn().setEnabled(true);
+			}
+			
 			int j = this.bm.getPattern().length()-1;
 			int temp  = this.bm.getStateMachine().stack.get(this.next.getCnt()-1);
 			int cur = this.bm.getStateMachine().stack.get(this.next.getCnt()-2);

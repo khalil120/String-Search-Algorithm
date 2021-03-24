@@ -1,31 +1,37 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
-import javax.swing.JFrame;
+
 
 
 public class DoNEXTButton implements ActionListener {
-	public BM bm;
-	public  JFrame frame2 ;
-	public JButton[] inputarr;
-	public JButton[] patarray;
-	public int cnt =0 ;
+	private BM bm;
+	private JButton[] inputarr;
+	private JButton[] patarray;
+	private JButton next;
+	private int cnt = 0;
+	private int stackSize = 0;
+
 
 	public DoNEXTButton(BM bm) {
 		super();
 		this.bm = bm;
 	}
 
-	public DoNEXTButton(BM bm2, JButton[] arr, JButton[] array) {
+	public DoNEXTButton(BM bm2, JButton[] arr, JButton[] array, JButton b) {
 		super();
 		this.bm = bm2;
 		this.inputarr = arr;
 		this.patarray = array;
+		this.next = b;
 	}
 
 	public void actionPerformed(ActionEvent ae) {
+		
+		
+		stackSize = bm.getStateMachine().stack.size();
+		
 		if(bm.isSearchtype())
 			automatic_search();
 		else
@@ -53,6 +59,8 @@ public class DoNEXTButton implements ActionListener {
 
 	public void manual_search() {
 		//manual search
+		
+		
 		int i;
 		for(i = 0 ; i < this.patarray.length ;i++)
 			this.patarray[i].setBackground(Color.WHITE);
@@ -78,15 +86,18 @@ public class DoNEXTButton implements ActionListener {
 					}
 					j--;
 					cur--;
-
+					
 				}
+
 			}else {
 				this.patarray[j].setBackground(Color.RED);
 				this.inputarr[cur-2].setBackground(Color.RED);
 			}
-			cnt++; 
-		}else {
-			cnt = 0;
+			cnt++;
+			if(cnt >= stackSize)
+				this.next.setEnabled(false);
+			else
+				this.next.setEnabled(true);
 		}
 	}
 
@@ -94,8 +105,18 @@ public class DoNEXTButton implements ActionListener {
 		return cnt;
 	}
 
+	public void decCnt() {
+		this.cnt--;
+	}
 	public void setCnt(int cnt) {
 		this.cnt = cnt;
+	}
+	public int getStackSize() {
+		return stackSize;
+	}
+	
+	public JButton getNextBtn() {
+		return this.next;
 	}
 
 }
