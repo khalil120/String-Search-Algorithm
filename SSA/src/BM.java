@@ -31,8 +31,8 @@ public class BM  implements Algorithm{
 	private String readFromFile() {
 		String data = ""; 
 		try {
-			//File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\input.txt");
-			File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
+			File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\input.txt");
+			//File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
@@ -50,8 +50,9 @@ public class BM  implements Algorithm{
 		for (i = 0; i < NO_OF_CHARS; i++) 
 			badchar[i] = -1; 
 
-		for (i = 0; i < size; i++) 
-			badchar[(int) str[i]] = i; 
+		for (i = 0; i < size; i++) {
+			badchar[(int) str[i]] = i;
+		} 
 	}
 
 	public int max (int a, int b) { return (a > b)? a: b; } 

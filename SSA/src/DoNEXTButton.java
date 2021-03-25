@@ -12,19 +12,20 @@ public class DoNEXTButton implements ActionListener {
 	private JButton next;
 	private int cnt = 0;
 	private int stackSize = 0;
-
+    private JButton prev;
 
 	public DoNEXTButton(BM bm) {
 		super();
 		this.bm = bm;
 	}
 
-	public DoNEXTButton(BM bm2, JButton[] arr, JButton[] array, JButton b) {
+	public DoNEXTButton(BM bm2, JButton[] arr, JButton[] array, JButton b,JButton prev) {
 		super();
 		this.bm = bm2;
 		this.inputarr = arr;
 		this.patarray = array;
 		this.next = b;
+		this.prev = prev;
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -71,6 +72,11 @@ public class DoNEXTButton implements ActionListener {
 
 		int j = this.bm.getPattern().length()-1;
 		if( cnt < this.bm.getStateMachine().stack.size() ) {
+			
+			if(cnt == 0 ) {
+				this.prev.setEnabled(true);
+			}
+			
 			int cur = this.bm.getStateMachine().stack.get(cnt);
 			char input = this.bm.getInput().charAt(cur-2);
 			char patt = this.bm.getPattern().charAt(j);
