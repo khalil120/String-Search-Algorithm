@@ -1,3 +1,4 @@
+package il.ac.telhai.projects.ssa;
 
 public interface State {
 	
