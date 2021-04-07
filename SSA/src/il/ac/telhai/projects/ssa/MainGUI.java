@@ -47,13 +47,11 @@ public class MainGUI implements ActionListener{
         algText.setFont(new Font(algText.getFont().getName(), Font.PLAIN, 18));
     	selectAlg.add(algText);  	
     	initRadioButtons(selectAlgRadioBtn, radioBtnAlgorithimOptoins, selectAlg);
-    	selectAlg.setLayout(new BoxLayout(selectAlg, BoxLayout.Y_AXIS));
     	
         JLabel typeText	=	new	JLabel(Actions[1]);
         typeText.setFont(new Font(typeText.getFont().getName(), Font.PLAIN, 18));
         runType.add(typeText); 
         initRadioButtons(runTypeRadioBtn, radioBtnRunTypeOptoins, runType);
-    	runType.setLayout(new BoxLayout(runType, BoxLayout.Y_AXIS));
     	selectAlg.add(runType);
     	
     	JLabel inputlbl	=	new	JLabel(Actions[2]);
@@ -67,7 +65,6 @@ public class MainGUI implements ActionListener{
     	inputPanel.add(inputField);
     	inputPanel.add(patlbl);
     	inputPanel.add(patField);
-    	inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
     	selectAlg.add(inputPanel);
     	
     	JButton start = new JButton(Actions[3]);
@@ -79,6 +76,17 @@ public class MainGUI implements ActionListener{
     	selectAlg.add(start);
     	
 
+    }
+    
+    public void initRadioButtons(JRadioButton[] buttons, String[] str, JPanel panel) {
+    	
+    	ButtonGroup btnGroup = new ButtonGroup();
+    	for(int i = 0; i < buttons.length; i++) {
+    		buttons[i] = new JRadioButton(str[i]);
+    		btnGroup.add(buttons[i]);
+    		panel.add(buttons[i]);
+    	}
+    	panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
     
     public void show() {
@@ -97,18 +105,6 @@ public class MainGUI implements ActionListener{
     	
     }
     
-    public void initRadioButtons(JRadioButton[] buttons, String[] str, JPanel panel) {
-    	int i;
-    	ButtonGroup btnGroup = new ButtonGroup();
-    	
-    	for(i = 0; i < buttons.length; i++) {
-    		buttons[i] = new JRadioButton(str[i]);
-    		btnGroup.add(buttons[i]);
-    		panel.add(buttons[i]);
-    	}
-    }
-    
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
