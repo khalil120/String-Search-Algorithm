@@ -18,17 +18,23 @@ import javax.swing.JTextField;
 public class MainGUI implements ActionListener{
 	
 	private JPanel selectAlg;
-	private JRadioButton r1;
-	private JRadioButton r2;
-	private JRadioButton ra1;
-	private JRadioButton ra2;
-	private JRadioButton rb1;
-	private JRadioButton rb2;
+	private static String[] Actions = {"CHOOSE ALGORITHM: " , "Run Type: ", "Input: ", "Start"};
+	private static String[] radioBtnAlgorithimOptoins = {"A) BM " , "B) KMP "};
+	private static String[] radioBtnRunTypeOptoins = {"A) Automatic", "B) Manual "};
+	private static String[] radioBtnInputOptoins = {"Current File", "Manual Input"};
+	private JRadioButton[] selectAlgRadioBtn;
+	private JRadioButton[] runTypeRadioBtn;
+	private JRadioButton[] inputRadioBtn;
 	private JTextField inputField;
 	private JTextField patField;
+	private int firstIndex = 0;
+	private int secondIndex = 1;
 
     public MainGUI(){ 
     	selectAlg = new JPanel();
+    	selectAlgRadioBtn = new JRadioButton[2];
+    	runTypeRadioBtn = new JRadioButton[2];
+    	inputRadioBtn = new JRadioButton[2];
     	init();
 
     }
@@ -37,52 +43,34 @@ public class MainGUI implements ActionListener{
     	JPanel runType = new JPanel();
     	JPanel inputPanel = new JPanel();
     	
-        JLabel algText	=	new	JLabel("CHOOSE ALGORITHM: ");
+        JLabel algText	=	new	JLabel(Actions[0]);
         algText.setFont(new Font(algText.getFont().getName(), Font.PLAIN, 18));
     	selectAlg.add(algText);  	
-    	ra1 = new JRadioButton("A) BM ");    
-    	ra2 = new JRadioButton("B) KMP ");
-    	ButtonGroup G1 = new ButtonGroup();
-    	G1.add(ra1);
-    	G1.add(ra2);
-    	selectAlg.add(ra1);
-    	selectAlg.add(ra2);
+    	initRadioButtons(selectAlgRadioBtn, radioBtnAlgorithimOptoins, selectAlg);
     	selectAlg.setLayout(new BoxLayout(selectAlg, BoxLayout.Y_AXIS));
     	
-        JLabel typeText	=	new	JLabel("Run Type: ");
+        JLabel typeText	=	new	JLabel(Actions[1]);
         typeText.setFont(new Font(typeText.getFont().getName(), Font.PLAIN, 18));
         runType.add(typeText); 
-    	r1 = new JRadioButton("A) Automatic");    
-    	r2 = new JRadioButton("B) Manual ");
-    	ButtonGroup G2 = new ButtonGroup();
-    	G2.add(r1);
-    	G2.add(r2);
-    	runType.add(r1);
-    	runType.add(r2);
+        initRadioButtons(runTypeRadioBtn, radioBtnRunTypeOptoins, runType);
     	runType.setLayout(new BoxLayout(runType, BoxLayout.Y_AXIS));
     	selectAlg.add(runType);
     	
-    	JLabel inputlbl	=	new	JLabel("Input: ");
+    	JLabel inputlbl	=	new	JLabel(Actions[2]);
     	inputlbl.setFont(new Font(inputlbl.getFont().getName(), Font.PLAIN, 18));
     	inputPanel.add(inputlbl);
-    	rb1 = new JRadioButton("Current File");
-    	rb2 = new JRadioButton("Manual Input");
     	inputField = new JTextField(30);
     	JLabel patlbl	=	new	JLabel("Pattern: ");
     	patlbl.setFont(new Font(patlbl.getFont().getName(), Font.PLAIN, 18));
     	patField = new JTextField(30);
-    	ButtonGroup G3 = new ButtonGroup();
-    	G3.add(rb1);
-    	G3.add(rb2);
-    	inputPanel.add(rb1);
-    	inputPanel.add(rb2);
+    	initRadioButtons(inputRadioBtn, radioBtnInputOptoins, inputPanel);
     	inputPanel.add(inputField);
     	inputPanel.add(patlbl);
     	inputPanel.add(patField);
     	inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
     	selectAlg.add(inputPanel);
     	
-    	JButton start = new JButton("start");
+    	JButton start = new JButton(Actions[3]);
     	start.addActionListener(this);
     	start.setBackground(new Color(59, 89, 182));
     	start.setForeground(Color.WHITE);
@@ -102,44 +90,50 @@ public class MainGUI implements ActionListener{
     	
     	frame.add(selectAlg);    	
     	frame.pack();
-    	frame.setSize(500,500);
+    	frame.setSize(850,850);
     	frame.setLayout(null); 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setVisible(true); 
     	
     }
     
+    public void initRadioButtons(JRadioButton[] buttons, String[] str, JPanel panel) {
+    	int i;
+    	ButtonGroup btnGroup = new ButtonGroup();
+    	
+    	for(i = 0; i < buttons.length; i++) {
+    		buttons[i] = new JRadioButton(str[i]);
+    		btnGroup.add(buttons[i]);
+    		panel.add(buttons[i]);
+    	}
+    }
+    
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("clicked!!!");
+
 		DoBMButton run;
 		BM bm ;
-		if(ra1.isSelected()) {
-			System.out.println("BM");
+		if(selectAlgRadioBtn[firstIndex].isSelected()) {
 			//to be changed - new featuers - BUG HERE will Fix Soon 
 			String pat = patField.getName();
-			if(rb1.isSelected()) {
+			if(inputRadioBtn[firstIndex].isSelected()) {
 				//input from file
 				bm = new BM("ABCDABD");
 				String input = bm.getInput();
 				String patt = bm.getPattern();
 				run = new DoBMButton( input, patt);
 				run.actionPerformed(null);
-				if(r1.isSelected())
-					 run.getBm().setSearchtype(true);
-				else
-					run.getBm().setSearchtype(false);
+				run.getBm().setSearchtype(runTypeRadioBtn[firstIndex].isSelected());
+
 			}else {
 				String text = inputField.getText();
 				String txt = patField.getText();
 				bm = new BM(text,txt);
 				run = new DoBMButton(text,txt);
 				run.actionPerformed(null);
-				if(r1.isSelected())
-					 run.getBm().setSearchtype(true);
-				else
-					run.getBm().setSearchtype(false);
+				run.getBm().setSearchtype(runTypeRadioBtn[firstIndex].isSelected());
+	
 			}
 			
 		}else {
@@ -155,3 +149,4 @@ public class MainGUI implements ActionListener{
     	GUI.show();
     }
 }
+

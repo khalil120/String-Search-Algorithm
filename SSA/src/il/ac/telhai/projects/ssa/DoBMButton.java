@@ -1,11 +1,13 @@
 package il.ac.telhai.projects.ssa;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 
@@ -20,9 +22,11 @@ public class DoBMButton  implements ActionListener{
 	public void actionPerformed(ActionEvent ae) {
 		// showing the input 
 		String st = bm.getInput();
-		JButton button	=	new	JButton("input");
-		button.setBounds(0,0,150,50);
-		frame2.add(button);
+		JLabel inputLbl = new JLabel("Input: ");
+		inputLbl.setFont(new Font(inputLbl.getFont().getName(), Font.PLAIN, 18));
+		inputLbl.setBounds(0, 0, 150, 50);
+
+		frame2.add(inputLbl);
 		JButton arr[] =  new JButton[st.length()];
 		int x = 200 , y = 0 , width = 50  , height = 50;
 		for(int i = 0 ; i < st.length() ; i++) {
@@ -40,11 +44,12 @@ public class DoBMButton  implements ActionListener{
 			arr[i].setForeground(Color.BLACK);
 			frame2.add(arr[i]);
 		}
-		// showing the search string
+		// showing the Pattern
+		JLabel patternLbl = new JLabel("PATTERN: ");
+		patternLbl.setFont(new Font(patternLbl.getFont().getName(), Font.PLAIN, 18));
+		patternLbl.setBounds(0, y + 60, 150, 50);
 		String str=  bm.getPattern();
-		JButton button1	=	new	JButton("search string");
-		button1.setBounds(0,y+60,150,50);
-		frame2.add(button1);
+		frame2.add(patternLbl);
 		JButton array[] =  new JButton[str.length()];
 		x = 200 ; y = y + 60  ; width = 50  ; height = 50;
 		for(int i = 0 ; i < str.length() ; i++) {

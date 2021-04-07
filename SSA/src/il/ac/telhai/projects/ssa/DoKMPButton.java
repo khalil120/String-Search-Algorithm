@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 public class DoKMPButton implements ActionListener {
 
 	public DoKMPButton(JFrame frame) {
-		// TODO Auto-generated constructor stub
+		
 	}
 	public void actionPerformed(ActionEvent ae) {}
 
