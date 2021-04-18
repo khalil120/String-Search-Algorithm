@@ -32,7 +32,7 @@ public class DoNEXTButton implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		
 		
-		stackSize = bm.getStateMachine().stack.size();
+		stackSize = bm.getStack().size();
 		
 		if(bm.isSearchtype())
 			automatic_search();
@@ -43,8 +43,9 @@ public class DoNEXTButton implements ActionListener {
 
 	public void automatic_search() {
 		this.bm.nextStep();
-		int i = this.bm.getStateMachine().stack.get(this.bm.getStateMachine().getIndex()-1), 
-				j = this.bm.getPattern().length()-1;
+		State<Integer> st = this.bm.getStack().get(this.bm.getIndex()-1);
+		int i = st.getState();
+		int j = this.bm.getPattern().length()-1;
 		char input = this.bm.getInput().charAt(i-2);
 		char patt = this.bm.getPattern().charAt(j);
 
@@ -72,13 +73,14 @@ public class DoNEXTButton implements ActionListener {
 
 
 		int j = this.bm.getPattern().length()-1;
-		if( cnt < this.bm.getStateMachine().stack.size() ) {
+		if( cnt < this.bm.getStack().size() ) {
 			
 			if(cnt == 0 ) {
 				this.prev.setEnabled(true);
 			}
 			
-			int cur = this.bm.getStateMachine().stack.get(cnt);
+			State<Integer> st = this.bm.getStack().get(cnt);
+			int cur = st.getState();
 			char input = this.bm.getInput().charAt(cur-2);
 			char patt = this.bm.getPattern().charAt(j);
 			if(input == patt ) {

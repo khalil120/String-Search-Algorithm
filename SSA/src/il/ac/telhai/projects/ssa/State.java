@@ -1,24 +1,20 @@
 package il.ac.telhai.projects.ssa;
 
-public interface State {
+public class State<T> {
 	
+	private T state;
 	
-	/**
-	 * 
-	 * @return return a copy of stack head
-	 */
-	public int currentState();
+	public State(T state) {
+		this.state = state;
+	}
+
+	public T getState() {
+		return state;
+	}
+
+	public void setState(T state) {
+		this.state = state;
+	}
 	
-	/**
-	 * push the new state to the stack
-	 * @param state to be the index of the new state
-	 */
-	public void nextState(int state);
-	
-	/**
-	 * pop current head
-	 * @return a copy of stack head
-	 */
-	public int prevState();
 
 }

@@ -2,18 +2,20 @@ package il.ac.telhai.projects.ssa;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Stack;
 
 
-public class BM  implements Algorithm{
+public class BM  extends Algorithm<Integer>{
 
 	private String input, pattern;
 	private int NO_OF_CHARS = 256;
-	private BM_State stateMachine = new BM_State();
 	private int patLen; 
 	private int txtLen;
 	private  boolean searchtype;
 
 	public BM(String input, String pattern) {
+		
+		this.setDataStructure(new Stack<State<Integer>>());
 		this.input = input;
 		this.pattern = pattern;
 		patLen = pattern.length(); 
@@ -22,6 +24,8 @@ public class BM  implements Algorithm{
 	}
 
 	public BM(String pattern) {
+		
+		this.setDataStructure(new Stack<State<Integer>>());
 		this.pattern = pattern;
 		this.input = readFromFile();
 		patLen = pattern.length(); 
@@ -59,12 +63,12 @@ public class BM  implements Algorithm{
 	public int max (int a, int b) { return (a > b)? a: b; } 
 
 	public void nextStep() {
-		int s = stateMachine.currentState();
+		int s = this.currentState();
 		search(s);
 	}
 
-	public void prevState() {
-		int s = stateMachine.prevState();
+	public void prevStep() {
+		int s = this.prevState();
 		search(s);
 	}
 
@@ -89,7 +93,7 @@ public class BM  implements Algorithm{
 			} else {
 				s += max(1, j - badchar[txt[s+j]]);
 			}
-			stateMachine.nextState(s); //update the next state
+			this.updateNextState(s); //update the next state
 		}
 	}
 
@@ -101,7 +105,7 @@ public class BM  implements Algorithm{
 		int badchar[] = new int[NO_OF_CHARS]; 
 
 		badCharTable(pat, patLen, badchar); 
-		stateMachine.nextState(s);
+		this.updateNextState(s);
 		while(s <= (txtLen - patLen)) {	
 			int j = patLen-1; 
 			while(j >= 0 && pat[j] == txt[s+j])
@@ -112,15 +116,10 @@ public class BM  implements Algorithm{
 			} else {
 				s += max(1, j - badchar[txt[s+j]]); 
 			}
-			stateMachine.nextState(s);
+			this.updateNextState(s);
 		}
 	}
 
-	@Override
-	public void step() {}
-
-	@Override
-	public void pop() {}
 
 	public String getInput() {
 		return input;
@@ -137,20 +136,35 @@ public class BM  implements Algorithm{
 	public void setPattern(String pattern) {
 		this.pattern = pattern;
 	}
-
-	public BM_State getStateMachine() {
-		return stateMachine;
-	}
-
-	public void setStateMachine(BM_State stateMachine) {
-		this.stateMachine = stateMachine;
-	}
 	
 	public boolean isSearchtype() {
 		return searchtype;
 	}
 	public void setSearchtype(boolean searchtype) {
 		this.searchtype = searchtype;
+	}
+
+
+
+	@Override
+	public void updateNextState(Integer state) {
+		this.getStack().push(new State<Integer>(state));
+		this.incIndex();
+	}
+
+	@Override
+	public Integer currentState() {
+		return this.getStack().get(0).getState();
+	}
+
+	@Override
+	public Integer prevState() {
+		//TODO: check possible bug here
+		if(!this.getStack().isEmpty()) {
+			this.decIndex();
+			return this.getStack().pop().getState();
+		}
+		return null;
 	}
 
 	

@@ -38,8 +38,8 @@ public class DoPREVButton implements ActionListener  {
 			}
 			
 			int j = this.bm.getPattern().length()-1;
-			//int temp  = this.bm.getStateMachine().stack.get(this.next.getCnt()-1);
-			int cur = this.bm.getStateMachine().stack.get(this.next.getCnt()-2);
+			State<Integer> st = this.bm.getStack().get(this.next.getCnt()-2);
+			int cur = st.getState();
 			char input = this.bm.getInput().charAt(cur-2);
 			char patt = this.bm.getPattern().charAt(j);
 
