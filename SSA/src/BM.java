@@ -1,21 +1,18 @@
-package il.ac.telhai.projects.ssa;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.Stack;
 
 
-public class BM  extends Algorithm<Integer>{
+public class BM  implements Algorithm{
 
 	private String input, pattern;
 	private int NO_OF_CHARS = 256;
+	private BM_State stateMachine = new BM_State();
 	private int patLen; 
 	private int txtLen;
 	private  boolean searchtype;
 
 	public BM(String input, String pattern) {
-		
-		this.setDataStructure(new Stack<State<Integer>>());
 		this.input = input;
 		this.pattern = pattern;
 		patLen = pattern.length(); 
@@ -24,8 +21,6 @@ public class BM  extends Algorithm<Integer>{
 	}
 
 	public BM(String pattern) {
-		
-		this.setDataStructure(new Stack<State<Integer>>());
 		this.pattern = pattern;
 		this.input = readFromFile();
 		patLen = pattern.length(); 
@@ -37,7 +32,7 @@ public class BM  extends Algorithm<Integer>{
 		String data = ""; 
 		try {
 			File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\input.txt");
-		//	File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
+			//File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
@@ -63,12 +58,12 @@ public class BM  extends Algorithm<Integer>{
 	public int max (int a, int b) { return (a > b)? a: b; } 
 
 	public void nextStep() {
-		int s = this.currentState();
+		int s = stateMachine.currentState();
 		search(s);
 	}
 
-	public void prevStep() {
-		int s = this.prevState();
+	public void prevState() {
+		int s = stateMachine.prevState();
 		search(s);
 	}
 
@@ -93,7 +88,7 @@ public class BM  extends Algorithm<Integer>{
 			} else {
 				s += max(1, j - badchar[txt[s+j]]);
 			}
-			this.updateNextState(s); //update the next state
+			stateMachine.nextState(s); //update the next state
 		}
 	}
 
@@ -105,7 +100,7 @@ public class BM  extends Algorithm<Integer>{
 		int badchar[] = new int[NO_OF_CHARS]; 
 
 		badCharTable(pat, patLen, badchar); 
-		this.updateNextState(s);
+		stateMachine.nextState(s);
 		while(s <= (txtLen - patLen)) {	
 			int j = patLen-1; 
 			while(j >= 0 && pat[j] == txt[s+j])
@@ -116,10 +111,15 @@ public class BM  extends Algorithm<Integer>{
 			} else {
 				s += max(1, j - badchar[txt[s+j]]); 
 			}
-			this.updateNextState(s);
+			stateMachine.nextState(s);
 		}
 	}
 
+	@Override
+	public void step() {}
+
+	@Override
+	public void pop() {}
 
 	public String getInput() {
 		return input;
@@ -136,35 +136,20 @@ public class BM  extends Algorithm<Integer>{
 	public void setPattern(String pattern) {
 		this.pattern = pattern;
 	}
+
+	public BM_State getStateMachine() {
+		return stateMachine;
+	}
+
+	public void setStateMachine(BM_State stateMachine) {
+		this.stateMachine = stateMachine;
+	}
 	
 	public boolean isSearchtype() {
 		return searchtype;
 	}
 	public void setSearchtype(boolean searchtype) {
 		this.searchtype = searchtype;
-	}
-
-
-
-	@Override
-	public void updateNextState(Integer state) {
-		this.getStack().push(new State<Integer>(state));
-		this.incIndex();
-	}
-
-	@Override
-	public Integer currentState() {
-		return this.getStack().get(0).getState();
-	}
-
-	@Override
-	public Integer prevState() {
-		//TODO: check possible bug here
-		if(!this.getStack().isEmpty()) {
-			this.decIndex();
-			return this.getStack().pop().getState();
-		}
-		return null;
 	}
 
 	

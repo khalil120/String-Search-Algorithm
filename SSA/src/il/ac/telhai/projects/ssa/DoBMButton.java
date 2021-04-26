@@ -115,6 +115,12 @@ public class DoBMButton  implements ActionListener{
 
 		JButton array[] =  new JButton[str.length()];
 		int x = 200 , y = 300 , width = 50  , height = 50;
+		
+		JLabel patternLbl = new JLabel("BAD CHAR TABLE: ");
+		patternLbl.setFont(new Font(patternLbl.getFont().getName(), Font.PLAIN, 18));
+		patternLbl.setBounds(100, y-50, width*3, height);
+		f.add(patternLbl);
+		
 		for( i = 0 ; i < sb.length() ; i++) {
 			char c = str.charAt(i);
 			String s  = String.valueOf(c);  
