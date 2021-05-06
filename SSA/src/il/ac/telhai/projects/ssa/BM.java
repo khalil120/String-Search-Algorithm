@@ -36,7 +36,7 @@ public class BM  extends Algorithm<Integer>{
 	private String readFromFile() {
 		String data = ""; 
 		try {
-			File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\input.txt");
+			File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\il\\input.txt");
 		//	File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
@@ -81,13 +81,11 @@ public class BM  extends Algorithm<Integer>{
 		int badchar[] = new int[NO_OF_CHARS]; 
 
 		badCharTable(pat, patLen, badchar); 
-
 		int s = 0;  // s is shift of the pattern with respect to text 
 		while(s <= (txtLen - patLen)) {	
 			int j = patLen-1; 
 			while(j >= 0 && pat[j] == txt[s+j])
 				j--;
-
 			if (j < 0) { 
 				s += (s+patLen < txtLen)? patLen-badchar[txt[s+patLen]] : 1; 
 			} else {

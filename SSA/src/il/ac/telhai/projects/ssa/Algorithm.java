@@ -48,6 +48,10 @@ public abstract class Algorithm<S> {
 	public int getIndex() {
 		return index;
 	}
+	
+	public int getStackSize() {
+		return this.getStack().size();
+	}
 
 
 	public void setIndex(int index) {

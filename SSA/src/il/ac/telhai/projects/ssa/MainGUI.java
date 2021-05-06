@@ -31,15 +31,15 @@ public class MainGUI implements ActionListener{
 	private JTextField inputField;
 	private JTextField patField;
 	private int firstIndex = 0;
-	//private int secondIndex = 1;
+	private final int radioBtnGroubSize = 2;
 	private int numOfSections = 4;
 	public JFrame frame;
 
 	public MainGUI(){ 
 		selectAlg = new JPanel();
-		selectAlgRadioBtn = new JRadioButton[2];
-		runTypeRadioBtn = new JRadioButton[2];
-		inputRadioBtn = new JRadioButton[2];
+		selectAlgRadioBtn = new JRadioButton[radioBtnGroubSize];
+		runTypeRadioBtn = new JRadioButton[radioBtnGroubSize];
+		inputRadioBtn = new JRadioButton[radioBtnGroubSize];
 		init();
 
 	}
@@ -139,11 +139,10 @@ public class MainGUI implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		DoBMButton run;
-		BM bm ;
-		if(selectAlgRadioBtn[firstIndex].isSelected()) {
-			//to be changed - new featuers - BUG HERE will Fix Soon 
+		if (selectAlgRadioBtn[firstIndex].isSelected()) { // if bm is chosen
+			DoBMButton run;
+			BM bm ;
+			//TODO - BUG HERE will Fix Soon 
 			String pat = patField.getName();
 			if(inputRadioBtn[firstIndex].isSelected()) {
 				//input from file
@@ -163,14 +162,12 @@ public class MainGUI implements ActionListener{
 				run.getBm().setSearchtype(runTypeRadioBtn[firstIndex].isSelected());
 
 			}
+		}else {  // if kmp is chosen
 
-		}else {
-			System.out.println("KMP");
 		}
-
 	}
 
-	private class DoBMButton  implements ActionListener{
+	private class DoBMButton implements ActionListener{
 		private BM bm;
 
 		public DoBMButton(String input,String patt) {
@@ -219,7 +216,7 @@ public class MainGUI implements ActionListener{
 				array[i].setForeground(Color.BLACK);
 				frame.add(array[i]);
 			}
-			JButton b =	new	JButton("NEXT");;
+			JButton b =	new	JButton("NEXT");
 			JButton b1=	new	JButton("PREV");
 			JButton b2	=	new	JButton("RESET");
 
@@ -227,19 +224,13 @@ public class MainGUI implements ActionListener{
 			b1.setBounds(700,y+80,150,50);
 			b2.setBounds(900,y+80,150,50);
 
-			DoNEXTButton donenext	=	new	DoNEXTButton(bm,arr,array,b,b1);
-			b.addActionListener(donenext);
+			ButtonHandler buttonsarr = new  ButtonHandler(bm, arr, array, b, b1,b2);
+			b.addActionListener(buttonsarr);
+			b1.addActionListener(buttonsarr);
+			b2.addActionListener(buttonsarr);
 			frame.add(b);
-
-			DoPREVButton donePREV	=	new	DoPREVButton(bm,arr,array,donenext,b1);
-			b1.addActionListener(donePREV);
 			frame.add(b1);
-
-			DoRESETButton doneRest	=	new	DoRESETButton(arr,array,donenext,b1);
-			b2.addActionListener(doneRest);
 			frame.add(b2);
-
-
 
 			frame.setSize(1300,700);
 			frame.setLayout(null); 
@@ -252,10 +243,10 @@ public class MainGUI implements ActionListener{
 		public BM getBm() {
 			return bm;
 		}
-	
+
 		public void printchartable(String str,JFrame f) {
 			int i,j; 
-            int y = 400;
+			int y = 400;
 			char[] chars = str.toCharArray();
 			Set<Character> charSet = new LinkedHashSet<Character>();
 			for (char c : chars) {
@@ -274,7 +265,7 @@ public class MainGUI implements ActionListener{
 			patternLbl.setFont(new Font(patternLbl.getFont().getName(), Font.PLAIN, 25));
 			patternLbl.setBounds(500, y, width*5, height);
 			f.add(patternLbl);
-            y =y +50;
+			y =y +50;
 
 			JTextField myOutpu = new JTextField("Letters");
 			myOutpu.setBounds(500, y, width*2, height);
@@ -328,7 +319,7 @@ public class MainGUI implements ActionListener{
 				}
 			}
 
-			
+
 		}
 	}
 
