@@ -64,9 +64,11 @@ public class ButtonHandler implements ActionListener{
 			char patt = this.bm.getPattern().charAt(j);
 			int[] find = new int[this.bm.getInput().length()];
 			int i ; 
-			for (i = 0; i < this.bm.getInput().length() ; i++) {
+			for (i = 0; i < this.bm.getInput().length(); i++) {
 				if(input == patt ) {
 					find[i] = cur;
+					//TODO: print is here
+					System.out.println(i);
 				}else {
 					st = this.bm.getStack().get(cnt++);
 					cur = st.getState();
@@ -96,6 +98,7 @@ public class ButtonHandler implements ActionListener{
 			this.next.setEnabled(false);
 			this.prev.setEnabled(true);
 		}
+		System.out.println("from next cnt = " + cnt);
 	}
 	public void NEXTmanual_search() {
 		//manual search
@@ -124,6 +127,8 @@ public class ButtonHandler implements ActionListener{
 				j--;
 				cur--;
 				while(j > -1) {
+					input = this.bm.getInput().charAt(cur);
+					patt = this.bm.getPattern().charAt(j);
 					if(input == patt ) {
 						this.patarray[j].setBackground(Color.GREEN);
 						this.inputarr[cur].setBackground(Color.GREEN);
@@ -209,7 +214,7 @@ public class ButtonHandler implements ActionListener{
 
 		for(i = 0 ; i < this.inputarr.length ;i++)
 			this.inputarr[i].setBackground(Color.WHITE);
-		cnt -=1;
+		cnt -= 1;
 		State<Integer> st = this.bm.getStack().get(cnt);
 		int cur = st.getState();
 		int j = this.bm.getPattern().length()-1;
@@ -221,7 +226,7 @@ public class ButtonHandler implements ActionListener{
 			if(input == patt ) {
 				find[i] = cur;
 			}else {
-				st = this.bm.getStack().get(cnt++);
+				st = this.bm.getStack().get(cnt);
 				cur = st.getState();
 				input = this.bm.getInput().charAt(cur);
 			}

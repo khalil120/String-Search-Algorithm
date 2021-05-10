@@ -94,6 +94,7 @@ public class BM  extends Algorithm<Integer>{
 			} else {
 				s += max(1, j - badchar[txt[s]]);
 			}
+			System.out.println("s = " + s);
 			this.updateNextState(s); //update the next state
 		}
 		int j = 1; 
