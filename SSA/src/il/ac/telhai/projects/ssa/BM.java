@@ -14,7 +14,7 @@ public class BM  extends Algorithm<Integer>{
 	private  boolean searchtype;
 
 	public BM(String input, String pattern) {
-		
+
 		this.setDataStructure(new Stack<State<Integer>>());
 		this.input = input;
 		this.pattern = pattern;
@@ -24,20 +24,20 @@ public class BM  extends Algorithm<Integer>{
 	}
 
 	public BM(String pattern) {
-		
+
 		this.setDataStructure(new Stack<State<Integer>>());
 		this.pattern = pattern;
 		this.input = readFromFile();
 		patLen = pattern.length(); 
 		txtLen = input.length();
-		
+
 	}
 
 	private String readFromFile() {
 		String data = ""; 
 		try {
 			File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\il\\input.txt");
-		//	File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
+			//	File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
@@ -49,15 +49,16 @@ public class BM  extends Algorithm<Integer>{
 		return data;
 	}
 
-	private void badCharTable(char []str, int size, int badchar[]) { 
+	private int[] badCharTable(char []str, int size) { 
 		int i; 
-
+		int badchar[] = new int[NO_OF_CHARS];
 		for (i = 0; i < NO_OF_CHARS; i++) 
 			badchar[i] = -1; 
 
 		for (i = 0; i < size; i++) {
-			badchar[(int) str[i]] = i;
+			badchar[(int) str[i]] = i; // return the indexes of pattern 
 		} 
+		return  badchar;
 	}
 
 	public int max (int a, int b) { return (a > b)? a: b; } 
@@ -77,11 +78,13 @@ public class BM  extends Algorithm<Integer>{
 
 		char [] pat = this.pattern.toCharArray();
 		char [] txt = this.input.toCharArray();
- 
+
 		int badchar[] = new int[NO_OF_CHARS]; 
 
-		badCharTable(pat, patLen, badchar); 
+		badchar = badCharTable(pat, patLen); 
 		int s = 0;  // s is shift of the pattern with respect to text 
+		s = patLen -1 ;
+		this.updateNextState(s);
 		while(s <= (txtLen - patLen)) {	
 			int j = patLen-1; 
 			while(j >= 0 && pat[j] == txt[s+j])
@@ -89,9 +92,20 @@ public class BM  extends Algorithm<Integer>{
 			if (j < 0) { 
 				s += (s+patLen < txtLen)? patLen-badchar[txt[s+patLen]] : 1; 
 			} else {
-				s += max(1, j - badchar[txt[s+j]]);
+				s += max(1, j - badchar[txt[s]]);
 			}
 			this.updateNextState(s); //update the next state
+		}
+		int j = 1; 
+		if (s+j <txt.length) {
+			while(j >= 0 && pat[j] == txt[s+j])
+				j--;
+			if (j < 0) { 
+				s += (s+patLen < txtLen)? patLen-badchar[txt[s+patLen]] : 1; 
+			} else {
+				s += max(1, j - badchar[txt[s]]);
+			}
+			this.updateNextState(s);
 		}
 	}
 
@@ -102,7 +116,7 @@ public class BM  extends Algorithm<Integer>{
 
 		int badchar[] = new int[NO_OF_CHARS]; 
 
-		badCharTable(pat, patLen, badchar); 
+		badchar = badCharTable(pat, patLen); 
 		this.updateNextState(s);
 		while(s <= (txtLen - patLen)) {	
 			int j = patLen-1; 
@@ -134,7 +148,7 @@ public class BM  extends Algorithm<Integer>{
 	public void setPattern(String pattern) {
 		this.pattern = pattern;
 	}
-	
+
 	public boolean isSearchtype() {
 		return searchtype;
 	}
@@ -165,7 +179,7 @@ public class BM  extends Algorithm<Integer>{
 		return null;
 	}
 
-	
+
 
 
 }
