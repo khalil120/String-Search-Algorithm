@@ -98,7 +98,6 @@ public class ButtonHandler implements ActionListener{
 			this.next.setEnabled(false);
 			this.prev.setEnabled(true);
 		}
-		System.out.println("from next cnt = " + cnt);
 	}
 	public void NEXTmanual_search() {
 		//manual search
@@ -122,6 +121,7 @@ public class ButtonHandler implements ActionListener{
 			char input = this.bm.getInput().charAt(cur);
 			char patt = this.bm.getPattern().charAt(j);
 			if(input == patt ) {
+				//TODO: check here searching not working
 				this.patarray[j].setBackground(Color.GREEN);
 				this.inputarr[cur].setBackground(Color.GREEN);
 				j--;
@@ -150,7 +150,7 @@ public class ButtonHandler implements ActionListener{
 	}
 
 	private void PREVmanual_search() {
-
+		//TODO: check coloring 
 		if( this.getCnt()>1) {
 
 			if(this.getCnt() == this.getStackSize()) {

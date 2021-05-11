@@ -142,7 +142,6 @@ public class MainGUI implements ActionListener{
 		if (selectAlgRadioBtn[firstIndex].isSelected()) { // if bm is chosen
 			DoBMButton run;
 			BM bm ;
-			//TODO - BUG HERE will Fix Soon 
 			String pat = patField.getName();
 			if(inputRadioBtn[firstIndex].isSelected()) {
 				//input from file

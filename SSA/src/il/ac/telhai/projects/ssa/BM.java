@@ -94,20 +94,15 @@ public class BM  extends Algorithm<Integer>{
 			} else {
 				s += max(1, j - badchar[txt[s]]);
 			}
-			System.out.println("s = " + s);
+			//TODO: print here tobe removed
+			//System.out.println("s = " + s);
 			this.updateNextState(s); //update the next state
 		}
-		int j = 1; 
-		if (s+j <txt.length) {
-			while(j >= 0 && pat[j] == txt[s+j])
-				j--;
-			if (j < 0) { 
-				s += (s+patLen < txtLen)? patLen-badchar[txt[s+patLen]] : 1; 
-			} else {
-				s += max(1, j - badchar[txt[s]]);
-			}
-			this.updateNextState(s);
-		}
+		int j = patLen-1; 
+		s += max(1, j - badchar[txt[s]]);
+		//System.out.println("s = " + s);
+		this.updateNextState(s);
+
 	}
 
 	//manual search
