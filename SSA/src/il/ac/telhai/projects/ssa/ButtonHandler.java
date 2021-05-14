@@ -56,7 +56,7 @@ public class ButtonHandler implements ActionListener{
 
 	}
 	public void NEXTautomatic_search() {
-		if (cnt < stackSize ) {
+		if( cnt < this.bm.getStack().size() ) {
 			State<Integer> st = this.bm.getStack().get(cnt);
 			int cur = st.getState();
 			int j = this.bm.getPattern().length()-1;
@@ -67,8 +67,6 @@ public class ButtonHandler implements ActionListener{
 			for (i = 0; i < this.bm.getInput().length(); i++) {
 				if(input == patt ) {
 					find[i] = cur;
-					//TODO: print is here
-					System.out.println(i);
 				}else {
 					st = this.bm.getStack().get(cnt++);
 					cur = st.getState();
@@ -88,15 +86,13 @@ public class ButtonHandler implements ActionListener{
 				cur--;
 			}
 
-			if(cnt >= stackSize)
+			State<Integer> stt = this.bm.getStack().get(cnt);
+			int curr = stt.getState();
+			cnt++;
+			if( curr == this.bm.getStack().get(stackSize-1).getState())
 				this.next.setEnabled(false);
 			else
 				this.next.setEnabled(true);
-			this.prev.setEnabled(true);
-		} else {
-			cnt-=1;
-			this.next.setEnabled(false);
-			this.prev.setEnabled(true);
 		}
 	}
 	public void NEXTmanual_search() {
@@ -118,31 +114,38 @@ public class ButtonHandler implements ActionListener{
 
 			State<Integer> st = this.bm.getStack().get(cnt);
 			int cur = st.getState();
-			char input = this.bm.getInput().charAt(cur);
-			char patt = this.bm.getPattern().charAt(j);
-			if(input == patt ) {
-				//TODO: check here searching not working
-				this.patarray[j].setBackground(Color.GREEN);
-				this.inputarr[cur].setBackground(Color.GREEN);
-				j--;
-				cur--;
-				while(j > -1) {
-					input = this.bm.getInput().charAt(cur);
-					patt = this.bm.getPattern().charAt(j);
-					if(input == patt ) {
-						this.patarray[j].setBackground(Color.GREEN);
-						this.inputarr[cur].setBackground(Color.GREEN);
-					}
+			if(cur < this.bm.getInput().length()) {
+				char input = this.bm.getInput().charAt(cur);
+				char patt = this.bm.getPattern().charAt(j);
+				if(input == patt ) {
+					//TODO: check here searching not working
+					this.patarray[j].setBackground(Color.GREEN);
+					this.inputarr[cur].setBackground(Color.GREEN);
 					j--;
 					cur--;
-				}
+					while(j > -1) {
+						input = this.bm.getInput().charAt(cur);
+						patt = this.bm.getPattern().charAt(j);
+						if(input == patt ) {
+							this.patarray[j].setBackground(Color.GREEN);
+							this.inputarr[cur].setBackground(Color.GREEN);
+						}else break;
+						j--;
+						cur--;
+					}
 
-			}else {
-				this.patarray[j].setBackground(Color.RED);
-				this.inputarr[cur].setBackground(Color.RED);
+				}else {
+					this.patarray[j].setBackground(Color.RED);
+					this.inputarr[cur].setBackground(Color.RED);
+				}
 			}
+			//	cnt++;
+			State<Integer> stt = this.bm.getStack().get(cnt);
+			int curr = stt.getState();
 			cnt++;
-			if(cnt >= stackSize)
+			//TODO : remove
+			//System.out.println(curr+ "  " + this.bm.getStack().get(stackSize-1).getState() );
+			if( curr == this.bm.getStack().get(stackSize-1).getState())
 				this.next.setEnabled(false);
 			else
 				this.next.setEnabled(true);
@@ -164,15 +167,24 @@ public class ButtonHandler implements ActionListener{
 			char patt = this.bm.getPattern().charAt(j);
 
 			if(input == patt ) {
+				int i;
+				for(i = 0 ; i < this.patarray.length ;i++)
+					this.patarray[i].setBackground(Color.WHITE);
+
+				for(i = 0 ; i < this.inputarr.length ;i++)
+					this.inputarr[i].setBackground(Color.WHITE);
+
 				this.patarray[j].setBackground(Color.GREEN);
 				this.inputarr[cur].setBackground(Color.GREEN);
 				j--;
 				cur--;
 				while(j > -1) {
+					input = this.bm.getInput().charAt(cur);
+					patt = this.bm.getPattern().charAt(j);
 					if(input == patt ) {
 						this.patarray[j].setBackground(Color.GREEN);
 						this.inputarr[cur].setBackground(Color.GREEN);
-					}
+					}else break;
 					j--;
 					cur--;
 				}

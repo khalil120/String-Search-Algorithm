@@ -50,15 +50,24 @@ public class BM  extends Algorithm<Integer>{
 	}
 
 	private int[] badCharTable(char []str, int size) { 
-		int i; 
-		int badchar[] = new int[NO_OF_CHARS];
-		for (i = 0; i < NO_OF_CHARS; i++) 
-			badchar[i] = -1; 
+		int i ,j;
+		int c = 0;
+		int vals[] = new int[size];
 
-		for (i = 0; i < size; i++) {
-			badchar[(int) str[i]] = i; // return the indexes of pattern 
-		} 
-		return  badchar;
+		for( i = 0 ; i < size ; i++) {
+			c = max(1,size-i-1);
+			vals[i] = c;
+		}
+
+		for( i = 0 ; i < size; i++) {
+			for( j = i+1 ; j < size ;j++) {
+				if(str[i] == str[j]) {
+					vals[i] = vals[j];
+					vals[j] = 0;
+				}
+			}
+		}
+		return vals;
 	}
 
 	public int max (int a, int b) { return (a > b)? a: b; } 
@@ -82,27 +91,31 @@ public class BM  extends Algorithm<Integer>{
 		int badchar[] = new int[NO_OF_CHARS]; 
 
 		badchar = badCharTable(pat, patLen); 
-		int s = 0;  // s is shift of the pattern with respect to text 
-		s = patLen -1 ;
+		//int s = 0;  // s is shift of the pattern with respect to text 
+		int s = patLen -1 ;
 		this.updateNextState(s);
-		while(s <= (txtLen - patLen)) {	
-			int j = patLen-1; 
-			while(j >= 0 && pat[j] == txt[s+j])
-				j--;
-			if (j < 0) { 
-				s += (s+patLen < txtLen)? patLen-badchar[txt[s+patLen]] : 1; 
-			} else {
-				s += max(1, j - badchar[txt[s]]);
+		//TODO : remove syso
+		//System.out.println("s =  "+ s);
+		int j;
+		boolean bool = true;
+		while(s < txtLen-1) {
+			for(j = 0 ; j < patLen ; j++) {
+				if(txt[s] == pat[j]) {
+					s+= badchar[j]; 
+					this.updateNextState(s);
+					//System.out.println("s =  "+ s );
+					bool = false;
+					break;
+				}else { 
+					bool = true;
+				}
 			}
-			//TODO: print here tobe removed
-			//System.out.println("s = " + s);
-			this.updateNextState(s); //update the next state
+			if(bool) {
+				s+=patLen;
+				this.updateNextState(s);
+				//System.out.println("s =  "+ s);
+			}
 		}
-		int j = patLen-1; 
-		s += max(1, j - badchar[txt[s]]);
-		//System.out.println("s = " + s);
-		this.updateNextState(s);
-
 	}
 
 	//manual search
