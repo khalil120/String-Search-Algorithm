@@ -81,6 +81,21 @@ public class BM  extends Algorithm<Integer>{
 		int s = this.prevState();
 		search(s);
 	}
+	
+	public boolean isMatch(int index) {
+		int starting = index;
+		int i = patLen - 1;
+		for(; i >= 0; i--) {
+			if(input.charAt(index) != pattern.charAt(i))
+				return false;
+			else {
+				index--;
+				if(starting == (index + patLen))
+					return true;
+			}
+		}
+		return false;
+	}
 
 	//automatic search
 	public void search() {
@@ -91,11 +106,10 @@ public class BM  extends Algorithm<Integer>{
 		int badchar[] = new int[NO_OF_CHARS]; 
 
 		badchar = badCharTable(pat, patLen); 
-		//int s = 0;  // s is shift of the pattern with respect to text 
+
 		int s = patLen -1 ;
 		this.updateNextState(s);
-		//TODO : remove syso
-		//System.out.println("s =  "+ s);
+
 		int j;
 		boolean bool = true;
 		while(s < txtLen-1) {

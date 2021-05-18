@@ -3,6 +3,8 @@ package il.ac.telhai.projects.ssa;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Stack;
+
 import javax.swing.JButton;
 
 
@@ -15,7 +17,9 @@ public class ButtonHandler implements ActionListener{
 	private int stackSize = 0;
 	private JButton prev;
 	private JButton reset;
-
+	private Stack<node> found;
+	
+	//TODO: change here BM to Algorithm
 	public ButtonHandler(BM bm2, JButton[] arr, JButton[] array, JButton next,JButton prev,JButton reset) {
 		super();
 		this.bm = bm2;
@@ -24,6 +28,7 @@ public class ButtonHandler implements ActionListener{
 		this.next = next;
 		this.prev = prev;
 		this.reset = reset;
+		found = new Stack<node>();
 	}
 
 	@Override
@@ -56,54 +61,70 @@ public class ButtonHandler implements ActionListener{
 
 	}
 	public void NEXTautomatic_search() {
-		if( cnt < this.bm.getStack().size() ) {
-			State<Integer> st = this.bm.getStack().get(cnt);
-			int cur = st.getState();
-			int j = this.bm.getPattern().length()-1;
-			char input = this.bm.getInput().charAt(cur);
-			char patt = this.bm.getPattern().charAt(j);
-			int[] find = new int[this.bm.getInput().length()];
-			int i ; 
-			for (i = 0; i < this.bm.getInput().length(); i++) {
-				if(input == patt ) {
-					find[i] = cur;
-				}else {
-					st = this.bm.getStack().get(cnt++);
-					cur = st.getState();
-					input = this.bm.getInput().charAt(cur);
+	
+		resetBoard();
+		this.prev.setEnabled(true);
+		int patLen = this.bm.getPattern().length();
+		int state, i;
+		int iter = cnt;
+		boolean cntFlag = false;
+		
+		while(iter < bm.getStackSize()) {
+			state = this.bm.getStack().get(iter).getState();
+			if(this.bm.isMatch(state)){
+				//pattern match...
+				for(i = 0; i < patLen; i++) {
+					this.inputarr[state - i].setBackground(Color.GREEN);
+					this.patarray[i].setBackground(Color.GREEN);
 				}
+				cnt = (iter + 1);
+				//save the data where pattern found
+				found.push(new node(cnt,state));
+				System.out.println("cnt = " + cnt + " iter = " + iter);
+				break;
+			}else {
+				//no match...
+				iter++;
 			}
-			for(i = 0 ; i < this.patarray.length ;i++)
-				this.patarray[i].setBackground(Color.WHITE);
-
-			for(i = 0 ; i < this.inputarr.length ;i++)
-				this.inputarr[i].setBackground(Color.WHITE);
-
-			while(j>=0) {
-				this.patarray[j].setBackground(Color.GREEN);
-				this.inputarr[cur].setBackground(Color.GREEN);
-				j-- ;
-				cur--;
+		}
+		// disable next button at end of input.
+		if(cnt == stackSize) {
+			cnt--;
+			cntFlag = true;
+		}
+		if(bm.getStack().get(cnt).getState() == bm.getStack().get(stackSize-1).getState()) {
+			this.next.setEnabled(false);
+			if(cntFlag) {
+				cnt++;
+				cntFlag = false;
 			}
+		}
+		
+	}
+	
+	private void PREVautomatic_search() {
 
-			State<Integer> stt = this.bm.getStack().get(cnt);
-			int curr = stt.getState();
-			cnt++;
-			if( curr == this.bm.getStack().get(stackSize-1).getState())
-				this.next.setEnabled(false);
-			else
+		//1. delete current apperiance from stack 
+		if(!found.isEmpty()) {
+			node tmp = found.pop();
+			colorBoard(tmp.getState(), Color.WHITE);
+			if(!this.next.isEnabled())
 				this.next.setEnabled(true);
 		}
+		//2. set count to the new value
+		if(!found.isEmpty()) {
+			this.setCnt(found.peek().getItr());
+			colorBoard(found.peek().getState(), Color.GREEN);
+		}else {
+			this.setCnt(bm.getPattern().length() - 1);
+			this.prev.setEnabled(false);
+		}
+
 	}
+
 	public void NEXTmanual_search() {
 		//manual search
-		int i;
-		for(i = 0 ; i < this.patarray.length ;i++)
-			this.patarray[i].setBackground(Color.WHITE);
-
-		for(i = 0 ; i < this.inputarr.length ;i++)
-			this.inputarr[i].setBackground(Color.WHITE);
-
+		resetBoard();
 
 		int j = this.bm.getPattern().length()-1;
 		if( cnt < this.bm.getStack().size() ) {
@@ -118,7 +139,6 @@ public class ButtonHandler implements ActionListener{
 				char input = this.bm.getInput().charAt(cur);
 				char patt = this.bm.getPattern().charAt(j);
 				if(input == patt ) {
-					//TODO: check here searching not working
 					this.patarray[j].setBackground(Color.GREEN);
 					this.inputarr[cur].setBackground(Color.GREEN);
 					j--;
@@ -139,12 +159,10 @@ public class ButtonHandler implements ActionListener{
 					this.inputarr[cur].setBackground(Color.RED);
 				}
 			}
-			//	cnt++;
+			
 			State<Integer> stt = this.bm.getStack().get(cnt);
 			int curr = stt.getState();
 			cnt++;
-			//TODO : remove
-			//System.out.println(curr+ "  " + this.bm.getStack().get(stackSize-1).getState() );
 			if( curr == this.bm.getStack().get(stackSize-1).getState())
 				this.next.setEnabled(false);
 			else
@@ -167,13 +185,8 @@ public class ButtonHandler implements ActionListener{
 			char patt = this.bm.getPattern().charAt(j);
 
 			if(input == patt ) {
-				int i;
-				for(i = 0 ; i < this.patarray.length ;i++)
-					this.patarray[i].setBackground(Color.WHITE);
-
-				for(i = 0 ; i < this.inputarr.length ;i++)
-					this.inputarr[i].setBackground(Color.WHITE);
-
+				
+				resetBoard();
 				this.patarray[j].setBackground(Color.GREEN);
 				this.inputarr[cur].setBackground(Color.GREEN);
 				j--;
@@ -189,13 +202,7 @@ public class ButtonHandler implements ActionListener{
 					cur--;
 				}
 			}else {
-				int i;
-				for(i = 0 ; i < this.patarray.length ;i++)
-					this.patarray[i].setBackground(Color.WHITE);
-
-				for(i = 0 ; i < this.inputarr.length ;i++)
-					this.inputarr[i].setBackground(Color.WHITE);
-
+				resetBoard();
 				this.patarray[j].setBackground(Color.RED);
 				this.inputarr[cur].setBackground(Color.RED);
 			}
@@ -209,49 +216,8 @@ public class ButtonHandler implements ActionListener{
 			else
 				this.prev.setEnabled(true);
 
-			int i ;
-
-			for(i = 0 ; i < this.patarray.length ;i++)
-				this.patarray[i].setBackground(Color.WHITE);
-
-			for(i = 0 ; i < this.inputarr.length ;i++)
-				this.inputarr[i].setBackground(Color.WHITE);
+			resetBoard();
 		}
-	}
-
-	private void PREVautomatic_search() {
-		int i;
-		for(i = 0 ; i < this.patarray.length ;i++)
-			this.patarray[i].setBackground(Color.WHITE);
-
-		for(i = 0 ; i < this.inputarr.length ;i++)
-			this.inputarr[i].setBackground(Color.WHITE);
-		cnt -= 1;
-		State<Integer> st = this.bm.getStack().get(cnt);
-		int cur = st.getState();
-		int j = this.bm.getPattern().length()-1;
-		char input = this.bm.getInput().charAt(cur);
-		char patt = this.bm.getPattern().charAt(j);
-		int[] find = new int[this.bm.getInput().length()];
-
-		for (i = 0; i < this.bm.getInput().length() ; i++) {
-			if(input == patt ) {
-				find[i] = cur;
-			}else {
-				st = this.bm.getStack().get(cnt);
-				cur = st.getState();
-				input = this.bm.getInput().charAt(cur);
-			}
-		}
-		if(cnt > stackSize)
-			this.next.setEnabled(false);
-		else
-			this.next.setEnabled(true);
-		if(cnt >= -1)
-			this.prev.setEnabled(false);
-		else
-			this.prev.setEnabled(true);
-
 	}
 
 
@@ -272,5 +238,43 @@ public class ButtonHandler implements ActionListener{
 
 	public JButton getNextBtn() {
 		return this.next;
+	}
+	
+	public void colorBoard(int index, Color color) {
+		int i;
+		for(i = 0; i < this.bm.getPattern().length(); i++) {
+			this.patarray[i].setBackground(color);
+			this.inputarr[index - i].setBackground(color);
+		}
+	}
+	
+	public void resetBoard() {
+		
+		int i;
+		for(i = 0 ; i < this.inputarr.length ;i++) {
+			this.inputarr[i].setBackground(Color.WHITE);
+			if(i < this.patarray.length)
+				this.patarray[i].setBackground(Color.WHITE);
+		}
+	}
+	
+	private class node{
+		private int itr;
+		private int state;
+		
+		public node(int itr, int state) {
+			this.itr = itr;
+			this.state = state;
+		}
+
+		public int getItr() {
+			return itr;
+		}
+
+		public int getState() {
+			return state;
+		}
+		
+		
 	}
 }
