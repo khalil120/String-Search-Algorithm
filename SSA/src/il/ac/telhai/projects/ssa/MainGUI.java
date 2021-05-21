@@ -5,9 +5,6 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -28,11 +25,16 @@ public class MainGUI implements ActionListener{
 	private JRadioButton[] selectAlgRadioBtn;
 	private JRadioButton[] runTypeRadioBtn;
 	private JRadioButton[] inputRadioBtn;
+	private JButton[] inputArr;
+	private JButton[] pattArr;
 	private JTextField inputField;
 	private JTextField patField;
 	private int firstIndex = 0;
+	private int xCord = 0;
+	private int yCord = 0;
 	private final int radioBtnGroubSize = 2;
 	private int numOfSections = 4;
+	private boolean isFirstTime = true;;
 	public JFrame frame;
 
 	public MainGUI(){ 
@@ -43,8 +45,8 @@ public class MainGUI implements ActionListener{
 		init();
 
 	}
+	
 	private void init() {
-
 		for(int i = 0; i < numOfSections; i++) {
 			switch (i) {
 			case 0:
@@ -61,7 +63,6 @@ public class MainGUI implements ActionListener{
 				break;
 			}
 		}
-
 	}
 
 	public void initRadioButtons(JRadioButton[] buttons, String[] str, JPanel panel) {
@@ -72,6 +73,7 @@ public class MainGUI implements ActionListener{
 			btnGroup.add(buttons[i]);
 			panel.add(buttons[i]);
 		}
+		buttons[firstIndex].setSelected(true); //set first button to be selected as default
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 	}
 
@@ -120,15 +122,81 @@ public class MainGUI implements ActionListener{
 		start.setFont(new Font("Tahoma", Font.BOLD, 12));
 		selectAlg.add(start);
 	}
+	
+    public void initInputDisplay(String input) {
+    	
+    	JLabel inputLbl = new JLabel("Input: ");
+		inputLbl.setFont(new Font(inputLbl.getFont().getName(), Font.PLAIN, 18));
+		inputLbl.setBounds(400, 0, 150, 50);
+		frame.add(inputLbl);
+		inputArr =  new JButton[input.length()];
+		xCord = 500;  yCord = 0;  
+		int width = 50  , height = 50;
+		for(int i = 0 ; i < input.length() ; i++) { 
+			inputArr[i] = new JButton(String.valueOf(input.charAt(i)));
+			inputArr[i].setBounds(xCord,yCord,width,height);
+			if(xCord < 1000 )
+				xCord += width;
+			else {
+				xCord = 500;
+				yCord += height+10;
+			}
+			inputArr[i].setBackground(Color.WHITE);
+			inputArr[i].setForeground(Color.BLACK);
+			frame.add(inputArr[i]);
+		}
+    }
+    
+    public void initPatternDisplay(String pattern) {
+    	
+    	xCord = 500; yCord += 60 ;
+    	int width = 50  , height = 50;
+		JLabel patternLbl = new JLabel("PATTERN: ");
+		patternLbl.setFont(new Font(patternLbl.getFont().getName(), Font.PLAIN, 18));
+		patternLbl.setBounds(400, yCord, 150, 50);
+		frame.add(patternLbl);
+		pattArr =  new JButton[pattern.length()];
+		for(int i = 0 ; i < pattern.length() ; i++) {
 
+			pattArr[i] = new JButton(String.valueOf(pattern.charAt(i)));
+			pattArr[i].setBounds(xCord,yCord,width,height); 
+			xCord += width;
+			pattArr[i].setBackground(Color.WHITE);
+			pattArr[i].setForeground(Color.BLACK);
+			frame.add(pattArr[i]);
+		}
+    }
+    
+    public void initButton(int len, BM alg) {
+    	
+    	yCord += 80;
+		JButton nxtBtn = new JButton("NEXT");
+		JButton prevBtn = new JButton("PREV");
+		JButton rstBtn	= new JButton("RESET");
+
+		nxtBtn.setBounds(500,yCord,150,50);
+		prevBtn.setBounds(700,yCord,150,50);
+		rstBtn.setBounds(900,yCord,150,50);
+		
+		ButtonHandler buttonsarr = new  ButtonHandler(alg, inputArr, pattArr, nxtBtn, prevBtn,rstBtn);
+		nxtBtn.addActionListener(buttonsarr);
+		prevBtn.addActionListener(buttonsarr);
+		rstBtn.addActionListener(buttonsarr);
+		
+		frame.add(nxtBtn);
+		frame.add(prevBtn);
+		frame.add(rstBtn);
+    }
+	
 	public void show() {
-
-		frame	=	new	JFrame();
-		frame.setTitle("String Search Algorithms");
-		Container	cp	=	frame.getContentPane();
-		cp.setLayout(new BorderLayout());
-
-		frame.add(selectAlg);    	
+		
+		if(frame == null) {
+			frame = new JFrame();
+			frame.setTitle("String Search Algorithms");
+			Container cp = frame.getContentPane();
+			cp.setLayout(new BorderLayout());
+		}
+		frame.add(selectAlg);
 		frame.pack();
 		frame.setSize(850,850);
 		frame.setLayout(null); 
@@ -139,191 +207,47 @@ public class MainGUI implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (selectAlgRadioBtn[firstIndex].isSelected()) { // if bm is chosen
-			DoBMButton run;
+		
+		if(!isFirstTime) {
+			//this is not the first click on start button then reset the frame
+			frame.getContentPane().removeAll();
+			frame.repaint();
+			this.show();
+		}else {
+			isFirstTime = false;
+		}
+		
+		if (selectAlgRadioBtn[firstIndex].isSelected()) { //bm selected
 			BM bm ;
-			String pat = patField.getName();
+			String input;
+			String pat;
+			pat = patField.getText();
 			if(inputRadioBtn[firstIndex].isSelected()) {
 				//input from file
-				bm = new BM("ABCDABD");
-				String input = bm.getInput();
-				String patt = bm.getPattern();
-				run = new DoBMButton( input, patt);
-				run.actionPerformed(null);
-				run.getBm().setSearchtype(runTypeRadioBtn[firstIndex].isSelected());
-
+				bm = new BM(pat);
+				initInputDisplay(bm.getInput());
+				initPatternDisplay(pat);
+				initButton(bm.getInput().length(),bm);
+				bm.search();
+				bm.setSearchtype(runTypeRadioBtn[firstIndex].isSelected());
 			}else {
-				String text = inputField.getText();
-				String txt = patField.getText();
-				bm = new BM(text,txt);
-				run = new DoBMButton(text,txt);
-				run.actionPerformed(null);
-				run.getBm().setSearchtype(runTypeRadioBtn[firstIndex].isSelected());
-
+				//input from user
+				input = inputField.getText();
+				initInputDisplay(input);
+				initPatternDisplay(pat);
+				bm = new BM(input,pat);
+				initButton(pat.length(),bm);
+				bm.search();
+				bm.setSearchtype(runTypeRadioBtn[firstIndex].isSelected());
 			}
-		}else {  // if kmp is chosen
-
-		}
-	}
-
-	private class DoBMButton implements ActionListener{
-		private BM bm;
-
-		public DoBMButton(String input,String patt) {
-			this.bm = new BM(input, patt);
-		}
-		public void actionPerformed(ActionEvent ae) {
-			// showing the input 
-			String st = bm.getInput();
-			JLabel inputLbl = new JLabel("Input: ");
-			inputLbl.setFont(new Font(inputLbl.getFont().getName(), Font.PLAIN, 18));
-			inputLbl.setBounds(400, 0, 150, 50);
-
-			frame.add(inputLbl);
-			JButton arr[] =  new JButton[st.length()];
-			int x = 500 , y = 0 , width = 50  , height = 50;
-			for(int i = 0 ; i < st.length() ; i++) {
-				char c = st.charAt(i);
-				String ss  = String.valueOf(c);  
-				arr[i] = new JButton(ss);
-				arr[i].setBounds(x,y,width,height);
-				if(x < 1000 )
-					x+=width;
-				else {
-					x = 500;
-					y+= height+10;
-				}
-				arr[i].setBackground(Color.WHITE);
-				arr[i].setForeground(Color.BLACK);
-				frame.add(arr[i]);
-			}
-			// showing the Pattern
-			JLabel patternLbl = new JLabel("PATTERN: ");
-			patternLbl.setFont(new Font(patternLbl.getFont().getName(), Font.PLAIN, 18));
-			patternLbl.setBounds(400, y + 60, 150, 50);
-			String str=  bm.getPattern();
-			frame.add(patternLbl);
-			JButton array[] =  new JButton[str.length()];
-			x = 500 ; y = y + 60  ; width = 50  ; height = 50;
-			for(int i = 0 ; i < str.length() ; i++) {
-				char c = str.charAt(i);
-				String s  = String.valueOf(c);  
-				array[i] = new JButton(s);
-				array[i].setBounds(x,y,width,height); 
-				x+=width;
-				array[i].setBackground(Color.WHITE);
-				array[i].setForeground(Color.BLACK);
-				frame.add(array[i]);
-			}
-			JButton b =	new	JButton("NEXT");
-			JButton b1=	new	JButton("PREV");
-			JButton b2	=	new	JButton("RESET");
-
-			b.setBounds(500,y+80,150,50);
-			b1.setBounds(700,y+80,150,50);
-			b2.setBounds(900,y+80,150,50);
-
-			ButtonHandler buttonsarr = new  ButtonHandler(bm, arr, array, b, b1,b2);
-			b.addActionListener(buttonsarr);
-			b1.addActionListener(buttonsarr);
-			b2.addActionListener(buttonsarr);
-			frame.add(b);
-			frame.add(b1);
-			frame.add(b2);
-
-			frame.setSize(1300,700);
-			frame.setLayout(null); 
-			frame.setVisible(true);
-			printchartable(bm.getPattern(), frame);
-
+			bm.printchartable(pat, frame, xCord, yCord);
 			bm.search();
-
-		}
-		public BM getBm() {
-			return bm;
-		}
-
-		public void printchartable(String str,JFrame f) {
-			int i,j; 
-			int y = 400;
-			char[] chars = str.toCharArray();
-			Set<Character> charSet = new LinkedHashSet<Character>();
-			for (char c : chars) {
-				charSet.add(c);
-			}
-
-			StringBuilder sb = new StringBuilder();
-			for (Character character : charSet) {
-				sb.append(character);
-			}
-
-			JButton array[] =  new JButton[str.length()];
-			int x = 500  , width = 50  , height = 50;
-
-			JLabel patternLbl = new JLabel("BAD CHAR TABLE: ");
-			patternLbl.setFont(new Font(patternLbl.getFont().getName(), Font.PLAIN, 25));
-			patternLbl.setBounds(500, y, width*5, height);
-			f.add(patternLbl);
-			y =y +50;
-
-			JTextField myOutpu = new JTextField("Letters");
-			myOutpu.setBounds(500, y, width*2, height);
-			f.add(myOutpu);
-			x = x +150;
-			for( i = 0 ; i < sb.length() ; i++) {
-				char c = str.charAt(i);
-				String s  = String.valueOf(c);  
-				array[i] = new JButton(s);
-				array[i].setBounds(x,y,width,height); 
-				x+=width;
-				array[i].setBackground(Color.WHITE);
-				array[i].setForeground(Color.BLACK);
-				f.add(array[i]);
-			}
-
-			int c = 0;
-			String s;
-			int vals[] = new int[str.length()];
-
-			for( i = 0 ; i < str.length() ; i++) {
-				c =bm.max(1, str.length()-i-1);
-				vals[i] = c;
-			}
-
-			for( i = 0 ; i < str.length() ; i++) {
-				for( j = i+1 ; j < str.length() ;j++) {
-					if(str.charAt(i) == str.charAt(j)) {
-						vals[i] = vals[j];
-						vals[j] = 0;
-					}
-				}
-			}
-
-			x = 500 ;y = 500; // coordinates 
-			JTextField myOutput = new JTextField("values");
-			myOutput.setBounds(500, y, width*2, height);
-			f.add(myOutput);
-			x = x + 150;
-			JButton arr[] =  new JButton[str.length()];
-			for( i = 0 ; i < str.length() ; i++) {
-				if(vals[i]!=0) {
-					int k = vals[i];
-					s  = String.valueOf(k);
-					arr[i] = new JButton(s);
-					arr[i].setBounds(x,y,width,height); 
-					x+=width;
-					arr[i].setBackground(Color.WHITE);
-					arr[i].setForeground(Color.BLACK);
-					f.add(arr[i]);
-				}
-			}
-
+			bm.show(frame);
+		}else {  // kmp selected
 
 		}
 	}
-
-
-
+	
 	public static void main(String[] args) { 
 
 		MainGUI GUI = new MainGUI();

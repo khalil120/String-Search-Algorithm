@@ -88,11 +88,12 @@ public class ButtonHandler implements ActionListener{
 			}
 		}
 		// disable next button at end of input.
+		System.out.println("cnt = " + cnt+ " iter = " + iter + " stackSize = " + stackSize);
 		if(cnt == stackSize) {
 			cnt--;
 			cntFlag = true;
 		}
-		if(bm.getStack().get(cnt).getState() == bm.getStack().get(stackSize-1).getState()) {
+		if(bm.getStack().get(cnt).getState() == bm.getStack().get(stackSize-1).getState() || cnt == 0) {
 			this.next.setEnabled(false);
 			if(cntFlag) {
 				cnt++;
@@ -118,6 +119,10 @@ public class ButtonHandler implements ActionListener{
 		}else {
 			this.setCnt(bm.getPattern().length() - 1);
 			this.prev.setEnabled(false);
+		}
+		//check next button in case Disabeled enable it
+		if(!this.next.isEnabled()) {
+			this.next.setEnabled(true);
 		}
 
 	}
@@ -219,8 +224,6 @@ public class ButtonHandler implements ActionListener{
 			resetBoard();
 		}
 	}
-
-
 
 	public int getCnt() {
 		return cnt;

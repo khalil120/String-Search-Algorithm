@@ -1,8 +1,17 @@
 package il.ac.telhai.projects.ssa;
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Stack;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 
 public class BM  extends Algorithm<Integer>{
@@ -36,8 +45,8 @@ public class BM  extends Algorithm<Integer>{
 	private String readFromFile() {
 		String data = ""; 
 		try {
-			File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\il\\input.txt");
-			//	File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
+			//File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\il\\input.txt");
+			File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
@@ -153,6 +162,97 @@ public class BM  extends Algorithm<Integer>{
 			}
 			this.updateNextState(s);
 		}
+	}
+	
+	public void printchartable(String str,JFrame f, int xCord, int yCord) {
+		
+		int i,j; 
+		yCord += 80;
+		char[] chars = str.toCharArray();
+		Set<Character> charSet = new LinkedHashSet<Character>();
+		for (char c : chars) {
+			charSet.add(c);
+		}
+
+		StringBuilder sb = new StringBuilder();
+		for (Character character : charSet) {
+			sb.append(character);
+		}
+
+		JButton array[] =  new JButton[str.length()];
+		int x = 500  , width = 50  , height = 50;
+
+		JLabel patternLbl = new JLabel("BAD CHAR TABLE: ");
+		patternLbl.setFont(new Font(patternLbl.getFont().getName(), Font.PLAIN, 25));
+		patternLbl.setBounds(500,  yCord, width*5, height);
+		f.add(patternLbl);
+		yCord += 50;
+
+		JTextField myOutpu = new JTextField("Letters");
+		myOutpu.setBounds(500, yCord, width*2, height);
+		f.add(myOutpu);
+		x = x +150;
+		for( i = 0 ; i < sb.length() ; i++) {
+			char c = str.charAt(i);
+			String s  = String.valueOf(c);  
+			array[i] = new JButton(s);
+			array[i].setBounds(x,yCord,width,height); 
+			x+=width;
+			array[i].setBackground(Color.WHITE);
+			array[i].setForeground(Color.BLACK);
+			f.add(array[i]);
+		}
+
+		int c = 0;
+		String s;
+		int vals[] = new int[str.length()];
+
+		for( i = 0 ; i < str.length() ; i++) {
+			c = this.max(1, str.length()-i-1);
+			vals[i] = c;
+		}
+
+		for( i = 0 ; i < str.length() ; i++) {
+			for( j = i+1 ; j < str.length() ;j++) {
+				if(str.charAt(i) == str.charAt(j)) {
+					vals[i] = vals[j];
+					vals[j] = 0;
+				}
+			}
+		}
+		// if there is no match char
+		String st = "no match";
+		JButton tmp = new JButton(st);
+		tmp.setBounds(x, yCord, width*3, height);
+		tmp.setBackground(Color.WHITE);
+		f.add(tmp);
+
+		x = 500 ; yCord += 50; // coordinates 
+		JTextField myOutput = new JTextField("values");
+		myOutput.setBounds(500, yCord, width*2, height);
+		f.add(myOutput);
+		x = x + 150;
+		JButton arr[] =  new JButton[str.length()];
+		for( i = 0 ; i < str.length() ; i++) {
+			if(vals[i]!=0) {
+				int k = vals[i];
+				s  = String.valueOf(k);
+				arr[i] = new JButton(s);
+				arr[i].setBounds(x,yCord,width,height); 
+				x+=width;
+				arr[i].setBackground(Color.WHITE);
+				arr[i].setForeground(Color.BLACK);
+				f.add(arr[i]);
+			}
+		}
+		// if there is no match char
+		int k = str.length();
+		s  = String.valueOf(k);
+		JButton tmpp = new JButton(s);
+		tmpp.setBounds(x, yCord, width*3, height);
+		tmpp.setBackground(Color.WHITE);
+		f.add(tmpp);
+
 	}
 
 

@@ -2,6 +2,8 @@ package il.ac.telhai.projects.ssa;
 
 import java.util.Stack;
 
+import javax.swing.JFrame;
+
 public abstract class Algorithm<S> {
 	
 	private Stack<State<S>> stack;
@@ -73,5 +75,14 @@ public abstract class Algorithm<S> {
 	
 	public boolean isEmpty() {
 		return this.stack.isEmpty();
+	}
+	
+	public void show(JFrame frame) {
+		
+		frame.setSize(1300,700);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		frame.setLayout(null);
+		frame.setVisible(true);
+		
 	}
 }
