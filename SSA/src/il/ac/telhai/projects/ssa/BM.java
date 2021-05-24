@@ -25,8 +25,8 @@ public class BM  extends Algorithm<Integer>{
 	public BM(String input, String pattern) {
 
 		this.setDataStructure(new Stack<State<Integer>>());
-		this.input = input;
-		this.pattern = pattern;
+		this.input = input.toUpperCase();
+		this.pattern = pattern.toUpperCase();
 		patLen = pattern.length(); 
 		txtLen = input.length();
 
@@ -35,8 +35,8 @@ public class BM  extends Algorithm<Integer>{
 	public BM(String pattern) {
 
 		this.setDataStructure(new Stack<State<Integer>>());
-		this.pattern = pattern;
-		this.input = readFromFile();
+		this.pattern = pattern.toUpperCase();
+		this.input = readFromFile().toUpperCase();
 		patLen = pattern.length(); 
 		txtLen = input.length();
 
@@ -45,8 +45,8 @@ public class BM  extends Algorithm<Integer>{
 	private String readFromFile() {
 		String data = ""; 
 		try {
-			//File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\il\\input.txt");
-			File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
+			File myObj = new File("C:\\Users\\home\\eclipse-workspace\\SSA\\src\\input.txt");
+		//	File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
@@ -92,6 +92,7 @@ public class BM  extends Algorithm<Integer>{
 	}
 	
 	public boolean isMatch(int index) {
+		if (index > txtLen-1) return false;
 		int starting = index;
 		int i = patLen - 1;
 		for(; i >= 0; i--) {
@@ -117,6 +118,13 @@ public class BM  extends Algorithm<Integer>{
 		badchar = badCharTable(pat, patLen); 
 
 		int s = patLen -1 ;
+	
+		/*	when the stack not empty this means this is not the first call for search method
+		 *	then -> clear the stack then store the new data 
+		*/
+		if(!this.isEmpty())
+			this.clear();
+		
 		this.updateNextState(s);
 
 		int j;
@@ -126,7 +134,6 @@ public class BM  extends Algorithm<Integer>{
 				if(txt[s] == pat[j]) {
 					s+= badchar[j]; 
 					this.updateNextState(s);
-					//System.out.println("s =  "+ s );
 					bool = false;
 					break;
 				}else { 
@@ -136,7 +143,6 @@ public class BM  extends Algorithm<Integer>{
 			if(bool) {
 				s+=patLen;
 				this.updateNextState(s);
-				//System.out.println("s =  "+ s);
 			}
 		}
 	}

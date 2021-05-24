@@ -77,6 +77,10 @@ public abstract class Algorithm<S> {
 		return this.stack.isEmpty();
 	}
 	
+	public void clear() {
+		this.getStack().clear();
+	}
+	
 	public void show(JFrame frame) {
 		
 		frame.setSize(1300,700);

@@ -74,6 +74,7 @@ public class MainGUI implements ActionListener{
 			panel.add(buttons[i]);
 		}
 		buttons[firstIndex].setSelected(true); //set first button to be selected as default
+		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 	}
 
@@ -228,19 +229,16 @@ public class MainGUI implements ActionListener{
 				initInputDisplay(bm.getInput());
 				initPatternDisplay(pat);
 				initButton(bm.getInput().length(),bm);
-				bm.search();
-				bm.setSearchtype(runTypeRadioBtn[firstIndex].isSelected());
 			}else {
 				//input from user
 				input = inputField.getText();
 				initInputDisplay(input);
 				initPatternDisplay(pat);
 				bm = new BM(input,pat);
-				initButton(pat.length(),bm);
-				bm.search();
-				bm.setSearchtype(runTypeRadioBtn[firstIndex].isSelected());
+				initButton(pat.length(),bm);				
 			}
 			bm.printchartable(pat, frame, xCord, yCord);
+			bm.setSearchtype(runTypeRadioBtn[firstIndex].isSelected());
 			bm.search();
 			bm.show(frame);
 		}else {  // kmp selected

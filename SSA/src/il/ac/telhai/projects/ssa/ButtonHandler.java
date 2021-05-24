@@ -18,7 +18,7 @@ public class ButtonHandler implements ActionListener{
 	private JButton prev;
 	private JButton reset;
 	private Stack<node> found;
-	
+
 	//TODO: change here BM to Algorithm
 	public ButtonHandler(BM bm2, JButton[] arr, JButton[] array, JButton next,JButton prev,JButton reset) {
 		super();
@@ -61,14 +61,15 @@ public class ButtonHandler implements ActionListener{
 
 	}
 	public void NEXTautomatic_search() {
-	
+
 		resetBoard();
 		this.prev.setEnabled(true);
+
 		int patLen = this.bm.getPattern().length();
 		int state, i;
 		int iter = cnt;
 		boolean cntFlag = false;
-		
+
 		while(iter < bm.getStackSize()) {
 			state = this.bm.getStack().get(iter).getState();
 			if(this.bm.isMatch(state)){
@@ -80,7 +81,7 @@ public class ButtonHandler implements ActionListener{
 				cnt = (iter + 1);
 				//save the data where pattern found
 				found.push(new node(cnt,state));
-				System.out.println("cnt = " + cnt + " iter = " + iter);
+				//System.out.println("cnt = " + cnt + " iter = " + iter);
 				break;
 			}else {
 				//no match...
@@ -88,21 +89,33 @@ public class ButtonHandler implements ActionListener{
 			}
 		}
 		// disable next button at end of input.
-		System.out.println("cnt = " + cnt+ " iter = " + iter + " stackSize = " + stackSize);
+		//System.out.println("cnt = " + cnt+ " iter = " + iter + " stackSize = " + stackSize);
 		if(cnt == stackSize) {
 			cnt--;
 			cntFlag = true;
 		}
-		if(bm.getStack().get(cnt).getState() == bm.getStack().get(stackSize-1).getState() || cnt == 0) {
+
+		/*if(bm.getStack().get(cnt).getState() == bm.getStack().get(stackSize-1).getState() || cnt == 0 ) {
 			this.next.setEnabled(false);
 			if(cntFlag) {
 				cnt++;
 				cntFlag = false;
 			}
+		}*/
+		if(cnt+1 < this.bm.getInput().length()) {
+			State<Integer> stt = this.bm.getStack().get(cnt);
+			int curr = stt.getState();
+			cnt++;
+			if( curr == this.bm.getStack().get(stackSize-1).getState())
+				this.next.setEnabled(false);
+			else
+				this.next.setEnabled(true);
+		}else {
+			this.next.setEnabled(false);
 		}
-		
+
 	}
-	
+
 	private void PREVautomatic_search() {
 
 		//1. delete current apperiance from stack 
@@ -116,7 +129,7 @@ public class ButtonHandler implements ActionListener{
 		if(!found.isEmpty()) {
 			this.setCnt(found.peek().getItr());
 			colorBoard(found.peek().getState(), Color.GREEN);
-		}else {
+		}if (found.size() == 1)  {
 			this.setCnt(bm.getPattern().length() - 1);
 			this.prev.setEnabled(false);
 		}
@@ -134,9 +147,9 @@ public class ButtonHandler implements ActionListener{
 		int j = this.bm.getPattern().length()-1;
 		if( cnt < this.bm.getStack().size() ) {
 
-			if(cnt == 0 ) {
-				this.prev.setEnabled(true);
-			}
+
+			this.prev.setEnabled(true);
+
 
 			State<Integer> st = this.bm.getStack().get(cnt);
 			int cur = st.getState();
@@ -164,7 +177,7 @@ public class ButtonHandler implements ActionListener{
 					this.inputarr[cur].setBackground(Color.RED);
 				}
 			}
-			
+
 			State<Integer> stt = this.bm.getStack().get(cnt);
 			int curr = stt.getState();
 			cnt++;
@@ -177,8 +190,7 @@ public class ButtonHandler implements ActionListener{
 
 	private void PREVmanual_search() {
 		//TODO: check coloring 
-		if( this.getCnt()>1) {
-
+		if( this.getCnt()> 0) {
 			if(this.getCnt() == this.getStackSize()) {
 				this.getNextBtn().setEnabled(true);
 			}
@@ -190,7 +202,7 @@ public class ButtonHandler implements ActionListener{
 			char patt = this.bm.getPattern().charAt(j);
 
 			if(input == patt ) {
-				
+
 				resetBoard();
 				this.patarray[j].setBackground(Color.GREEN);
 				this.inputarr[cur].setBackground(Color.GREEN);
@@ -212,17 +224,20 @@ public class ButtonHandler implements ActionListener{
 				this.inputarr[cur].setBackground(Color.RED);
 			}
 
-			this.setCnt(this.getCnt()-1);		
-		}else {
+			this.setCnt(this.getCnt()-1);	
+			if(this.getCnt() == 1)
+				this.prev.setEnabled(false);
+			else
+				this.prev.setEnabled(true);
+		}/*else {
 			this.setCnt(0);
-
-			if(this.getCnt() >= 0)
+			if(this.getCnt() == 0)
 				this.prev.setEnabled(false);
 			else
 				this.prev.setEnabled(true);
 
 			resetBoard();
-		}
+		}*/
 	}
 
 	public int getCnt() {
@@ -242,7 +257,7 @@ public class ButtonHandler implements ActionListener{
 	public JButton getNextBtn() {
 		return this.next;
 	}
-	
+
 	public void colorBoard(int index, Color color) {
 		int i;
 		for(i = 0; i < this.bm.getPattern().length(); i++) {
@@ -250,9 +265,9 @@ public class ButtonHandler implements ActionListener{
 			this.inputarr[index - i].setBackground(color);
 		}
 	}
-	
+
 	public void resetBoard() {
-		
+
 		int i;
 		for(i = 0 ; i < this.inputarr.length ;i++) {
 			this.inputarr[i].setBackground(Color.WHITE);
@@ -260,11 +275,11 @@ public class ButtonHandler implements ActionListener{
 				this.patarray[i].setBackground(Color.WHITE);
 		}
 	}
-	
+
 	private class node{
 		private int itr;
 		private int state;
-		
+
 		public node(int itr, int state) {
 			this.itr = itr;
 			this.state = state;
@@ -277,7 +292,7 @@ public class ButtonHandler implements ActionListener{
 		public int getState() {
 			return state;
 		}
-		
-		
+
+
 	}
 }
