@@ -1,5 +1,6 @@
 package il.ac.telhai.stringSearchMultiple;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,8 @@ public class StringSearchMultipleOutput implements Output<StringSearchMultiple>{
 
 	@Override
 	public void show(Container c) {
-		// TODO Auto-generated method stub
 		
 	}
+
+	
 }

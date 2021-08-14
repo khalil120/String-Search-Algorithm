@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 
-public class BM  extends Algorithm<Integer>{
+public class BM extends Algorithm<Integer>{
 
 	private String input, pattern;
 	private int NO_OF_CHARS = 256;

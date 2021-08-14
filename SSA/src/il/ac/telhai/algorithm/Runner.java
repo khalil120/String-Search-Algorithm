@@ -14,12 +14,11 @@ public class Runner<P extends Problem> {
 	public Runner(Class<Algorithm<P>> algorithmClass, Input<P> input, Container container) throws Exception {
 		this.container = container;
 		this.input = input;
-
 		Constructor<Algorithm<P>> ctor = algorithmClass.getConstructor();
 		instance = ctor.newInstance();
-		
 		instance.reset(input);
 		pushAndShow();
+		instance.step();
 	}
 
 	private void pushAndShow() {
@@ -37,9 +36,8 @@ public class Runner<P extends Problem> {
 	}
 	
 	public void step(int depth) {
-		while (instance.getState().getDepth() > depth) {
-			instance.step();
-		}
+		while (instance.getState().getDepth() > depth) 
+		       instance.step();
         pushAndShow();
 	}
 
