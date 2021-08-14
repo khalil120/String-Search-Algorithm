@@ -1,23 +1,17 @@
 package il.ac.telhai.stringSearchMultiple;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Constructor;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
-
-import il.ac.telhai.algorithm.Algorithm;
-import il.ac.telhai.algorithm.BM;
 import il.ac.telhai.algorithm.Input;
 import il.ac.telhai.algorithm.Runner;
-import il.ac.telhai.projects.ssa.ButtonHandler;
-import il.ac.telhai.projects.ssa.MainGUI;
+
 
 public class StringSearchMultipleInput implements Input<StringSearchMultiple>, ActionListener {
+	private static boolean prev = false;
 	String text;
 	String pattern;
 	Container c;
@@ -33,6 +27,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	private int ismanual;
 	private Runner run;
 	private int depth;
+	private boolean rst = false;
 
 	public StringSearchMultipleInput(String text, String pattern) {
 		super();
@@ -201,11 +196,26 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == nxtBtn) {
+			this.prevBtn.setEnabled(true);
+			this.prev = false;
+			this.rst = false;
 			run.step(0);
 			this.depth--;
 		}
 		if (e.getSource() == prevBtn) {
-
+			this.nxtBtn.setEnabled(true);
+		    this.prev = true;
+		    this.rst = false;
+            run.back(depth);
+            this.depth++;
+		}
+		if(e.getSource() == rstBtn) {
+			this.nxt = false;
+			this.prv = false;
+			this.rst = true;
+			this.nxtBtn.setEnabled(true);
+			this.prevBtn.setEnabled(true);
+			run.reset();
 		}
 
 	}
@@ -241,5 +251,11 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		return this.depth;
 	}
 
-
+	public boolean isprev() {
+		return prev;
+	}
+	
+	public boolean isrst() {
+		return rst ;
+	}
 }

@@ -2,11 +2,11 @@ package il.ac.telhai.algorithm;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.Stack;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -17,6 +17,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	private State<Algorithm<Problem>> state;
 	private LinkedList<Integer> Indexlist = new LinkedList<Integer>();
+	private Stack<Integer> stack = new Stack<>(); //the stack to save the depth of all the matching strings
 	private Input<Problem> input;
 	private Output<Problem> output;
 	private int depth = 0;
@@ -33,6 +34,16 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	public void reset(Input<Problem> input) {
 		this.input=input;
 		inputData = this.input.getSSMI();
+		if(inputData.isrst()) {
+			int i;
+			for(i = 0; i < this.inputData.getInputArr().length; i++) {
+				this.inputData.getInputArr()[i].setBackground(Color.WHITE);
+			}
+			for(i = 0; i < this.inputData.getPattArr().length; i++) {
+				this.inputData.getPattArr()[i].setBackground(Color.WHITE);
+			}
+			this.clear();
+		}
 		printchartable(input.pattern(),input.getcont(),input.getxCord(),input.getyCord());
 		calcMaxDepth();
 	}
@@ -53,9 +64,13 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		//System.out.println("Pattern to look for is: " + this.input.pattern());
 		//	System.out.println("Input is:" + this.input.input());
 		//System.out.println("Starting new Step with Depth = " + depth);
+		//System.out.println("111111111111111111111111111111111111111111111111");
 		int i;
 		for(i = 0; i < this.inputData.getInputArr().length; i++) {
-		     this.inputData.getInputArr()[i].setBackground(Color.WHITE);
+			this.inputData.getInputArr()[i].setBackground(Color.WHITE);
+		}
+		if (inputData.getInputArr().length == depth) {
+			this.inputData.getPrevBtn().setEnabled(false);
 		}
 		if(!bool) {
 			bool = true;
@@ -66,10 +81,15 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		int inputLength = input.input().length();
 		int indexToStartFrom = Indexlist.get(indexToPaint);
 		int patt_ch, inpt_ch;
-		if(indexToStartFrom < inputLength) {
+		if(indexToStartFrom <= inputLength) {
+			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isprev())
+				inputData.setdepth(inputData.getdepth()-1);
 			patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
 			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
 			if(inpt_ch == patt_ch) {
+				//System.out.println("111111111111111111111111111111111111111111111111    " + depth);
+				if (!inputData.isprev())
+					stack.push(depth);
 				this.inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
 				this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
 				patternLen--;
@@ -85,21 +105,32 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					indexToStartFrom--;
 				}
 			}else if (inputData.getIsmanual() == 0){
-				inputData.setdepth(inputData.getdepth()-1);
+				if(!this.inputData.isprev())
+					inputData.setdepth(inputData.getdepth()-1);
+				else if (this.inputData.isprev()) {
+					inputData.setdepth(inputData.getdepth()+1);
+				}
 			}
 			if (inputData.getIsmanual() == 1 && inpt_ch != patt_ch) {
+				if (!inputData.isprev())
+					stack.push(depth);
 				this.inputData.getPattArr()[patternLen].setBackground(Color.RED);
 				this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.RED);
 			}
-			this.depth --;
+			if(!this.inputData.isprev()) {
+				this.depth --;
+			}
+			else this.depth++;
 		}
 		else {
-			this.depth --;
+			if(!this.inputData.isprev())
+				this.depth --;
+			else this.depth++;
 		}
+		//System.out.println("depth after = "+ depth);
 	}
 
 	public void calcMaxDepth() {
-
 		char [] pat = this.input.pattern().toUpperCase().toCharArray();
 		char [] txt = this.input.input().toUpperCase().toCharArray();
 		int patLen = input.pattern().length();
@@ -114,7 +145,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		 */
 		if(!this.isEmpty())
 			this.clear();
-
+		else this.depth = 0;
 		this.depth++;
 		this.updateNextState(s);
 
@@ -141,7 +172,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		inputData.setdepth(depth);
 		//System.out.println("number of indexs is: " + this.Indexlist.size());
 		//for(int i = 0; i < this.Indexlist.size(); i++)
-		//System.out.println(Indexlist.get(i));
+		//  System.out.println(Indexlist.get(i));
 	}
 
 	private int[] badCharTable(char []str, int size) { 
@@ -289,6 +320,11 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public int getDepth() { 
+		System.out.println(this.depth + "   "+inputData.getdepth());
+		if(this.depth == 0) {
+			this.inputData.getNxtBtn().setEnabled(false);
+			inputData.setdepth(inputData.getdepth()+1);
+		}
 		if (this.depth == inputData.getdepth()&& inputData.getIsmanual() == 0)
 			return this.depth;
 		else if (inputData.getIsmanual() == 1 && this.depth == inputData.getdepth())  return this.depth;
@@ -297,7 +333,14 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public void show(Container c) { //TODO: check this method
-		//printchartable(input.pattern(),c,input.getxCord(),input.getyCord());	
+		if(inputData.isprev() ) {
+			stack.pop();
+			int tmp = stack.peek();
+			while (tmp >= depth) {
+				this.step();
+			}
+			this.depth--;
+		}
 	}
 
 

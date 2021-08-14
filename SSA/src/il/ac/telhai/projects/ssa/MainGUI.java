@@ -32,14 +32,10 @@ public class MainGUI implements ActionListener{
 	private JRadioButton[] selectAlgRadioBtn;
 	private JRadioButton[] runTypeRadioBtn;
 	private JRadioButton[] inputRadioBtn;
-	private JButton[] inputArr;
-	private JButton[] pattArr;
 	private JTextField inputField;
 	private JTextField patField;
 	private JTextField depth;
 	private int firstIndex = 0;
-	private int xCord = 0;
-	private int yCord = 0;
 	private int numOfSections = 4;
 	private final int radioBtnGroubSize = 2;
 	private final int AutomaticDepth = 0;
@@ -197,7 +193,8 @@ public class MainGUI implements ActionListener{
 					//this.run.step(this.AutomaticDepth+1);
 				}
 				input.getNxtBtn().addActionListener(input);
-
+                input.getPrevBtn().addActionListener(input);
+                input.getRstBtn().addActionListener(input);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
