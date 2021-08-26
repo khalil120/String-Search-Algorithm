@@ -77,6 +77,9 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			return;
 		}
 		int indexToPaint = this.Indexlist.size() - this.depth;
+		if(this.Indexlist.size() == indexToPaint)
+			indexToPaint--;
+		//System.out.println(indexToPaint + "  hereeeeeeeeeeeeeee  " + this.Indexlist.size());
 		int patternLen = input.pattern().length() - 1;
 		int inputLength = input.input().length();
 		int indexToStartFrom = Indexlist.get(indexToPaint);
@@ -88,8 +91,9 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
 			if(inpt_ch == patt_ch) {
 				//System.out.println("111111111111111111111111111111111111111111111111    " + depth);
-				if (!inputData.isprev())
+				if (!inputData.isprev()) {
 					stack.push(depth);
+				}
 				this.inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
 				this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
 				patternLen--;
@@ -321,7 +325,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	@Override
 	public int getDepth() { 
 		System.out.println(this.depth + "   "+inputData.getdepth());
-		if(this.depth == 0) {
+		if(this.depth == 0   && inputData.getdepth() == 0) {
 			this.inputData.getNxtBtn().setEnabled(false);
 			inputData.setdepth(inputData.getdepth()+1);
 		}
@@ -332,10 +336,12 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	}
 
 	@Override
-	public void show(Container c) { //TODO: check this method
+	public void show(Container c) {
 		if(inputData.isprev() ) {
-			stack.pop();
+			if(depth != 0 ) 
+				stack.pop();
 			int tmp = stack.peek();
+			System.out.println(tmp + " hereeeeeeeeeeeeeee");
 			while (tmp >= depth) {
 				this.step();
 			}

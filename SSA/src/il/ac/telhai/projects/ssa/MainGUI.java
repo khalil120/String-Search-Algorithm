@@ -34,7 +34,6 @@ public class MainGUI implements ActionListener{
 	private JRadioButton[] inputRadioBtn;
 	private JTextField inputField;
 	private JTextField patField;
-	private JTextField depth;
 	private int firstIndex = 0;
 	private int numOfSections = 4;
 	private final int radioBtnGroubSize = 2;
@@ -107,11 +106,6 @@ public class MainGUI implements ActionListener{
 	public void initInputSection(int secIndex) {
 		JPanel inputPanel = new JPanel();
 		JLabel inputlbl	=	new	JLabel(Actions[secIndex]);
-		depth = new JTextField(30);
-		JLabel depthlbl	=	new	JLabel("Depth: ");
-		depthlbl.setFont(new Font(depthlbl.getFont().getName(), Font.PLAIN, 18));
-		inputPanel.add(depthlbl);
-		inputPanel.add(depth);
 
 		inputlbl.setFont(new Font(inputlbl.getFont().getName(), Font.PLAIN, 18));
 		inputPanel.add(inputlbl);
@@ -186,11 +180,9 @@ public class MainGUI implements ActionListener{
 					//Automatic Search Method -> depth = 0
 					input.ismanual(AutomaticDepth);
 					input.setRun(run);
-			       // this.run.step(this.AutomaticDepth); // run to end 
 				}else {
 					input.ismanual(AutomaticDepth+1);
 					input.setRun(run);
-					//this.run.step(this.AutomaticDepth+1);
 				}
 				input.getNxtBtn().addActionListener(input);
                 input.getPrevBtn().addActionListener(input);
