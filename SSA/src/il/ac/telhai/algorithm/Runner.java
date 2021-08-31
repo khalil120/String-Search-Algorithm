@@ -36,7 +36,7 @@ public class Runner<P extends Problem> {
 	}
 	
 	public void step(int depth) {
-		//System.out.println("hereeeee2   "+  instance.getState().getDepth());
+	//	System.out.println("hereeeee2   "+  instance.getState().getDepth());
 		while (instance.getState().getDepth() > depth) 
 		       instance.step();
         pushAndShow();
