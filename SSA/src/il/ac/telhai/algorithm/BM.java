@@ -43,7 +43,9 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			for(i = 0; i < this.inputData.getPattArr().length; i++) {
 				this.inputData.getPattArr()[i].setBackground(Color.WHITE);
 			}
+			this.inputData.getPrevBtn().setEnabled(false);
 			this.clear();
+			depth = 0;
 		}
 		printchartable(input.pattern(),input.getcont(),input.getxCord(),input.getyCord());
 		calcMaxDepth();
