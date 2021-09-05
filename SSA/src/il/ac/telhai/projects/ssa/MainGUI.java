@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import java.util.Scanner;
 import il.ac.telhai.algorithm.Algorithm;
 import il.ac.telhai.algorithm.BM;
+import il.ac.telhai.algorithm.KMP;
 import il.ac.telhai.algorithm.Runner;
 import il.ac.telhai.stringSearchMultiple.StringSearchMultiple;
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
@@ -192,7 +193,33 @@ public class MainGUI implements ActionListener{
 			}
 
 		}else {  // KMP Algorithm selected
-
+			StringSearchMultipleInput input;
+			if(inputRadioBtn[firstIndex].isSelected()) {
+				input = new StringSearchMultipleInput(this.readFromFile(),patField.getText());
+			}else {
+				input = new StringSearchMultipleInput(inputField.getText(),patField.getText());
+			}
+			frame.setSize(1850,900);
+			Container container = frame.getContentPane();
+			input.show(container);
+			Class cls[] = new Class[] {KMP.class};
+			Class<Algorithm<StringSearchMultiple>> algorithmClass = cls[0] ;
+			try {
+				this.run = new Runner<StringSearchMultiple>(algorithmClass, input, container);
+				if(runTypeRadioBtn[firstIndex].isSelected()) {
+					//Automatic Search Method -> depth = 0
+					input.ismanual(AutomaticDepth);
+					input.setRun(run);
+				}else {
+					input.ismanual(AutomaticDepth+1);
+					input.setRun(run);
+				}
+				input.getNxtBtn().addActionListener(input);
+                input.getPrevBtn().addActionListener(input);
+                input.getRstBtn().addActionListener(input);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
