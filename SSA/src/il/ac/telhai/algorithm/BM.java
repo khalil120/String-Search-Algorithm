@@ -6,12 +6,10 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
-
 
 public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
@@ -143,7 +141,6 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					if(this.Indexlist.size() <= indexToPaint2  ) {
 						this.inputData.getNxtBtn().setEnabled(false);
 						index = true;
-						//dvdsvsdfdvsbsdbsdbds
 						break;
 					}
 					if(!index) {
@@ -206,9 +203,6 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			}
 		}
 		inputData.setdepth(depth);
-		int i ;
-	for(i= 0 ; i < Indexlist.size()-1;i++) 
-			System.out.println(Indexlist.get(i));
 	}
 
 	private int[] badCharTable(char []str, int size) { 

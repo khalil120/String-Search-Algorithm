@@ -3,18 +3,13 @@ package il.ac.telhai.algorithm;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.List;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
-
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
 
 public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
@@ -38,7 +33,6 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public int getDepth() { 
-		System.out.println("depth = " + depth + "  input depth  = " +inputData.getdepth()  + " next depth " + nextdepth);
 		if((inputData.getdepth() == nextdepth || depth == nextdepth) && inputData.getIsmanual() == 1)
 			this.depth--;
 		if (this.depth == inputData.getdepth()&& inputData.getIsmanual() == 0)
@@ -50,7 +44,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	@Override
 	public void show(Container c) {
 		if(inputData.isprev() ) {
-			if(depth != 0 ) 
+			if(depth != 0  & !stack.isEmpty() ) 
 				stack.pop();
 			if(stack.isEmpty()) { 
 				int i;
@@ -82,7 +76,6 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public void step() {
-		///System.out.println("11111111111111111111");
 		int i;
 		for(i = 0; i < this.inputData.getInputArr().length; i++) {
 			this.inputData.getInputArr()[i].setBackground(Color.WHITE);
@@ -94,10 +87,11 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			bool = true;
 			return;
 		}
+		boolean tmp = false;
 		int indexToPaint = this.Indexlist.size() - this.depth;
 		int patternLen = 0;
 		int inputLength = input.input().length();
-		if( indexToPaint < 0 )
+		if(indexToPaint < 0)
 			indexToPaint = 0;
 		int indexToStartFrom = Indexlist.get(indexToPaint);
 		int patt_ch, inpt_ch;
@@ -105,28 +99,43 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isprev())
 				inputData.setdepth(inputData.getdepth()-1);
 			patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
+			if(input.input().length()<=indexToStartFrom ) {
+				this.inputData.getNxtBtn().setEnabled(false);
+				indexToStartFrom = input.input().length() -1;
+			}
 			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
-			System.out.println(input.pattern().toUpperCase().charAt(patternLen) + "         jsbcjsbfiuebofc     "+input.input().toUpperCase().charAt(indexToStartFrom));
 			if(inpt_ch == patt_ch) {
-				if (!inputData.isprev()) {
-					if(stack.isEmpty()) stack.push(depth);
-					else if(depth!=stack.peek())
-						stack.push(depth);
-				}
 				this.inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
 				this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
 				patternLen++;
 				indexToStartFrom++;
 				while(patternLen < input.pattern().length()) {
-					//W	System.out.println(patternLen+"  " +indexToStartFrom );
 					patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
 					inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
 					if(inpt_ch == patt_ch ) {
 						this.inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
 						this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
-					}else  break;
+						tmp = false;
+					}else  {
+
+						if (inputData.getIsmanual() == 0){
+							if(!this.inputData.isprev()) {
+								inputData.setdepth(inputData.getdepth()-1);
+							}
+							else if (this.inputData.isprev()) {
+								inputData.setdepth(inputData.getdepth()+1);
+							}
+						}
+						tmp = true;
+						break;
+					}
 					patternLen++;
 					indexToStartFrom++;
+				}
+				if (!inputData.isprev() && !tmp) {
+					if(stack.isEmpty()) stack.push(depth);
+					else if(depth!=stack.peek())
+						stack.push(depth);
 				}
 			}else if (inputData.getIsmanual() == 0){
 				if(!this.inputData.isprev()) {
@@ -140,7 +149,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				if (!inputData.isprev())
 					stack.push(depth);
 				this.inputData.getPattArr()[patternLen].setBackground(Color.RED);
-				this.inputData.getInputArr()[indexToStartFrom+2].setBackground(Color.RED);
+				this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.RED);
 			}
 			if(!this.inputData.isprev()) {
 				this.depth --;
@@ -152,32 +161,40 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				boolean index = false;
 				if(nextdepth >= this.Indexlist.size()) nextdepth--;
 				int indexToPaint2 = this.Indexlist.size() - this.nextdepth;
-				if(this.Indexlist.size() == indexToPaint2)
-					indexToPaint2--;
-				int patternLen2 = input.pattern().length() - 1;
+				int patternLen2 = 0;
+				if(this.Indexlist.size()<=indexToPaint2 ) {
+					this.inputData.getNxtBtn().setEnabled(false);
+					indexToPaint2 = this.Indexlist.size() -1;
+				}
 				int indexToStartFrom2 = Indexlist.get(indexToPaint2);
+				if(input.input().length()<=indexToStartFrom2 ) {
+					this.inputData.getNxtBtn().setEnabled(false);
+					indexToStartFrom2 = input.input().length() -1;
+				}
 				patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
 				inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom2);
 				while (patt_ch!=inpt_ch) {
 					nextdepth--;
 					indexToPaint2 = this.Indexlist.size() - this.nextdepth;
-					if(this.Indexlist.size() <= indexToPaint2  ) {
-						//this.inputData.getNxtBtn().setEnabled(false);
+					if(this.Indexlist.size() <= indexToPaint2 ) {
+						this.inputData.getNxtBtn().setEnabled(false);
 						index = true;
 						break;
 					}
 					if(!index) {
-						patternLen2 = input.pattern().length() - 1;
+						patternLen2 = 0;
 						indexToStartFrom2 = Indexlist.get(indexToPaint2);
 						patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
-						if(input.input().length()<indexToStartFrom2)
+						if(input.input().length()<=indexToStartFrom2)
 							indexToStartFrom2  = input.input().length()-1;
 						inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom2);
 					}
 				}
 			}
 			nextdepth--;
-			if( nextdepth < input.pattern().length() && nextdepth != 0)	this.inputData.getNxtBtn().setEnabled(false);
+			if( nextdepth < input.pattern().length() && nextdepth!=0 && depth!=inputData.getPattern().length()) {
+				this.inputData.getNxtBtn().setEnabled(false);
+			}
 		}
 		else {
 			if(!this.inputData.isprev())
@@ -233,50 +250,45 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	public void KMPSearch(String pat, String txt){
 		int M = pat.length();
-		char [] pat1 = this.input.pattern().toUpperCase().toCharArray();
-		char [] txt1 = this.input.input().toUpperCase().toCharArray();
-		int patLen = input.pattern().length();
-		lps = new int[NO_OF_CHARS]; 
-		int txtLen = input.input().length();
-		lps = computeLPSArray(input.pattern(),M); 
+		int N = txt.length();
+		lps = new int[M];
+		int j = 0; // index for pat[]
+		lps = computeLPSArray(pat, M);
 
-		int s = 0 ;
-
-		/*	when the Data Structure is not empty this means this is not the first call for search method
-		 *	then -> clear the Data Structure then store the new data 
-		 */
-		if(!this.isEmpty())
-			this.clear();
-		else this.depth = 0;
+		int i = 0; // index for txt[]
+		this.updateNextState(0);
 		this.depth++;
-		this.updateNextState(s);
-		int j;
-		boolean bool = true;
-		while(s < txtLen-1) {
-			for(j = 0 ; j < patLen ; j++) {
-				if(txt1[s] == pat1[j]) {
-					if(lps[j]!= 0 )
-						s+= lps[j];
-					else 
-						s++;
-					this.depth++;
-					this.updateNextState(s);
-					bool = false;
-					break;
-				}else 
-					bool = true;
-
+		while (i < N) {
+			if (pat.toUpperCase().charAt(j) == txt.toUpperCase().charAt(i)) {
+				j++;
+				i++;
 			}
-			if(bool) {
-				s++;
+			if (j == M) {
+				this.updateNextState((i - j));
+				if(i != 0)
+					this.updateNextState(i);
+				this.depth+=2;
+				j = lps[j - 1];
+			}
+
+			// mismatch after j matches
+			else if (i < N && pat.toUpperCase().charAt(j) != txt.toUpperCase().charAt(i)) {
+				if (j != 0) {
+					j = lps[j - 1];
+				}
+				i = i + 1;
+				this.updateNextState(i);
 				this.depth++;
-				this.updateNextState(s);
 			}
 		}
+
+		for(i= 0 ; i < Indexlist.size()-1;i++) {
+			if(Indexlist.get(i) == Indexlist.get(i+1)){
+				Indexlist.remove(i+1);
+				this.depth--;
+			}
+		} 
 		inputData.setdepth(depth);
-		int i ;
-		for(i= 0 ; i < Indexlist.size()-1;i++) 
-			System.out.println(Indexlist.get(i));
 	}
 
 	private int[]  computeLPSArray(String pat, int M)
