@@ -111,6 +111,10 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				indexToStartFrom++;
 				while(patternLen < input.pattern().length()) {
 					patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
+					if(input.input().length()<=indexToStartFrom ) {
+						this.inputData.getNxtBtn().setEnabled(false);
+						indexToStartFrom = input.input().length() -1;
+					}
 					inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
 					if(inpt_ch == patt_ch ) {
 						this.inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
@@ -192,7 +196,8 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				}
 			}
 			nextdepth--;
-			if( nextdepth < input.pattern().length() && nextdepth!=0 && depth!=inputData.getPattern().length()) {
+			if( ((nextdepth < input.pattern().length() && depth!=inputData.getPattern().length()) || indexToStartFrom ==  inputData.getText().length()) 
+					&&!inputData.isprev() && inputData.getIsmanual() == 0) {
 				this.inputData.getNxtBtn().setEnabled(false);
 			}
 		}
