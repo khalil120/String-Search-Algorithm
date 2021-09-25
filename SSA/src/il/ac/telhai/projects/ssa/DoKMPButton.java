@@ -4,7 +4,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
-public class DoKMPButton implements ActionListener {
+// TODO: MORDO - Remove this class that is not (and should not be) used.
+public class DoKMPButton implements ActionListener { 
 
 	public DoKMPButton(JFrame frame) {
 		

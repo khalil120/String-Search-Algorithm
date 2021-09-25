@@ -17,15 +17,15 @@ import javax.swing.JTextField;
 public class BM extends Algorithm<Integer>{
 
 	private String input, pattern;
-	private int NO_OF_CHARS = 256;
+	private int NO_OF_CHARS = 256;  // TODO: MORDO CONST?
 	private int patLen; 
 	private int txtLen;
-	private  boolean searchtype;
+	private  boolean searchtype;  // TODO: MORDO camelCase 
 
 	public BM(String input, String pattern) {
 
 		this.setDataStructure(new Stack<State<Integer>>());
-		this.input = input.toUpperCase();
+		this.input = input.toUpperCase();       // TODO: MORDO - This functionality is not specific to BM
 		this.pattern = pattern.toUpperCase();
 		patLen = pattern.length(); 
 		txtLen = input.length();
@@ -35,7 +35,7 @@ public class BM extends Algorithm<Integer>{
 	public BM(String pattern) {
 
 		this.setDataStructure(new Stack<State<Integer>>());
-		this.pattern = pattern.toUpperCase();
+		this.pattern = pattern.toUpperCase();    // TODOO: MORDO - Refactor code common to various c'tors. use "this()"
 		this.input = readFromFile().toUpperCase();
 		patLen = pattern.length(); 
 		txtLen = input.length();
@@ -59,6 +59,7 @@ public class BM extends Algorithm<Integer>{
 	}
 
 	private int[] badCharTable(char []str, int size) { 
+		// TODO: MORDO: The functionality of this function is not clear. Document the function
 		int i ,j;
 		int c = 0;
 		int vals[] = new int[size];
@@ -79,7 +80,7 @@ public class BM extends Algorithm<Integer>{
 		return vals;
 	}
 
-	public int max (int a, int b) { return (a > b)? a: b; } 
+	public int max (int a, int b) { return (a > b)? a: b; } // TODO: MORDO use the built-in max function
 
 	public void nextStep() {
 		int s = this.currentState();
@@ -94,7 +95,7 @@ public class BM extends Algorithm<Integer>{
 	public boolean isMatch(int index) {
 		if (index > txtLen-1) return false;
 		int starting = index;
-		int i = patLen - 1;
+		int i = patLen - 1;   // TODO: MORDO - Why not embedded in the following for statement
 		for(; i >= 0; i--) {
 			if(input.charAt(index) != pattern.charAt(i))
 				return false;
@@ -113,7 +114,7 @@ public class BM extends Algorithm<Integer>{
 		char [] pat = this.pattern.toCharArray();
 		char [] txt = this.input.toCharArray();
 
-		int badchar[] = new int[NO_OF_CHARS]; 
+		int badchar[] = new int[NO_OF_CHARS];   // TODO: MORDO - Overridedn by the next statement
 
 		badchar = badCharTable(pat, patLen); 
 
@@ -128,7 +129,7 @@ public class BM extends Algorithm<Integer>{
 		this.updateNextState(s);
 
 		int j;
-		boolean bool = true;
+		boolean bool = true;  // TODO: MOROD - More meaningful names. "bool" and "flag" are the worst names possible
 		while(s < txtLen-1) {
 			for(j = 0 ; j < patLen ; j++) {
 				if(txt[s] == pat[j]) {
@@ -147,12 +148,13 @@ public class BM extends Algorithm<Integer>{
 		}
 	}
 
+	// TODO: MORDO - What is "manual"
 	//manual search
 	public void search(int s) {
 		char [] pat = this.pattern.toCharArray();
 		char [] txt = this.input.toCharArray();
 
-		int badchar[] = new int[NO_OF_CHARS]; 
+		int badchar[] = new int[NO_OF_CHARS]; // TODO: MORDO - Overriden by next statement 
 
 		badchar = badCharTable(pat, patLen); 
 		this.updateNextState(s);
@@ -170,10 +172,10 @@ public class BM extends Algorithm<Integer>{
 		}
 	}
 	
-	public void printchartable(String str,JFrame f, int xCord, int yCord) {
+	public void printchartable(String str,JFrame f, int xCord, int yCord) {  // TODO: MORDO: camelCase
 		
 		int i,j; 
-		yCord += 80;
+		yCord += 80;     // TODO: MORDO: Algorithm should not have GIU concerns.
 		char[] chars = str.toCharArray();
 		Set<Character> charSet = new LinkedHashSet<Character>();
 		for (char c : chars) {
@@ -185,8 +187,9 @@ public class BM extends Algorithm<Integer>{
 			sb.append(character);
 		}
 
-		JButton array[] =  new JButton[str.length()];
-		int x = 500  , width = 50  , height = 50;
+		JButton array[] =  new JButton[str.length()]; // TODO: MORDO: Algorithm should not have GIU concerns.
+		                                              // DECOUPLE ALGORITHM FROM GUI !!!!!
+		int x = 500  , width = 50  , height = 50;  // TODO: MORDO: Algorithm should not have GIU concerns.
 
 		JLabel patternLbl = new JLabel("BAD CHAR TABLE: ");
 		patternLbl.setFont(new Font(patternLbl.getFont().getName(), Font.PLAIN, 25));
@@ -288,17 +291,17 @@ public class BM extends Algorithm<Integer>{
 
 
 	@Override
-	public void updateNextState(Integer state) {
+	public void updateNextState(Integer state) {   // TODO: MORDO - I don't see any reason to override
 		this.getStack().push(new State<Integer>(state));
 		this.incIndex();
 	}
 
 	@Override
-	public Integer currentState() {
+	public Integer currentState() {  // TODO: MORDO - I don't see any reason to override
 		return this.getStack().get(0).getState();
 	}
 
-	@Override
+	@Override   // TODO: MORDO - I don't see any reason to override
 	public Integer prevState() {
 		//TODO: check possible bug here
 		if(!this.getStack().isEmpty()) {

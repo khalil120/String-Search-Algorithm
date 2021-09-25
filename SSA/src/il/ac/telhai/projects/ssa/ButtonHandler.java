@@ -20,6 +20,7 @@ public class ButtonHandler implements ActionListener{
 	private Stack<node> found;
 
 	//TODO: change here BM to Algorithm
+	// TODO: MORDO - Finish all TODOs
 	public ButtonHandler(BM bm2, JButton[] arr, JButton[] array, JButton next,JButton prev,JButton reset) {
 		super();
 		this.bm = bm2;
@@ -92,11 +93,13 @@ public class ButtonHandler implements ActionListener{
 		}
 		// disable next button at end of input.
 		//System.out.println("cnt = " + cnt+ " iter = " + iter + " stackSize = " + stackSize);
+		// TODO: MORDO - Remove all obsolete code
 		if(cnt == stackSize) {
 			cnt--;
 			cntFlag = true;
 		}
 
+		// TODO: MORDO - Remove all obsolete code
 		/*if(bm.getStack().get(cnt).getState() == bm.getStack().get(stackSize-1).getState() || cnt == 0 ) {
 			this.next.setEnabled(false);
 			if(cntFlag) {
@@ -104,7 +107,7 @@ public class ButtonHandler implements ActionListener{
 				cntFlag = false;
 			}
 		}*/
-		if(cnt+1 < this.bm.getInput().length()) {
+		if(cnt+1 < this.bm.getInput().length()) {   // TODO: MORDO - The usage if "this" is unnecessary , clean here and everywhere
 			State<Integer> stt = this.bm.getStack().get(cnt);
 			int curr = stt.getState();
 			cnt++;
@@ -142,13 +145,13 @@ public class ButtonHandler implements ActionListener{
 
 	}
 
-	public void NEXTmanual_search() {
+	public void NEXTmanual_search() {  // TODO:MORDO- camelCase !!
 		//manual search
 		resetBoard();
 
 		int j = this.bm.getPattern().length()-1;
 		if( cnt < this.bm.getStack().size() ) {
-
+// TODO: MORDO - EMPTY LINES ? NOT HERE !
 
 			this.prev.setEnabled(true);
 
@@ -190,7 +193,7 @@ public class ButtonHandler implements ActionListener{
 		}
 	}
 
-	private void PREVmanual_search() {
+	private void PREVmanual_search() {   // TODO: MORDO - The usage if "this" is unnecessary
 		//TODO: check coloring 
 		if( this.getCnt()> 0) {
 			if(this.getCnt() == this.getStackSize()) {

@@ -16,6 +16,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	private State<Algorithm<Problem>> state;
 	private LinkedList<Integer> Indexlist = new LinkedList<Integer>();
 	private Stack<Integer> stack = new Stack<>(); //the stack to save the depth of all the matching strings
+	// TODO: MORDO: BM is not a stack algorithm. THe stack is part of our framework. It should be moved to the class Algorithm
 	private Input<Problem> input;
 	private Output<Problem> output;
 	private int depth = 0;
@@ -35,7 +36,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		inputData = this.input.getSSMI();
 		if(inputData.isrst()) {
 			int i;
-			for(i = 0; i < this.inputData.getInputArr().length; i++) {
+			for(i = 0; i < this.inputData.getInputArr().length; i++) {  // TODO: MORDO - Use for each loop
 				this.inputData.getInputArr()[i].setBackground(Color.WHITE);
 			}
 			for(i = 0; i < this.inputData.getPattArr().length; i++) {
@@ -54,7 +55,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		return this.state;
 	}
 
-	@Override
+	@Override    // TODO: MORDO - Override ??!! Why ????
 	public void setState(State<Algorithm<Problem>> state) {
 		this.state = state;
 	}

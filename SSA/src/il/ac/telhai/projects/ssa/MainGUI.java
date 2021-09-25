@@ -35,8 +35,8 @@ public class MainGUI implements ActionListener{
 	private JRadioButton[] inputRadioBtn;
 	private JTextField inputField;
 	private JTextField patField;
-	private int firstIndex = 0;
-	private int numOfSections = 4;
+	private int firstIndex = 0;                 // TODO: MORDO - A more meaningful name
+	private int numOfSections = 4;              // TODO: MORDO - Constants should be written as  private static final int NUM_OF_SECTIONS = 4; 
 	private final int radioBtnGroubSize = 2;
 	private final int AutomaticDepth = 0;
 	private boolean isFirstTime = true;;
@@ -71,6 +71,11 @@ public class MainGUI implements ActionListener{
 				break;
 			}
 		}
+		// TODO: MORDO- THe above code seems to be equivalent to
+		// initAlgSection(0);
+		// initRunTypeSection(1);
+		// initInputSection(2);
+		// initStartBtn(3);
 	}
 
 	public void initRadioButtons(JRadioButton[] buttons, String[] str, JPanel panel) {
@@ -226,6 +231,8 @@ public class MainGUI implements ActionListener{
 	private String readFromFile() {
 		String data = ""; 
 		try {
+			// TODO: MORDO - Avoid hard-coded literals within the body of the code. 
+			// TODO: MORDO - Avoid absolute filenames
 		   File myObj = new File("C:\\Users\\eslam asli\\eclipse-workspace\\SSA1\\src\\input.txt");
 		//	File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
 			Scanner myReader = new Scanner(myObj);

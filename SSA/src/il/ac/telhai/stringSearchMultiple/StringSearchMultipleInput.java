@@ -195,6 +195,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// TODO: MORDO: The following cases are apparently mutually exclusive. The code should reflect this fact: either switch or if else if else if .... 
 		if (e.getSource() == nxtBtn) {
 			this.prevBtn.setEnabled(true);
 			this.prev = false;
@@ -234,7 +235,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		return ismanual;
 	}
 
-	public Runner getRun() {
+	public Runner getRun() {   // TODO: MORDO - Use generics. In general, respect all compiler warnings
 		return run;
 	}
 
