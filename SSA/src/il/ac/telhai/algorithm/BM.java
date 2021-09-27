@@ -212,7 +212,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	 */
 	private int[] badCharTable(char []str, int size) { 
 		int i ,j;
-		int c = 0; // TODO: MORDO: Algorithm should not have GIU concerns.
+		int c = 0;
 		int vals[] = new int[size];
 
 		for( i = 0 ; i < size ; i++) {
@@ -245,6 +245,8 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		return output;
 	}
 
+
+	// TODO: MORDO: Algorithm should not have GIU concerns.
 	public void printchartable(String str,Container cc, int xCord, int yCord) {
 
 		int i,j; 
