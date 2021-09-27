@@ -2,6 +2,7 @@ package il.ac.telhai.algorithm;
 
 import java.awt.Container;
 
+import il.ac.telhai.stringSearchMultiple.StringSearchMultiple;
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
 
 public interface Input<P extends Problem> {
@@ -14,5 +15,5 @@ public interface Input<P extends Problem> {
     void setCont(Container c);
     StringSearchMultipleInput getSSMI();
     void isManual(int num);  
-    void setRun(Runner run);
+    void setRun(Runner<StringSearchMultiple> run);
 }

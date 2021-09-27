@@ -20,7 +20,6 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	private Input<Problem> input;
 	private Output<Problem> output;
 	private int depth = 0;
-	private int NO_OF_CHARS = 256;
 	private Container container ;
 	private StringSearchMultipleInput inputData ;
 	private boolean bool = false;
@@ -213,7 +212,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	 */
 	private int[] badCharTable(char []str, int size) { 
 		int i ,j;
-		int c = 0;
+		int c = 0; // TODO: MORDO: Algorithm should not have GIU concerns.
 		int vals[] = new int[size];
 
 		for( i = 0 ; i < size ; i++) {

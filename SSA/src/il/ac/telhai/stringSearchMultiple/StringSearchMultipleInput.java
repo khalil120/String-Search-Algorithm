@@ -25,7 +25,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	boolean nxt = false;
 	boolean prv = false;
 	private int ismanual;
-	private Runner run;
+	private Runner<StringSearchMultiple> run;
 	private int depth;
 	private boolean rst = false;
 
@@ -234,11 +234,11 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		return ismanual;
 	}
 
-	public Runner getRun() {   // TODO: MORDO - Use generics. In general, respect all compiler warnings
+	public Runner<StringSearchMultiple> getRun() {  
 		return run;
 	}
 
-	public void setRun(Runner run) {
+	public void setRun(Runner<StringSearchMultiple> run) {
 		this.run = run;
 	}
 
