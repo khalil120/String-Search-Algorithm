@@ -35,10 +35,9 @@ public class MainGUI implements ActionListener{
 	private JRadioButton[] inputRadioBtn;
 	private JTextField inputField;
 	private JTextField patField;
-	private int firstIndex = 0;                 // TODO: MORDO - A more meaningful name
-	private int numOfSections = 4;              // TODO: MORDO - Constants should be written as  private static final int NUM_OF_SECTIONS = 4; 
-	private final int radioBtnGroubSize = 2;
-	private final int AutomaticDepth = 0;
+	private static final int numOfSections = 4;
+	private static final int AutomaticDepth = 0;
+	private static final int radioBtnGroubSize = 2;
 	private boolean isFirstTime = true;;
 	public JFrame frame;
 	public Runner<StringSearchMultiple> run;
@@ -86,7 +85,7 @@ public class MainGUI implements ActionListener{
 			btnGroup.add(buttons[i]);
 			panel.add(buttons[i]);
 		}
-		buttons[firstIndex].setSelected(true); //set first button to be selected as default
+		buttons[0].setSelected(true); //set first button to be selected as default
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 	}
@@ -161,17 +160,17 @@ public class MainGUI implements ActionListener{
 			//this is not the first click on start button then reset the frame
 			frame.getContentPane().removeAll();
 			frame.repaint();
-			this.show();
+			show();
 		}else {
 			isFirstTime = false;
 		}
 
-		if (selectAlgRadioBtn[firstIndex].isSelected()) { //BM Algorithm selected	
+		if (selectAlgRadioBtn[0].isSelected()) { //BM Algorithm selected	
 
 			// showing the input & buttons in the problem
 			StringSearchMultipleInput input;
-			if(inputRadioBtn[firstIndex].isSelected()) {
-				input = new StringSearchMultipleInput(this.readFromFile(),patField.getText());
+			if(inputRadioBtn[0].isSelected()) {
+				input = new StringSearchMultipleInput(readFromFile(),patField.getText());
 			}else {
 				input = new StringSearchMultipleInput(inputField.getText(),patField.getText());
 			}
@@ -181,13 +180,13 @@ public class MainGUI implements ActionListener{
 			Class cls[] = new Class[] {BM.class};
 			Class<Algorithm<StringSearchMultiple>> algorithmClass = cls[0] ;
 			try {
-				this.run = new Runner<StringSearchMultiple>(algorithmClass, input, container);
-				if(runTypeRadioBtn[firstIndex].isSelected()) {
+				run = new Runner<StringSearchMultiple>(algorithmClass, input, container);
+				if(runTypeRadioBtn[0].isSelected()) {
 					//Automatic Search Method -> depth = 0
-					input.ismanual(AutomaticDepth);
+					input.isManual(AutomaticDepth);
 					input.setRun(run);
 				}else {
-					input.ismanual(AutomaticDepth+1);
+					input.isManual(AutomaticDepth+1);
 					input.setRun(run);
 				}
 				input.getNxtBtn().addActionListener(input);
@@ -199,8 +198,8 @@ public class MainGUI implements ActionListener{
 
 		}else {  // KMP Algorithm selected
 			StringSearchMultipleInput input;
-			if(inputRadioBtn[firstIndex].isSelected()) {
-				input = new StringSearchMultipleInput(this.readFromFile(),patField.getText());
+			if(inputRadioBtn[0].isSelected()) {
+				input = new StringSearchMultipleInput(readFromFile(),patField.getText());
 			}else {
 				input = new StringSearchMultipleInput(inputField.getText(),patField.getText());
 			}
@@ -210,13 +209,13 @@ public class MainGUI implements ActionListener{
 			Class cls[] = new Class[] {KMP.class};
 			Class<Algorithm<StringSearchMultiple>> algorithmClass = cls[0] ;
 			try {
-				this.run = new Runner<StringSearchMultiple>(algorithmClass, input, container);
-				if(runTypeRadioBtn[firstIndex].isSelected()) {
+				run = new Runner<StringSearchMultiple>(algorithmClass, input, container);
+				if(runTypeRadioBtn[0].isSelected()) {
 					//Automatic Search Method -> depth = 0
-					input.ismanual(AutomaticDepth);
+					input.isManual(AutomaticDepth);
 					input.setRun(run);
 				}else {
-					input.ismanual(AutomaticDepth+1);
+					input.isManual(AutomaticDepth+1);
 					input.setRun(run);
 				}
 				input.getNxtBtn().addActionListener(input);

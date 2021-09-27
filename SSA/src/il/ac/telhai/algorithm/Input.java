@@ -13,6 +13,6 @@ public interface Input<P extends Problem> {
     Container getcont();
     void setCont(Container c);
     StringSearchMultipleInput getSSMI();
-    void ismanual(int num);  // TODO: MORDO - camelCase
+    void isManual(int num);  
     void setRun(Runner run);
 }

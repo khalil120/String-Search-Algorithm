@@ -45,41 +45,41 @@ public class ButtonHandler implements ActionListener{
 				PREVautomatic_search();
 		}else {
 			if (ae.getSource() == next) 
-				NEXTmanual_search();
+				NextManual_Search();
 			if (ae.getSource() == prev)
 				PREVmanual_search();
 		}
 
 		if (ae.getSource() == reset) {
 			int i;
-			this.getNextBtn().setEnabled(true);
-			this.prev.setEnabled(true);
-			this.setCnt(0);
-			for(i = 0 ; i < this.patarray.length ;i++)
-				this.patarray[i].setBackground(Color.WHITE);
+			getNextBtn().setEnabled(true);
+			prev.setEnabled(true);
+			setCnt(0);
+			for(i = 0 ; i < patarray.length ;i++)
+		     	patarray[i].setBackground(Color.WHITE);
 
-			for(i = 0 ; i < this.inputarr.length ;i++)
-				this.inputarr[i].setBackground(Color.WHITE);
+			for(i = 0 ; i < inputarr.length ;i++)
+				inputarr[i].setBackground(Color.WHITE);
 		} 
 
 	}
 	public void NEXTautomatic_search() {
 
 		resetBoard();
-		this.prev.setEnabled(true);
+		prev.setEnabled(true);
 
-		int patLen = this.bm.getPattern().length();
+		int patLen = bm.getPattern().length();
 		int state, i;
 		int iter = cnt;
 		boolean cntFlag = false;
 
 		while(iter < bm.getStackSize()) {
-			state = this.bm.getStack().get(iter).getState();
-			if(this.bm.isMatch(state)){
+			state = bm.getStack().get(iter).getState();
+			if(bm.isMatch(state)){
 				//pattern match...
 				for(i = 0; i < patLen; i++) {
-					this.inputarr[state - i].setBackground(Color.GREEN);
-					this.patarray[i].setBackground(Color.GREEN);
+					inputarr[state - i].setBackground(Color.GREEN);
+					patarray[i].setBackground(Color.GREEN);
 				}
 				cnt = (iter + 1);
 				//save the data where pattern found
@@ -91,32 +91,20 @@ public class ButtonHandler implements ActionListener{
 				iter++;
 			}
 		}
-		// disable next button at end of input.
-		//System.out.println("cnt = " + cnt+ " iter = " + iter + " stackSize = " + stackSize);
-		// TODO: MORDO - Remove all obsolete code
 		if(cnt == stackSize) {
 			cnt--;
 			cntFlag = true;
 		}
-
-		// TODO: MORDO - Remove all obsolete code
-		/*if(bm.getStack().get(cnt).getState() == bm.getStack().get(stackSize-1).getState() || cnt == 0 ) {
-			this.next.setEnabled(false);
-			if(cntFlag) {
-				cnt++;
-				cntFlag = false;
-			}
-		}*/
-		if(cnt+1 < this.bm.getInput().length()) {   // TODO: MORDO - The usage if "this" is unnecessary , clean here and everywhere
-			State<Integer> stt = this.bm.getStack().get(cnt);
+		if(cnt+1 < bm.getInput().length()) {   
+			State<Integer> stt = bm.getStack().get(cnt);
 			int curr = stt.getState();
 			cnt++;
-			if( curr == this.bm.getStack().get(stackSize-1).getState())
-				this.next.setEnabled(false);
+			if( curr == bm.getStack().get(stackSize-1).getState())
+				next.setEnabled(false);
 			else
-				this.next.setEnabled(true);
+				next.setEnabled(true);
 		}else {
-			this.next.setEnabled(false);
+			next.setEnabled(false);
 		}
 
 	}
@@ -127,122 +115,105 @@ public class ButtonHandler implements ActionListener{
 		if(!found.isEmpty()) {
 			node tmp = found.pop();
 			colorBoard(tmp.getState(), Color.WHITE);
-			if(!this.next.isEnabled())
-				this.next.setEnabled(true);
+			if(!next.isEnabled())
+				next.setEnabled(true);
 		}
 		//2. set count to the new value
 		if(!found.isEmpty()) {
-			this.setCnt(found.peek().getItr());
+			setCnt(found.peek().getItr());
 			colorBoard(found.peek().getState(), Color.GREEN);
 		}if (found.size() == 1)  {
-			this.setCnt(bm.getPattern().length() - 1);
-			this.prev.setEnabled(false);
+			setCnt(bm.getPattern().length() - 1);
+			prev.setEnabled(false);
 		}
 		//check next button in case Disabeled enable it
-		if(!this.next.isEnabled()) {
-			this.next.setEnabled(true);
+		if(!next.isEnabled()) {
+			next.setEnabled(true);
 		}
 
 	}
 
-	public void NEXTmanual_search() {  // TODO:MORDO- camelCase !!
+	public void NextManual_Search() {  
 		//manual search
 		resetBoard();
-
-		int j = this.bm.getPattern().length()-1;
-		if( cnt < this.bm.getStack().size() ) {
-// TODO: MORDO - EMPTY LINES ? NOT HERE !
-
-			this.prev.setEnabled(true);
-
-
-			State<Integer> st = this.bm.getStack().get(cnt);
+		int j = bm.getPattern().length()-1;
+		if( cnt < bm.getStack().size() ) {
+			prev.setEnabled(true);
+			State<Integer> st = bm.getStack().get(cnt);
 			int cur = st.getState();
-			if(cur < this.bm.getInput().length()) {
-				char input = this.bm.getInput().charAt(cur);
-				char patt = this.bm.getPattern().charAt(j);
+			if(cur < bm.getInput().length()) {
+				char input = bm.getInput().charAt(cur);
+				char patt = bm.getPattern().charAt(j);
 				if(input == patt ) {
-					this.patarray[j].setBackground(Color.GREEN);
-					this.inputarr[cur].setBackground(Color.GREEN);
+					patarray[j].setBackground(Color.GREEN);
+					inputarr[cur].setBackground(Color.GREEN);
 					j--;
 					cur--;
 					while(j > -1) {
-						input = this.bm.getInput().charAt(cur);
-						patt = this.bm.getPattern().charAt(j);
+						input = bm.getInput().charAt(cur);
+						patt = bm.getPattern().charAt(j);
 						if(input == patt ) {
-							this.patarray[j].setBackground(Color.GREEN);
-							this.inputarr[cur].setBackground(Color.GREEN);
+							patarray[j].setBackground(Color.GREEN);
+							inputarr[cur].setBackground(Color.GREEN);
 						}else break;
 						j--;
 						cur--;
 					}
 
 				}else {
-					this.patarray[j].setBackground(Color.RED);
-					this.inputarr[cur].setBackground(Color.RED);
+					patarray[j].setBackground(Color.RED);
+					inputarr[cur].setBackground(Color.RED);
 				}
 			}
-
-			State<Integer> stt = this.bm.getStack().get(cnt);
+			State<Integer> stt = bm.getStack().get(cnt);
 			int curr = stt.getState();
 			cnt++;
-			if( curr == this.bm.getStack().get(stackSize-1).getState())
-				this.next.setEnabled(false);
+			if( curr == bm.getStack().get(stackSize-1).getState())
+				next.setEnabled(false);
 			else
-				this.next.setEnabled(true);
+				next.setEnabled(true);
 		}
 	}
 
-	private void PREVmanual_search() {   // TODO: MORDO - The usage if "this" is unnecessary
+	private void PREVmanual_search() { 
 		//TODO: check coloring 
-		if( this.getCnt()> 0) {
-			if(this.getCnt() == this.getStackSize()) {
-				this.getNextBtn().setEnabled(true);
+		if( cnt> 0) {
+			if(cnt == getStackSize()) {
+				getNextBtn().setEnabled(true);
 			}
-
-			int j = this.bm.getPattern().length()-1;
-			State<Integer> st = this.bm.getStack().get(cnt-2);
+			int j = bm.getPattern().length()-1;
+			State<Integer> st = bm.getStack().get(cnt-2);
 			int cur = st.getState();
-			char input = this.bm.getInput().charAt(cur);
-			char patt = this.bm.getPattern().charAt(j);
-
+			char input = bm.getInput().charAt(cur);
+			char patt = bm.getPattern().charAt(j);
 			if(input == patt ) {
-
 				resetBoard();
-				this.patarray[j].setBackground(Color.GREEN);
-				this.inputarr[cur].setBackground(Color.GREEN);
+				patarray[j].setBackground(Color.GREEN);
+				inputarr[cur].setBackground(Color.GREEN);
 				j--;
 				cur--;
 				while(j > -1) {
-					input = this.bm.getInput().charAt(cur);
-					patt = this.bm.getPattern().charAt(j);
+					input = bm.getInput().charAt(cur);
+					patt = bm.getPattern().charAt(j);
 					if(input == patt ) {
-						this.patarray[j].setBackground(Color.GREEN);
-						this.inputarr[cur].setBackground(Color.GREEN);
+						patarray[j].setBackground(Color.GREEN);
+						inputarr[cur].setBackground(Color.GREEN);
 					}else break;
 					j--;
 					cur--;
 				}
 			}else {
 				resetBoard();
-				this.patarray[j].setBackground(Color.RED);
-				this.inputarr[cur].setBackground(Color.RED);
+				patarray[j].setBackground(Color.RED);
+				inputarr[cur].setBackground(Color.RED);
 			}
 
-			this.setCnt(this.getCnt()-1);	
-			if(this.getCnt() == 1)
-				this.prev.setEnabled(false);
+			setCnt(cnt-1);	
+			if(getCnt() == 1)
+				prev.setEnabled(false);
 			else
-				this.prev.setEnabled(true);
-		}/*else {
-			this.setCnt(0);
-			if(this.getCnt() == 0)
-				this.prev.setEnabled(false);
-			else
-				this.prev.setEnabled(true);
-
-			resetBoard();
-		}*/
+				prev.setEnabled(true);
+		}
 	}
 
 	public int getCnt() {
@@ -265,19 +236,19 @@ public class ButtonHandler implements ActionListener{
 
 	public void colorBoard(int index, Color color) {
 		int i;
-		for(i = 0; i < this.bm.getPattern().length(); i++) {
-			this.patarray[i].setBackground(color);
-			this.inputarr[index - i].setBackground(color);
+		for(i = 0; i < bm.getPattern().length(); i++) {
+			patarray[i].setBackground(color);
+			inputarr[index - i].setBackground(color);
 		}
 	}
 
 	public void resetBoard() {
 
 		int i;
-		for(i = 0 ; i < this.inputarr.length ;i++) {
-			this.inputarr[i].setBackground(Color.WHITE);
-			if(i < this.patarray.length)
-				this.patarray[i].setBackground(Color.WHITE);
+		for(i = 0 ; i < inputarr.length ;i++) {
+			inputarr[i].setBackground(Color.WHITE);
+			if(i < patarray.length)
+				patarray[i].setBackground(Color.WHITE);
 		}
 	}
 

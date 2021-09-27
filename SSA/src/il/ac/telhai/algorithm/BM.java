@@ -35,15 +35,16 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		this.input=input;
 		inputData = this.input.getSSMI();
 		if(inputData.isrst()) {
-			int i;
-			for(i = 0; i < this.inputData.getInputArr().length; i++) {  // TODO: MORDO - Use for each loop
-				this.inputData.getInputArr()[i].setBackground(Color.WHITE);
+			int[] numbers =  new int[inputData.getInputArr().length];
+			for(int i : numbers) { 
+				inputData.getInputArr()[i].setBackground(Color.WHITE);
 			}
-			for(i = 0; i < this.inputData.getPattArr().length; i++) {
-				this.inputData.getPattArr()[i].setBackground(Color.WHITE);
+			numbers =  new int[inputData.getPattArr().length];
+			for(int i : numbers) {
+				inputData.getPattArr()[i].setBackground(Color.WHITE);
 			}
-			this.inputData.getPrevBtn().setEnabled(false);
-			this.clear();
+			inputData.getPrevBtn().setEnabled(false);
+			clear();
 			depth = 0;
 		}
 		printchartable(input.pattern(),input.getcont(),input.getxCord(),input.getyCord());
@@ -54,8 +55,6 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	public State<Algorithm<Problem>> getState() {
 		return this.state;
 	}
-
-	@Override    // TODO: MORDO - Override ??!! Why ????
 	public void setState(State<Algorithm<Problem>> state) {
 		this.state = state;
 	}
@@ -64,18 +63,18 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	@Override
 	public void step() {
 		int i;
-		for(i = 0; i < this.inputData.getInputArr().length; i++) {
-			this.inputData.getInputArr()[i].setBackground(Color.WHITE);
+		for(i = 0; i < inputData.getInputArr().length; i++) {
+			inputData.getInputArr()[i].setBackground(Color.WHITE);
 		}
-		for(i = 0; i < this.inputData.getPattArr().length; i++) {
-			this.inputData.getPattArr()[i].setBackground(Color.WHITE);
+		for(i = 0; i < inputData.getPattArr().length; i++) {
+			inputData.getPattArr()[i].setBackground(Color.WHITE);
 		}
 		if(!bool) {
 			bool = true;
 			return;
 		}
-		int indexToPaint = this.Indexlist.size() - this.depth;
-		if(this.Indexlist.size() == indexToPaint)
+		int indexToPaint = Indexlist.size() - depth;
+		if(Indexlist.size() == indexToPaint)
 			indexToPaint--;
 		int patternLen = input.pattern().length() - 1;
 		int inputLength = input.input().length();
@@ -92,45 +91,45 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					else if(depth!=stack.peek())
 						stack.push(depth);
 				}
-				this.inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
-				this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
+				inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
+				inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
 				patternLen--;
 				indexToStartFrom--;
 				while(patternLen > -1) {
 					patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
 					inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
 					if(inpt_ch == patt_ch ) {
-						this.inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
-						this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
+						inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
+						inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
 					}else break;
 					patternLen--;
 					indexToStartFrom--;
 				}
 			}else if (inputData.getIsmanual() == 0){
-				if(!this.inputData.isprev()) {
+				if(!inputData.isprev()) {
 					inputData.setdepth(inputData.getdepth()-1);
 				}
-				else if (this.inputData.isprev()) {
+				else if (inputData.isprev()) {
 					inputData.setdepth(inputData.getdepth()+1);
 				}
 			}
 			if (inputData.getIsmanual() == 1 && inpt_ch != patt_ch) {
 				if (!inputData.isprev())
 					stack.push(depth);
-				this.inputData.getPattArr()[patternLen].setBackground(Color.RED);
-				this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.RED);
+				inputData.getPattArr()[patternLen].setBackground(Color.RED);
+				inputData.getInputArr()[indexToStartFrom].setBackground(Color.RED);
 			}
-			if(!this.inputData.isprev()) {
-				this.depth --;
+			if(!inputData.isprev()) {
+				depth --;
 			}
-			else this.depth++;
+			else depth++;
 			nextdepth = depth;
 			// finding the next step to enable the next button 
 			if(patt_ch==inpt_ch) {
 				boolean index = false;
-				if(nextdepth >= this.Indexlist.size()) nextdepth--;
-				int indexToPaint2 = this.Indexlist.size() - this.nextdepth;
-				if(this.Indexlist.size() == indexToPaint2)
+				if(nextdepth >= Indexlist.size()) nextdepth--;
+				int indexToPaint2 = Indexlist.size() - nextdepth;
+				if(Indexlist.size() == indexToPaint2)
 					indexToPaint2--;
 				int patternLen2 = input.pattern().length() - 1;
 				int indexToStartFrom2 = Indexlist.get(indexToPaint2);
@@ -138,9 +137,9 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom2);
 				while (patt_ch!=inpt_ch) {
 					nextdepth--;
-					indexToPaint2 = this.Indexlist.size() - this.nextdepth;
-					if(this.Indexlist.size() <= indexToPaint2  ) {
-						this.inputData.getNxtBtn().setEnabled(false);
+					indexToPaint2 = Indexlist.size() - nextdepth;
+					if(Indexlist.size() <= indexToPaint2  ) {
+						inputData.getNxtBtn().setEnabled(false);
 						index = true;
 						break;
 					}
@@ -155,18 +154,18 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				}
 			}
 			nextdepth--;
-			if( nextdepth < 0 )	this.inputData.getNxtBtn().setEnabled(false);
+			if( nextdepth < 0 )	inputData.getNxtBtn().setEnabled(false);
 		}
 		else {
-			if(!this.inputData.isprev())
-				this.depth --;
-			else this.depth++;
+			if(!inputData.isprev())
+				depth --;
+			else depth++;
 		}
 	}
 
 	public void calcMaxDepth() {
-		char [] pat = this.input.pattern().toUpperCase().toCharArray();
-		char [] txt = this.input.input().toUpperCase().toCharArray();
+		char [] pat = input.pattern().toUpperCase().toCharArray();
+		char [] txt = input.input().toUpperCase().toCharArray();
 		int patLen = input.pattern().length();
 		int badchar[] = new int[NO_OF_CHARS]; 
 		int txtLen = input.input().length();
@@ -177,11 +176,11 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		/*	when the Data Structure is not empty this means this is not the first call for search method
 		 *	then -> clear the Data Structure then store the new data 
 		 */
-		if(!this.isEmpty())
-			this.clear();
-		else this.depth = 0;
-		this.depth++;
-		this.updateNextState(s);
+		if(!isEmpty())
+			clear();
+		else depth = 0;
+	    depth++;
+		updateNextState(s);
 
 		int j;
 		boolean bool = true;
@@ -189,8 +188,8 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			for(j = 0 ; j < patLen ; j++) {
 				if(txt[s] == pat[j]) {
 					s+= badchar[j];
-					this.depth++;
-					this.updateNextState(s);
+					depth++;
+					updateNextState(s);
 					bool = false;
 					break;
 				}else 
@@ -199,8 +198,8 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			}
 			if(bool) {
 				s+=patLen;
-				this.depth++;
-				this.updateNextState(s);
+				depth++;
+				updateNextState(s);
 			}
 		}
 		inputData.setdepth(depth);
@@ -212,7 +211,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		int vals[] = new int[size];
 
 		for( i = 0 ; i < size ; i++) {
-			c = max(1,size-i-1);
+			c = Math.max(1,size-i-1);
 			vals[i] = c;
 		}
 
@@ -229,20 +228,18 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	public void colorBoard(int index, Color color) {
 		int i;
-		for(i = 0; i < this.inputData.getPattern().length(); i++) {
-			this.inputData.getPattArr()[i].setBackground(color);
-			this.inputData.getInputArr()[index - i + 1].setBackground(color);
+		for(i = 0; i < inputData.getPattern().length(); i++) {
+			inputData.getPattArr()[i].setBackground(color);
+			inputData.getInputArr()[index - i + 1].setBackground(color);
 		}
 	}
 
 	@Override
 	public Output<Problem> getOutput() {
-		this.output.show(container);
+		output.show(container);
 		return output;
 	}
 
-
-	public int max (int a, int b) { return (a > b)? a: b; } 
 	public void printchartable(String str,Container cc, int xCord, int yCord) {
 
 		int i,j; 
@@ -287,7 +284,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		int vals[] = new int[str.length()];
 
 		for( i = 0 ; i < str.length() ; i++) {
-			c = this.max(1, str.length()-i-1);
+			c = Math.max(1, str.length()-i-1);
 			vals[i] = c;
 		}
 
@@ -339,24 +336,23 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		 * This list used to save the indexes that the Algorithm will start
 		 * to search from
 		 */
-		this.Indexlist.add(index);
+		Indexlist.add(index);
 	}
 	public boolean isEmpty() {
-		return this.Indexlist.isEmpty();
+		return Indexlist.isEmpty();
 	}
 
 	public void clear() {
-		this.Indexlist.clear();
+		Indexlist.clear();
 	}
 
 	@Override
 	public int getDepth() { 
-		System.out.println(this.depth + "   "+inputData.getdepth() + "   next depth is " + nextdepth);
 		if((inputData.getdepth() == nextdepth || depth == nextdepth) && inputData.getIsmanual() == 1)
-	    	this.depth--;
-		if (this.depth == inputData.getdepth()&& inputData.getIsmanual() == 0)
-			return this.depth;
-		else if (inputData.getIsmanual() == 1 && this.depth == inputData.getdepth())  return this.depth;
+	    	depth--;
+		if (depth == inputData.getdepth()&& inputData.getIsmanual() == 0)
+			return depth;
+		else if (inputData.getIsmanual() == 1 && depth == inputData.getdepth())  return depth;
 		return 0;
 	}
 
@@ -367,16 +363,16 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				stack.pop();
 			if(stack.isEmpty()) { 
 				int i;
-				for(i = 0; i < this.inputData.getInputArr().length; i++) {
-					this.inputData.getInputArr()[i].setBackground(Color.WHITE);
+				for(i = 0; i < inputData.getInputArr().length; i++) {
+					inputData.getInputArr()[i].setBackground(Color.WHITE);
 				}
-				for(i = 0; i < this.inputData.getPattArr().length; i++) {
-					this.inputData.getPattArr()[i].setBackground(Color.WHITE);
+				for(i = 0; i < inputData.getPattArr().length; i++) {
+					inputData.getPattArr()[i].setBackground(Color.WHITE);
 				}
 			}
 			else{
-				if(this.stack.size() == 1)	{
-					this.inputData.getPrevBtn().setEnabled(false);
+				if(stack.size() == 1)	{
+					inputData.getPrevBtn().setEnabled(false);
 					inputData.setdepth(depth);
 				}
 				if(depth == 0 ) {
@@ -386,9 +382,9 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				}
 				int tmp = stack.peek();
 				while (tmp >= depth) {
-					this.step();
+					step();
 				}
-				this.depth--;
+				depth--;
 			}
 		}
 	}

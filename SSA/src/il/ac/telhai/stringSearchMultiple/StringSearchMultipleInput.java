@@ -197,25 +197,25 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	public void actionPerformed(ActionEvent e) {
 		// TODO: MORDO: The following cases are apparently mutually exclusive. The code should reflect this fact: either switch or if else if else if .... 
 		if (e.getSource() == nxtBtn) {
-			this.prevBtn.setEnabled(true);
-			this.prev = false;
-			this.rst = false;
+			prevBtn.setEnabled(true);
+			prev = false;
+			rst = false;
 			run.step(0);
-			this.depth--;
+			depth--;
 		}
 		if (e.getSource() == prevBtn) {
-			this.nxtBtn.setEnabled(true);
-		    this.prev = true;
-		    this.rst = false;
+			nxtBtn.setEnabled(true);
+		    prev = true;
+		    rst = false;
             run.back(depth);
-            this.depth++;
+            depth++;
 		}
 		if(e.getSource() == rstBtn) {
-			this.nxt = false;
-			this.prv = false;
-			this.rst = true;
-			this.nxtBtn.setEnabled(true);
-			this.prevBtn.setEnabled(true);
+			nxt = false;
+			prv = false;
+			rst = true;
+			nxtBtn.setEnabled(true);
+			prevBtn.setEnabled(true);
 			run.reset();
 		}
 
@@ -227,7 +227,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	}
 
 	@Override
-	public void ismanual(int num) {
+	public void isManual(int num) {
 		this.ismanual = num;
 	}
 

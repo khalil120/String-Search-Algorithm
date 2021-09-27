@@ -17,10 +17,10 @@ import javax.swing.JTextField;
 public class BM extends Algorithm<Integer>{
 
 	private String input, pattern;
-	private int NO_OF_CHARS = 256;  // TODO: MORDO CONST?
+	private static final int NO_OF_CHARS = 256;
 	private int patLen; 
 	private int txtLen;
-	private  boolean searchtype;  // TODO: MORDO camelCase 
+	private  boolean searchType; 
 
 	public BM(String input, String pattern) {
 
@@ -60,12 +60,13 @@ public class BM extends Algorithm<Integer>{
 
 	private int[] badCharTable(char []str, int size) { 
 		// TODO: MORDO: The functionality of this function is not clear. Document the function
+		// find the badcharTable
 		int i ,j;
 		int c = 0;
 		int vals[] = new int[size];
 
 		for( i = 0 ; i < size ; i++) {
-			c = max(1,size-i-1);
+			c = Math.max(1,size-i-1);
 			vals[i] = c;
 		}
 
@@ -79,8 +80,6 @@ public class BM extends Algorithm<Integer>{
 		}
 		return vals;
 	}
-
-	public int max (int a, int b) { return (a > b)? a: b; } // TODO: MORDO use the built-in max function
 
 	public void nextStep() {
 		int s = this.currentState();
@@ -147,9 +146,7 @@ public class BM extends Algorithm<Integer>{
 			}
 		}
 	}
-
-	// TODO: MORDO - What is "manual"
-	//manual search
+	//manual search is search were every step is shown
 	public void search(int s) {
 		char [] pat = this.pattern.toCharArray();
 		char [] txt = this.input.toCharArray();
@@ -166,13 +163,13 @@ public class BM extends Algorithm<Integer>{
 			if (j < 0) { 
 				s += (s+patLen < txtLen)? patLen-badchar[txt[s+patLen]] : 1;
 			} else {
-				s += max(1, j - badchar[txt[s+j]]); 
+				s += Math.max(1, j - badchar[txt[s+j]]); 
 			}
 			this.updateNextState(s);
 		}
 	}
 	
-	public void printchartable(String str,JFrame f, int xCord, int yCord) {  // TODO: MORDO: camelCase
+	public void printchartable(String str,JFrame f, int xCord, int yCord) {  
 		
 		int i,j; 
 		yCord += 80;     // TODO: MORDO: Algorithm should not have GIU concerns.
@@ -217,7 +214,7 @@ public class BM extends Algorithm<Integer>{
 		int vals[] = new int[str.length()];
 
 		for( i = 0 ; i < str.length() ; i++) {
-			c = this.max(1, str.length()-i-1);
+			c = Math.max(1, str.length()-i-1);
 			vals[i] = c;
 		}
 
@@ -282,26 +279,19 @@ public class BM extends Algorithm<Integer>{
 	}
 
 	public boolean isSearchtype() {
-		return searchtype;
+		return searchType;
 	}
 	public void setSearchtype(boolean searchtype) {
-		this.searchtype = searchtype;
+		this.searchType = searchtype;
 	}
-
-
-
-	@Override
-	public void updateNextState(Integer state) {   // TODO: MORDO - I don't see any reason to override
+	public void updateNextState(Integer state) { 
 		this.getStack().push(new State<Integer>(state));
 		this.incIndex();
 	}
 
-	@Override
-	public Integer currentState() {  // TODO: MORDO - I don't see any reason to override
+	public Integer currentState() {  
 		return this.getStack().get(0).getState();
 	}
-
-	@Override   // TODO: MORDO - I don't see any reason to override
 	public Integer prevState() {
 		//TODO: check possible bug here
 		if(!this.getStack().isEmpty()) {
