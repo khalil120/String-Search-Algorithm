@@ -11,7 +11,7 @@ public interface Input<P extends Problem> {
     String input();
     int getxCord();   // TODO: MORDO - DECOUPLE GUI FROM LOGIC
     int getyCord();
-    Container getcont();
+    Container getCont();
     void setCont(Container c);
     StringSearchMultipleInput getSSMI();
     void isManual(int num);  

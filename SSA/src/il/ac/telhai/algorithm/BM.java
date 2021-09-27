@@ -46,7 +46,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			clear();
 			depth = 0;
 		}
-		printchartable(input.pattern(),input.getcont(),input.getxCord(),input.getyCord());
+		printchartable(input.pattern(),input.getCont(),input.getxCord(),input.getyCord());
 		calcMaxDepth();
 	}
 

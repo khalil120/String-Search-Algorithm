@@ -225,7 +225,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			depth = 0;
 		}
 		KMPSearch(input.pattern(),inputData.getText());
-		printlps(input.pattern(),input.getcont(),input.getxCord(),input.getyCord());
+		printlps(input.pattern(),input.getCont(),input.getxCord(),input.getyCord());
 	}
 
 

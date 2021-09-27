@@ -169,7 +169,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	}
 
 	@Override
-	public Container getcont() {
+	public Container getCont() {
 		return c;
 	}
 
