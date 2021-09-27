@@ -59,7 +59,6 @@ public class BM extends Algorithm<Integer>{
 	}
 
 	private int[] badCharTable(char []str, int size) { 
-		// TODO: MORDO: The functionality of this function is not clear. Document the function
 		// find the badcharTable
 		int i ,j;
 		int c = 0;
@@ -113,7 +112,7 @@ public class BM extends Algorithm<Integer>{
 		char [] pat = this.pattern.toCharArray();
 		char [] txt = this.input.toCharArray();
 
-		int badchar[] = new int[NO_OF_CHARS];   // TODO: MORDO - Overridedn by the next statement
+		int badchar[] = new int[NO_OF_CHARS];
 
 		badchar = badCharTable(pat, patLen); 
 

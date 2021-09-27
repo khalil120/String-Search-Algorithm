@@ -167,7 +167,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		char [] pat = input.pattern().toUpperCase().toCharArray();
 		char [] txt = input.input().toUpperCase().toCharArray();
 		int patLen = input.pattern().length();
-		int badchar[] = new int[NO_OF_CHARS]; 
+		int badchar[];
 		int txtLen = input.input().length();
 		badchar = badCharTable(pat, patLen); 
 
@@ -205,6 +205,12 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		inputData.setdepth(depth);
 	}
 
+	/**
+	 * badCharTable method for BM Algorithm used to calculate the value of the jump for mismatch on specific char from the string
+	 * @param str equal to the pattern string
+	 * @param size pattern length
+	 * @return badCharTable with jumping values
+	 */
 	private int[] badCharTable(char []str, int size) { 
 		int i ,j;
 		int c = 0;

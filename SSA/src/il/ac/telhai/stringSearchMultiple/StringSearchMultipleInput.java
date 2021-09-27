@@ -195,7 +195,6 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO: MORDO: The following cases are apparently mutually exclusive. The code should reflect this fact: either switch or if else if else if .... 
 		if (e.getSource() == nxtBtn) {
 			prevBtn.setEnabled(true);
 			prev = false;
@@ -203,14 +202,14 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 			run.step(0);
 			depth--;
 		}
-		if (e.getSource() == prevBtn) {
+		else if (e.getSource() == prevBtn) {
 			nxtBtn.setEnabled(true);
 		    prev = true;
 		    rst = false;
             run.back(depth);
             depth++;
 		}
-		if(e.getSource() == rstBtn) {
+		else if(e.getSource() == rstBtn) {
 			nxt = false;
 			prv = false;
 			rst = true;

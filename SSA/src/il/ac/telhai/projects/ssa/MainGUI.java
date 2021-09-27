@@ -54,27 +54,10 @@ public class MainGUI implements ActionListener{
 	}
 
 	private void init() {
-		for(int i = 0; i < numOfSections; i++) {
-			switch (i) {
-			case 0:
-				initAlgSection(i);
-				break;
-			case 1:
-				initRunTypeSection(i);
-				break;
-			case 2:
-				initInputSection(i);
-				break;
-			case 3:
-				initStartBtn(i);
-				break;
-			}
-		}
-		// TODO: MORDO- THe above code seems to be equivalent to
-		// initAlgSection(0);
-		// initRunTypeSection(1);
-		// initInputSection(2);
-		// initStartBtn(3);
+		 initAlgSection(0);
+		 initRunTypeSection(1);
+		 initInputSection(2);
+		 initStartBtn(3);
 	}
 
 	public void initRadioButtons(JRadioButton[] buttons, String[] str, JPanel panel) {
@@ -230,10 +213,13 @@ public class MainGUI implements ActionListener{
 	private String readFromFile() {
 		String data = ""; 
 		try {
-			// TODO: MORDO - Avoid hard-coded literals within the body of the code. 
-			// TODO: MORDO - Avoid absolute filenames
-		   File myObj = new File("C:\\Users\\eslam asli\\eclipse-workspace\\SSA1\\src\\input.txt");
-		//	File myObj = new File("C:\\Users\\khalil\\eclipse-workspace\\SSA\\src\\input.txt");
+			//get working directory
+			String fileDirectory = System.getProperty("user.dir");
+			if(fileDirectory != null)
+				fileDirectory += "\\src\\input.txt";
+
+			File myObj = new File(fileDirectory);
+			System.out.println(myObj.getPath());
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
@@ -245,7 +231,7 @@ public class MainGUI implements ActionListener{
 		return data;
 	}
 
-	public static void main(String[] args) { 
+	public static void main(String[] args) {
 
 		MainGUI GUI = new MainGUI();
 		GUI.show();
