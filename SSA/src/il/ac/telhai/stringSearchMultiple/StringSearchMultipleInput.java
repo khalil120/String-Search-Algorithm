@@ -232,7 +232,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	}
 	public void printlps(String str,Container cc, int xCord, int yCord,int[] lps) {
 
-		int i,j; 
+		int i; 
 		yCord += 80;
 		char[] chars = str.toCharArray();
 		Set<Character> charSet = new LinkedHashSet<Character>();
@@ -263,7 +263,6 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 			cc.add(array[i]);
 		}
 
-		int c = 0;
 		String s;
 
 		// if there is no match char
@@ -362,10 +361,6 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		this.c = c;
 	}
 
-	@Override
-	public Container getcont() {
-		return c;
-	}
 
 	@Override
 	public StringSearchMultipleInput getSSMI() {
@@ -414,10 +409,6 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 
 	}
 
-	@Override
-	public void setCont(Container c) {
-		this.c = c;
-	}
 
 	@Override
 	public void isManual(int num) {

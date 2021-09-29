@@ -2,22 +2,11 @@ package il.ac.telhai.algorithm;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Font;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Set;
-import java.util.Stack;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
 
 public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
-	private static final int NO_OF_CHARS = 256;
 	private State<Algorithm<Problem>> state;
-	private LinkedList<Integer> Indexlist = new LinkedList<Integer>();
-	private Stack<Integer> stack = new Stack<>(); //the stack to save the depth of all the matching strings
 	private Input<Problem> input;
 	private Output<Problem> output;
 	private int depth = 0;
@@ -56,7 +45,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				}
 			}
 			else{
-				if(this.stack.size() == 1)	{
+				if(Algorithm.stack.size() == 1)	{
 					this.inputData.getPrevBtn().setEnabled(false);
 					inputData.setdepth(depth);
 				}
@@ -88,7 +77,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			return;
 		}
 		boolean tmp = false;
-		int indexToPaint = this.Indexlist.size() - this.depth;
+		int indexToPaint = Algorithm.Indexlist.size() - this.depth;
 		int patternLen = 0;
 		int inputLength = input.input().length();
 		if(indexToPaint < 0)
@@ -163,12 +152,12 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			// finding the next step to enable the next button 
 			if(patt_ch==inpt_ch) {
 				boolean index = false;
-				if(nextdepth >= this.Indexlist.size()) nextdepth--;
-				int indexToPaint2 = this.Indexlist.size() - this.nextdepth;
+				if(nextdepth >= Algorithm.Indexlist.size()) nextdepth--;
+				int indexToPaint2 = Algorithm.Indexlist.size() - this.nextdepth;
 				int patternLen2 = 0;
-				if(this.Indexlist.size()<=indexToPaint2 ) {
+				if(Algorithm.Indexlist.size()<=indexToPaint2 ) {
 					this.inputData.getNxtBtn().setEnabled(false);
-					indexToPaint2 = this.Indexlist.size() -1;
+					indexToPaint2 = Algorithm.Indexlist.size() -1;
 				}
 				int indexToStartFrom2 = Indexlist.get(indexToPaint2);
 				if(input.input().length()<=indexToStartFrom2 ) {
@@ -179,8 +168,8 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom2);
 				while (patt_ch!=inpt_ch) {
 					nextdepth--;
-					indexToPaint2 = this.Indexlist.size() - this.nextdepth;
-					if(this.Indexlist.size() <= indexToPaint2 ) {
+					indexToPaint2 = Algorithm.Indexlist.size() - this.nextdepth;
+					if(Algorithm.Indexlist.size() <= indexToPaint2 ) {
 						this.inputData.getNxtBtn().setEnabled(false);
 						index = true;
 						break;
@@ -326,13 +315,13 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		 * This list used to save the indexes that the Algorithm will start
 		 * to search from
 		 */
-		this.Indexlist.add(index);
+		Algorithm.Indexlist.add(index);
 	}
 	public boolean isEmpty() {
-		return this.Indexlist.isEmpty();
+		return Algorithm.Indexlist.isEmpty();
 	}
 
 	public void clear() {
-		this.Indexlist.clear();
+		Algorithm.Indexlist.clear();
 	}
 }

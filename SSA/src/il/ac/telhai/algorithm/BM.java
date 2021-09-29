@@ -1,22 +1,11 @@
 package il.ac.telhai.algorithm;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Font;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Set;
-import java.util.Stack;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
 
 public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	private State<Algorithm<Problem>> state;
-	private LinkedList<Integer> Indexlist = new LinkedList<Integer>();
-	private Stack<Integer> stack = new Stack<>(); //the stack to save the depth of all the matching strings
-	// TODO: MORDO: BM is not a stack algorithm. THe stack is part of our framework. It should be moved to the class Algorithm
 	private Input<Problem> input;
 	private Output<Problem> output;
 	private int depth = 0;
