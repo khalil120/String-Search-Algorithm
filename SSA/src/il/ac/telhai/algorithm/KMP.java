@@ -225,7 +225,6 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			depth = 0;
 		}
 		KMPSearch(input.pattern(),inputData.getText());
-		printlps(input.pattern(),input.getCont(),input.getxCord(),input.getyCord());
 	}
 
 
@@ -321,75 +320,6 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			}
 		}
 		return lps;
-	}
-	public int max (int a, int b) { return (a > b)? a: b; } 
-	public void printlps(String str,Container cc, int xCord, int yCord) {
-
-		int i,j; 
-		yCord += 80;
-		char[] chars = str.toCharArray();
-		Set<Character> charSet = new LinkedHashSet<Character>();
-		for (char c : chars) {
-			charSet.add(c);
-		}
-
-		JButton array[] =  new JButton[str.length()];
-		int x = 500  , width = 50  , height = 50;
-		JLabel patternLbl = new JLabel("LPS: ");
-		patternLbl.setFont(new Font(patternLbl.getFont().getName(), Font.PLAIN, 25));
-		patternLbl.setBounds(500,  yCord, width*5, height);
-		cc.add(patternLbl);
-		yCord += 50;
-
-		JTextField myOutpu = new JTextField("Letters");
-		myOutpu.setBounds(500, yCord, width*2, height);
-		cc.add(myOutpu);
-		x = x +150;
-		for( i = 0 ; i < str.length() ; i++) {
-			char c = str.charAt(i);
-			String s  = String.valueOf(c);  
-			array[i] = new JButton(s);
-			array[i].setBounds(x,yCord,width,height); 
-			x+=width;
-			array[i].setBackground(Color.WHITE);
-			array[i].setForeground(Color.BLACK);
-			cc.add(array[i]);
-		}
-
-		int c = 0;
-		String s;
-
-		// if there is no match char
-		String st = "no match";
-		JButton tmp = new JButton(st);
-		tmp.setBounds(x, yCord, width*3, height);
-		tmp.setBackground(Color.WHITE);
-		cc.add(tmp);
-
-		x = 500 ; yCord += 50; // coordinates 
-		JTextField myOutput = new JTextField("values");
-		myOutput.setBounds(500, yCord, width*2, height);
-		cc.add(myOutput);
-		x = x + 150;
-		JButton arr[] =  new JButton[str.length()];
-		for( i = 0 ; i < str.length() ; i++) {
-			int k = lps[i];
-			s  = String.valueOf(k);
-			arr[i] = new JButton(s);
-			arr[i].setBounds(x,yCord,width,height); 
-			x+=width;
-			arr[i].setBackground(Color.WHITE);
-			arr[i].setForeground(Color.BLACK);
-			cc.add(arr[i]);
-		}
-		// if there is no match char
-		int k = str.length();
-		s  = String.valueOf(k);
-		JButton tmpp = new JButton(s);
-		tmpp.setBounds(x, yCord, width*3, height);
-		tmpp.setBackground(Color.WHITE);
-		cc.add(tmpp);
-
 	}
 	public void updateNextState(Integer index) {
 		/*

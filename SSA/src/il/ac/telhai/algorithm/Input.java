@@ -9,10 +9,6 @@ public interface Input<P extends Problem> {
     void show(Container c);
     String pattern();
     String input();
-    int getxCord();   // TODO: MORDO - DECOUPLE GUI FROM LOGIC
-    int getyCord();
-    Container getCont();
-    void setCont(Container c);
     StringSearchMultipleInput getSSMI();
     void isManual(int num);  
     void setRun(Runner<StringSearchMultiple> run);
