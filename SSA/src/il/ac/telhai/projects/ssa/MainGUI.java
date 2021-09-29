@@ -26,10 +26,10 @@ import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
 public class MainGUI implements ActionListener{
 
 	private JPanel selectAlg;
-	private static String[] Actions = {"CHOOSE ALGORITHM: " , "Run Type: ", "Input: ", "Start"};
-	private static String[] radioBtnAlgorithimOptoins = {"A) BM " , "B) KMP "};
-	private static String[] radioBtnRunTypeOptoins = {"A) Automatic", "B) Manual "};
-	private static String[] radioBtnInputOptoins = {"Current File", "Manual Input"};
+	private static final String[] Actions = {"CHOOSE ALGORITHM: " , "Run Type: ", "Input: ", "Start"};
+	private static final String[] radioBtnAlgorithimOptoins = {"A) BM " , "B) KMP "};
+	private static final String[] radioBtnRunTypeOptoins = {"A) Automatic", "B) Manual "};
+	private static final String[] radioBtnInputOptoins = {"Current File", "Manual Input"};
 	private JRadioButton[] selectAlgRadioBtn;
 	private JRadioButton[] runTypeRadioBtn;
 	private JRadioButton[] inputRadioBtn;
@@ -41,6 +41,7 @@ public class MainGUI implements ActionListener{
 	private boolean isFirstTime = true;;
 	public JFrame frame;
 	public Runner<StringSearchMultiple> run;
+	public Class[] cls = new Class[] {BM.class,KMP.class};
 
 
 
@@ -160,7 +161,7 @@ public class MainGUI implements ActionListener{
 			frame.setSize(1850,900);
 			Container container = frame.getContentPane();
 			input.show(container);
-			Class cls[] = new Class[] {BM.class};
+			input.printCharTable(input.getPattern(),container,input.getXCord(),input.getYCord());
 			Class<Algorithm<StringSearchMultiple>> algorithmClass = cls[0] ;
 			try {
 				run = new Runner<StringSearchMultiple>(algorithmClass, input, container);
@@ -189,8 +190,8 @@ public class MainGUI implements ActionListener{
 			frame.setSize(1850,900);
 			Container container = frame.getContentPane();
 			input.show(container);
-			Class cls[] = new Class[] {KMP.class};
-			Class<Algorithm<StringSearchMultiple>> algorithmClass = cls[0] ;
+			input.printLps(input.getPattern(),container,input.getXCord(), input.getYCord(), input.computeLPSArray(input.getPattern(),input.getPattern().length()));
+			Class<Algorithm<StringSearchMultiple>> algorithmClass = cls[1] ;
 			try {
 				run = new Runner<StringSearchMultiple>(algorithmClass, input, container);
 				if(runTypeRadioBtn[0].isSelected()) {
@@ -219,13 +220,12 @@ public class MainGUI implements ActionListener{
 				fileDirectory += "\\src\\input.txt";
 
 			File myObj = new File(fileDirectory);
-			System.out.println(myObj.getPath());
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
 			myReader.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
+			System.out.println("An error occurred." + e.getMessage());
 			e.printStackTrace();
 		}
 		return data;

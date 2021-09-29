@@ -12,7 +12,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	private Container container ;
 	private StringSearchMultipleInput inputData ;
 	private boolean bool = false;
-	private int nextdepth = 0;
+	private int nextDepth = 0;
 
 	public BM() {
 		state = this;
@@ -22,15 +22,13 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	public void reset(Input<Problem> input) {
 		this.input=input;
 		inputData = this.input.getSSMI();
-		if(inputData.isrst()) {
-			int[] numbers =  new int[inputData.getInputArr().length];
-			for(int i : numbers) { 
+		if(inputData.isRst()) {
+			for(int i = 0; i < inputData.getInputArr().length; i++) {
 				inputData.getInputArr()[i].setBackground(Color.WHITE);
+				if( i < inputData.getPattArr().length)
+					inputData.getPattArr()[i].setBackground(Color.WHITE);
 			}
-			numbers =  new int[inputData.getPattArr().length];
-			for(int i : numbers) {
-				inputData.getPattArr()[i].setBackground(Color.WHITE);
-			}
+
 			inputData.getPrevBtn().setEnabled(false);
 			clear();
 			depth = 0;
@@ -68,12 +66,12 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		int indexToStartFrom = Indexlist.get(indexToPaint);
 		int patt_ch, inpt_ch;
 		if(indexToStartFrom <= inputLength) {
-			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isprev())
-				inputData.setdepth(inputData.getdepth()-1);
+			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isPrev())
+				inputData.setDepth(inputData.getDepth()-1);
 			patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
-			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
+			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom); //TODO: khalil- bug here - exception string range out of index
 			if(inpt_ch == patt_ch) {
-				if (!inputData.isprev()) {
+				if (!inputData.isPrev()) {
 					if(stack.isEmpty()) stack.push(depth);
 					else if(depth!=stack.peek())
 						stack.push(depth);
@@ -92,45 +90,45 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					patternLen--;
 					indexToStartFrom--;
 				}
-			}else if (inputData.getIsmanual() == 0){
-				if(!inputData.isprev()) {
-					inputData.setdepth(inputData.getdepth()-1);
+			}else if (inputData.getIsManual() == 0){
+				if(!inputData.isPrev()) {
+					inputData.setDepth(inputData.getDepth()-1);
 				}
-				else if (inputData.isprev()) {
-					inputData.setdepth(inputData.getdepth()+1);
+				else if (inputData.isPrev()) {
+					inputData.setDepth(inputData.getDepth()+1);
 				}
 			}
-			if (inputData.getIsmanual() == 1 && inpt_ch != patt_ch) {
-				if (!inputData.isprev())
+			if (inputData.getIsManual() == 1 && inpt_ch != patt_ch) {
+				if (!inputData.isPrev())
 					stack.push(depth);
 				inputData.getPattArr()[patternLen].setBackground(Color.RED);
 				inputData.getInputArr()[indexToStartFrom].setBackground(Color.RED);
 			}
-			if(!inputData.isprev()) {
+			if(!inputData.isPrev()) {
 				depth --;
 			}
 			else depth++;
-			nextdepth = depth;
+			nextDepth = depth;
 			// finding the next step to enable the next button 
 			if(patt_ch==inpt_ch) {
 				boolean index = false;
-				if(nextdepth >= Indexlist.size()) nextdepth--;
-				int indexToPaint2 = Indexlist.size() - nextdepth;
+				if(nextDepth >= Indexlist.size()) nextDepth--;
+				int indexToPaint2 = Indexlist.size() - nextDepth;
 				if(Indexlist.size() == indexToPaint2)
 					indexToPaint2--;
 				int patternLen2 = input.pattern().length() - 1;
 				int indexToStartFrom2 = Indexlist.get(indexToPaint2);
 				patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
 				inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom2);
-				while (patt_ch!=inpt_ch) {
-					nextdepth--;
-					indexToPaint2 = Indexlist.size() - nextdepth;
+				while (patt_ch != inpt_ch) {
+					nextDepth--;
+					indexToPaint2 = Indexlist.size() - nextDepth;
 					if(Indexlist.size() <= indexToPaint2  ) {
 						inputData.getNxtBtn().setEnabled(false);
 						index = true;
 						break;
 					}
-					if(!index) {
+					if(!index) { //TODO: khalil check this
 						patternLen2 = input.pattern().length() - 1;
 						indexToStartFrom2 = Indexlist.get(indexToPaint2);
 						patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
@@ -140,11 +138,11 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					}
 				}
 			}
-			nextdepth--;
-			if( nextdepth < 0 )	inputData.getNxtBtn().setEnabled(false);
+			nextDepth--;
+			if( nextDepth < 0 )	inputData.getNxtBtn().setEnabled(false);
 		}
 		else {
-			if(!inputData.isprev())
+			if(!inputData.isPrev())
 				depth --;
 			else depth++;
 		}
@@ -154,7 +152,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		char [] pat = input.pattern().toUpperCase().toCharArray();
 		char [] txt = input.input().toUpperCase().toCharArray();
 		int patLen = input.pattern().length();
-		int badchar[];
+		int[] badchar;
 		int txtLen = input.input().length();
 		badchar = badCharTable(pat, patLen); 
 
@@ -189,7 +187,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				updateNextState(s);
 			}
 		}
-		inputData.setdepth(depth);
+		inputData.setDepth(depth);
 	}
 
 	/**
@@ -247,21 +245,22 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	public void clear() {
 		Indexlist.clear();
+		stack.clear();
 	}
 
 	@Override
 	public int getDepth() { 
-		if((inputData.getdepth() == nextdepth || depth == nextdepth) && inputData.getIsmanual() == 1)
+		if((inputData.getDepth() == nextDepth || depth == nextDepth) && inputData.getIsManual() == 1)
 	    	depth--;
-		if (depth == inputData.getdepth()&& inputData.getIsmanual() == 0)
+		if (depth == inputData.getDepth()&& inputData.getIsManual() == 0)
 			return depth;
-		else if (inputData.getIsmanual() == 1 && depth == inputData.getdepth())  return depth;
+		else if (inputData.getIsManual() == 1 && depth == inputData.getDepth())  return depth;
 		return 0;
 	}
 
 	@Override
 	public void show(Container c) {
-		if(inputData.isprev() ) {
+		if(inputData.isPrev() ) {
 			if(depth != 0 ) 
 				stack.pop();
 			if(stack.isEmpty()) { 
@@ -276,11 +275,11 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			else{
 				if(stack.size() == 1)	{
 					inputData.getPrevBtn().setEnabled(false);
-					inputData.setdepth(depth);
+					inputData.setDepth(depth);
 				}
 				if(depth == 0 ) {
 					depth++;
-					inputData.setdepth(depth);
+					inputData.setDepth(depth);
 					stack.pop();
 				}
 				int tmp = stack.peek();

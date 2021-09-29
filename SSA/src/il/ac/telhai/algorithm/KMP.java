@@ -13,7 +13,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	private Container container ;
 	private StringSearchMultipleInput inputData ;
 	private boolean bool = false;
-	private int nextdepth = 0;
+	private int nextDepth = 0;
 	private int[] lps;
 
 	public KMP() {
@@ -22,17 +22,17 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public int getDepth() { 
-		if((inputData.getdepth() == nextdepth || depth == nextdepth) && inputData.getIsmanual() == 1)
+		if((inputData.getDepth() == nextDepth || depth == nextDepth) && inputData.getIsManual() == 1)
 			this.depth--;
-		if (this.depth == inputData.getdepth()&& inputData.getIsmanual() == 0)
+		if (this.depth == inputData.getDepth()&& inputData.getIsManual() == 0)
 			return this.depth;
-		else if (inputData.getIsmanual() == 1 && this.depth == inputData.getdepth())  return this.depth;
+		else if (inputData.getIsManual() == 1 && this.depth == inputData.getDepth())  return this.depth;
 		return 0;
 	}
 
 	@Override
 	public void show(Container c) {
-		if(inputData.isprev() ) {
+		if(inputData.isPrev() ) {
 			if(depth != 0  & !stack.isEmpty() ) 
 				stack.pop();
 			if(stack.isEmpty()) { 
@@ -47,11 +47,11 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			else{
 				if(Algorithm.stack.size() == 1)	{
 					this.inputData.getPrevBtn().setEnabled(false);
-					inputData.setdepth(depth);
+					inputData.setDepth(depth);
 				}
 				if(depth == 0 ) {
 					depth++;
-					inputData.setdepth(depth);
+					inputData.setDepth(depth);
 					stack.pop();
 				}
 				int tmp = stack.peek();
@@ -77,7 +77,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			return;
 		}
 		boolean tmp = false;
-		int indexToPaint = Algorithm.Indexlist.size() - this.depth;
+		int indexToPaint = Indexlist.size() - this.depth;
 		int patternLen = 0;
 		int inputLength = input.input().length();
 		if(indexToPaint < 0)
@@ -85,8 +85,8 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		int indexToStartFrom = Indexlist.get(indexToPaint);
 		int patt_ch, inpt_ch;
 		if(indexToStartFrom <= inputLength) {
-			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isprev())
-				inputData.setdepth(inputData.getdepth()-1);
+			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isPrev())
+				inputData.setDepth(inputData.getDepth()-1);
 			patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
 			if(input.input().length()<=indexToStartFrom ) {
 				this.inputData.getNxtBtn().setEnabled(false);
@@ -111,12 +111,12 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 						tmp = false;
 					}else  {
 
-						if (inputData.getIsmanual() == 0){
-							if(!this.inputData.isprev()) {
-								inputData.setdepth(inputData.getdepth()-1);
+						if (inputData.getIsManual() == 0){
+							if(!this.inputData.isPrev()) {
+								inputData.setDepth(inputData.getDepth()-1);
 							}
-							else if (this.inputData.isprev()) {
-								inputData.setdepth(inputData.getdepth()+1);
+							else if (this.inputData.isPrev()) {
+								inputData.setDepth(inputData.getDepth()+1);
 							}
 						}
 						tmp = true;
@@ -125,39 +125,39 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					patternLen++;
 					indexToStartFrom++;
 				}
-				if (!inputData.isprev() && !tmp) {
+				if (!inputData.isPrev() && !tmp) {
 					if(stack.isEmpty()) stack.push(depth);
 					else if(depth!=stack.peek())
 						stack.push(depth);
 				}
-			}else if (inputData.getIsmanual() == 0){
-				if(!this.inputData.isprev()) {
-					inputData.setdepth(inputData.getdepth()-1);
+			}else if (inputData.getIsManual() == 0){
+				if(!this.inputData.isPrev()) {
+					inputData.setDepth(inputData.getDepth()-1);
 				}
-				else if (this.inputData.isprev()) {
-					inputData.setdepth(inputData.getdepth()+1);
+				else if (this.inputData.isPrev()) {
+					inputData.setDepth(inputData.getDepth()+1);
 				}
 			}
-			if (inputData.getIsmanual() == 1 && inpt_ch != patt_ch) {
-				if (!inputData.isprev())
+			if (inputData.getIsManual() == 1 && inpt_ch != patt_ch) {
+				if (!inputData.isPrev())
 					stack.push(depth);
 				this.inputData.getPattArr()[patternLen].setBackground(Color.RED);
 				this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.RED);
 			}
-			if(!this.inputData.isprev()) {
+			if(!this.inputData.isPrev()) {
 				this.depth --;
 			}
 			else this.depth++;
-			nextdepth = depth;
+			nextDepth = depth;
 			// finding the next step to enable the next button 
 			if(patt_ch==inpt_ch) {
 				boolean index = false;
-				if(nextdepth >= Algorithm.Indexlist.size()) nextdepth--;
-				int indexToPaint2 = Algorithm.Indexlist.size() - this.nextdepth;
+				if(nextDepth >= Indexlist.size()) nextDepth--;
+				int indexToPaint2 = Indexlist.size() - this.nextDepth;
 				int patternLen2 = 0;
-				if(Algorithm.Indexlist.size()<=indexToPaint2 ) {
+				if(Indexlist.size()<=indexToPaint2 ) {
 					this.inputData.getNxtBtn().setEnabled(false);
-					indexToPaint2 = Algorithm.Indexlist.size() -1;
+					indexToPaint2 = Indexlist.size() -1;
 				}
 				int indexToStartFrom2 = Indexlist.get(indexToPaint2);
 				if(input.input().length()<=indexToStartFrom2 ) {
@@ -167,14 +167,14 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
 				inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom2);
 				while (patt_ch!=inpt_ch) {
-					nextdepth--;
-					indexToPaint2 = Algorithm.Indexlist.size() - this.nextdepth;
-					if(Algorithm.Indexlist.size() <= indexToPaint2 ) {
+					nextDepth--;
+					indexToPaint2 = Indexlist.size() - this.nextDepth;
+					if(Indexlist.size() <= indexToPaint2 ) {
 						this.inputData.getNxtBtn().setEnabled(false);
 						index = true;
 						break;
 					}
-					if(!index) {
+					if(!index) { //TODO: khalil - check this line
 						patternLen2 = 0;
 						indexToStartFrom2 = Indexlist.get(indexToPaint2);
 						patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
@@ -184,14 +184,14 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					}
 				}
 			}
-			nextdepth--;
-			if( ((nextdepth < input.pattern().length() && depth!=inputData.getPattern().length()) || indexToStartFrom ==  inputData.getText().length()) 
-					&&!inputData.isprev() && inputData.getIsmanual() == 0) {
+			nextDepth--;
+			if( ((nextDepth < input.pattern().length() && depth!=inputData.getPattern().length()) || indexToStartFrom ==  inputData.getText().length()) 
+					&&!inputData.isPrev() && inputData.getIsManual() == 0) {
 				this.inputData.getNxtBtn().setEnabled(false);
 			}
 		}
 		else {
-			if(!this.inputData.isprev())
+			if(!this.inputData.isPrev())
 				this.depth --;
 			else this.depth++;
 		}
@@ -201,7 +201,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	public void reset(Input<Problem> input) {
 		this.input=input;
 		inputData = this.input.getSSMI();
-		if(inputData.isrst()) {
+		if(inputData.isRst()) {
 			int i;
 			for(i = 0; i < this.inputData.getInputArr().length; i++) {
 				this.inputData.getInputArr()[i].setBackground(Color.WHITE);
@@ -281,7 +281,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				this.depth--;
 			}
 		} 
-		inputData.setdepth(depth);
+		inputData.setDepth(depth);
 	}
 
 	private int[]  computeLPSArray(String pat, int M)
@@ -315,13 +315,14 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		 * This list used to save the indexes that the Algorithm will start
 		 * to search from
 		 */
-		Algorithm.Indexlist.add(index);
+		Indexlist.add(index);
 	}
 	public boolean isEmpty() {
-		return Algorithm.Indexlist.isEmpty();
+		return Indexlist.isEmpty();
 	}
 
 	public void clear() {
-		Algorithm.Indexlist.clear();
+		Indexlist.clear();
+		stack.clear();
 	}
 }

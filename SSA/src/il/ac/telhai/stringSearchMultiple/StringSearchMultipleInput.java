@@ -33,7 +33,6 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	private Runner<StringSearchMultiple> run;
 	private int depth;
 	private boolean rst = false;
-	private int[] lps;
 
 	public StringSearchMultipleInput(String text, String pattern) {
 		super();
@@ -47,10 +46,6 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		initInputDisplay(text);
 		initPatternDisplay(pattern);
 		initButton(pattern.length());
-		printchartable(pattern,c,xCord,yCord);
-		lps = new int[pattern.length()];
-		lps = computeLPSArray(pattern, pattern.length());
-		printlps(pattern,c,xCord,yCord,lps);
 	}
 
 	public void initInputDisplay(String input) {
@@ -114,7 +109,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		c.add(prevBtn);
 		c.add(rstBtn);
 	}
-	public void printchartable(String str,Container cc, int xCord, int yCord) {
+	public void printCharTable(String str, Container cc, int xCord, int yCord) {
 
 		int i,j; 
 		yCord += 80;
@@ -204,8 +199,10 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		cc.add(tmpp);
 
 	}
-	private int[]  computeLPSArray(String pat, int M)
+	public int[]  computeLPSArray(String pat, int M)
 	{
+
+		int[] lps = new int[M];
 		// length of the previous longest prefix suffix
 		int len = 0;
 		int i = 1;
@@ -230,7 +227,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		}
 		return lps;
 	}
-	public void printlps(String str,Container cc, int xCord, int yCord,int[] lps) {
+	public void printLps(String str, Container cc, int xCord, int yCord, int[] lps) {
 
 		int i; 
 		yCord += 80;
@@ -240,7 +237,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 			charSet.add(c);
 		}
 
-		JButton array[] =  new JButton[str.length()];
+		JButton[] array =  new JButton[str.length()];
 		int x = 500  , width = 50  , height = 50;
 		JLabel patternLbl = new JLabel("LPS: ");
 		patternLbl.setFont(new Font(patternLbl.getFont().getName(), Font.PLAIN, 25));
@@ -248,9 +245,9 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		cc.add(patternLbl);
 		yCord += 50;
 
-		JTextField myOutpu = new JTextField("Letters");
-		myOutpu.setBounds(500, yCord, width*2, height);
-		cc.add(myOutpu);
+		JTextField myOutput = new JTextField("Letters");
+		myOutput.setBounds(500, yCord, width*2, height);
+		cc.add(myOutput);
 		x = x +150;
 		for( i = 0 ; i < str.length() ; i++) {
 			char c = str.charAt(i);
@@ -273,11 +270,11 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		cc.add(tmp);
 
 		x = 500 ; yCord += 50; // coordinates 
-		JTextField myOutput = new JTextField("values");
-		myOutput.setBounds(500, yCord, width*2, height);
-		cc.add(myOutput);
+		JTextField myOutpu = new JTextField("values");
+		myOutpu.setBounds(500, yCord, width*2, height);
+		cc.add(myOutpu);
 		x = x + 150;
-		JButton arr[] =  new JButton[str.length()];
+		JButton[] arr =  new JButton[str.length()];
 		for( i = 0 ; i < str.length() ; i++) {
 			int k = lps[i];
 			s  = String.valueOf(k);
@@ -310,40 +307,12 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		return nxtBtn;
 	}
 
-	public void setNxtBtn(JButton nxtBtn) {
-		this.nxtBtn = nxtBtn;
-	}
-
 	public JButton getPrevBtn() {
 		return prevBtn;
 	}
 
-	public void setPrevBtn(JButton prevBtn) {
-		this.prevBtn = prevBtn;
-	}
-
 	public JButton getRstBtn() {
 		return rstBtn;
-	}
-
-	public void setRstBtn(JButton rstBtn) {
-		this.rstBtn = rstBtn;
-	}
-
-	public int getxCord() {
-		return xCord;
-	}
-
-	public void setxCord(int xCord) {
-		this.xCord = xCord;
-	}
-
-	public int getyCord() {
-		return yCord;
-	}
-
-	public void setyCord(int yCord) {
-		this.yCord = yCord;
 	}
 
 	@Override
@@ -351,14 +320,13 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		return pattern;
 	}
 
+	public int getXCord() { return xCord; }
+
+	public int getYCord() { return yCord; }
+
 	@Override
 	public String input() {
 		return text;
-	}
-
-
-	public void setC(Container c) {
-		this.c = c;
 	}
 
 
@@ -371,17 +339,10 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		return inputArr;
 	}
 
-	public void setInputArr(JButton[] inputArr) {
-		this.inputArr = inputArr;
-	}
-
 	public JButton[] getPattArr() {
 		return pattArr;
 	}
 
-	public void setPattArr(JButton[] pattArr) {
-		this.pattArr = pattArr;
-	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == nxtBtn) {
@@ -415,32 +376,25 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		this.ismanual = num;
 	}
 
-	public int getIsmanual() {
+	public int getIsManual() {
 		return ismanual;
-	}
-
-	public Runner<StringSearchMultiple> getRun() {  
-		return run;
 	}
 
 	public void setRun(Runner<StringSearchMultiple> run) {
 		this.run = run;
 	}
 
-	public void setdepth(int depth) {
-		this.depth = depth;
+	public void setDepth(int depth) { this.depth = depth; }
 
-	}
-
-	public int getdepth() {
+	public int getDepth() {
 		return this.depth;
 	}
 
-	public boolean isprev() {
+	public boolean isPrev() {
 		return prev;
 	}
 	
-	public boolean isrst() {
+	public boolean isRst() {
 		return rst ;
 	}
 }
