@@ -1,6 +1,9 @@
 package il.ac.telhai.algorithm;
 import java.awt.Color;
 import java.awt.Container;
+
+import javax.swing.JButton;
+
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
 
 public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
@@ -23,12 +26,12 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		this.input=input;
 		inputData = this.input.getSSMI();
 		if(inputData.isRst()) {
-			for(int i = 0; i < inputData.getInputArr().length; i++) {
-				inputData.getInputArr()[i].setBackground(Color.WHITE);
-				if( i < inputData.getPattArr().length)
-					inputData.getPattArr()[i].setBackground(Color.WHITE);
-			}
+			for(JButton btn: inputData.getPattArr())
+				btn.setBackground(Color.WHITE);
 
+			for(JButton btn: inputData.getInputArr())
+				btn.setBackground(Color.WHITE);
+			
 			inputData.getPrevBtn().setEnabled(false);
 			clear();
 			depth = 0;
@@ -69,7 +72,9 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isPrev())
 				inputData.setDepth(inputData.getDepth()-1);
 			patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
-			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom); //TODO: khalil- bug here - exception string range out of index
+			if(indexToStartFrom >=input.input().length())
+				indexToStartFrom = input.input().length()-1;
+			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom); 
 			if(inpt_ch == patt_ch) {
 				if (!inputData.isPrev()) {
 					if(stack.isEmpty()) stack.push(depth);
@@ -128,7 +133,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 						index = true;
 						break;
 					}
-					if(!index) { //TODO: khalil check this
+					if(!index) {
 						patternLen2 = input.pattern().length() - 1;
 						indexToStartFrom2 = Indexlist.get(indexToPaint2);
 						patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
@@ -261,7 +266,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	@Override
 	public void show(Container c) {
 		if(inputData.isPrev() ) {
-			if(depth != 0 ) 
+			if(depth != 0 && !stack.isEmpty()) 
 				stack.pop();
 			if(stack.isEmpty()) { 
 				int i;

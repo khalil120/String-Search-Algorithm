@@ -35,7 +35,6 @@ public class MainGUI implements ActionListener{
 	private JRadioButton[] inputRadioBtn;
 	private JTextField inputField;
 	private JTextField patField;
-	private static final int numOfSections = 4;
 	private static final int AutomaticDepth = 0;
 	private static final int radioBtnGroubSize = 2;
 	private boolean isFirstTime = true;;

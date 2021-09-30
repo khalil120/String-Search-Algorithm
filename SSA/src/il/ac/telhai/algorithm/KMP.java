@@ -2,6 +2,9 @@ package il.ac.telhai.algorithm;
 
 import java.awt.Color;
 import java.awt.Container;
+
+import javax.swing.JButton;
+
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
 
 public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
@@ -174,7 +177,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 						index = true;
 						break;
 					}
-					if(!index) { //TODO: khalil - check this line
+					if(!index) {
 						patternLen2 = 0;
 						indexToStartFrom2 = Indexlist.get(indexToPaint2);
 						patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
@@ -202,13 +205,12 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		this.input=input;
 		inputData = this.input.getSSMI();
 		if(inputData.isRst()) {
-			int i;
-			for(i = 0; i < this.inputData.getInputArr().length; i++) {
-				this.inputData.getInputArr()[i].setBackground(Color.WHITE);
-			}
-			for(i = 0; i < this.inputData.getPattArr().length; i++) {
-				this.inputData.getPattArr()[i].setBackground(Color.WHITE);
-			}
+			for(JButton btn: inputData.getPattArr())
+				btn.setBackground(Color.WHITE);
+
+			for(JButton btn: inputData.getInputArr())
+				btn.setBackground(Color.WHITE);
+			
 			this.inputData.getPrevBtn().setEnabled(false);
 			this.clear();
 			depth = 0;
