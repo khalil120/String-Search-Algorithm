@@ -22,6 +22,7 @@ import il.ac.telhai.algorithm.KMP;
 import il.ac.telhai.algorithm.Runner;
 import il.ac.telhai.stringSearchMultiple.StringSearchMultiple;
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
+import il.ac.telhai.stringSearchMultiple.StringSearchMultipleOutput;
 
 public class MainGUI implements ActionListener{
 
@@ -175,6 +176,7 @@ public class MainGUI implements ActionListener{
 				input.getNxtBtn().addActionListener(input);
                 input.getPrevBtn().addActionListener(input);
                 input.getRstBtn().addActionListener(input);
+       
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

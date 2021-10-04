@@ -345,6 +345,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+	    resetBoard();
 		if (e.getSource() == nxtBtn) {
 			prevBtn.setEnabled(true);
 			prev = false;
@@ -369,8 +370,15 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		}
 
 	}
-
-
+    public void resetBoard() {
+    	for(JButton btn: getPattArr())
+			btn.setBackground(Color.WHITE);
+		for(JButton btn: getInputArr())
+			btn.setBackground(Color.WHITE);
+    }
+	
+	
+	
 	@Override
 	public void isManual(int num) {
 		this.ismanual = num;

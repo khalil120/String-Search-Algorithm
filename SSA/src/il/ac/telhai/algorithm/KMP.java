@@ -1,11 +1,7 @@
 package il.ac.telhai.algorithm;
-
-import java.awt.Color;
 import java.awt.Container;
-
-import javax.swing.JButton;
-
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
+import il.ac.telhai.stringSearchMultiple.StringSearchMultipleOutput;
 
 public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
@@ -15,6 +11,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	private int depth = 0;
 	private Container container ;
 	private StringSearchMultipleInput inputData ;
+	private StringSearchMultipleOutput outputData = new StringSearchMultipleOutput();
 	private boolean bool = false;
 	private int nextDepth = 0;
 	private int[] lps;
@@ -26,10 +23,10 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	@Override
 	public int getDepth() { 
 		if((inputData.getDepth() == nextDepth || depth == nextDepth) && inputData.getIsManual() == 1)
-			this.depth--;
-		if (this.depth == inputData.getDepth()&& inputData.getIsManual() == 0)
-			return this.depth;
-		else if (inputData.getIsManual() == 1 && this.depth == inputData.getDepth())  return this.depth;
+			depth--;
+		if (depth == inputData.getDepth()&& inputData.getIsManual() == 0)
+			return depth;
+		else if (inputData.getIsManual() == 1 && depth == inputData.getDepth())  return depth;
 		return 0;
 	}
 
@@ -39,17 +36,11 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			if(depth != 0  & !stack.isEmpty() ) 
 				stack.pop();
 			if(stack.isEmpty()) { 
-				int i;
-				for(i = 0; i < this.inputData.getInputArr().length; i++) {
-					this.inputData.getInputArr()[i].setBackground(Color.WHITE);
-				}
-				for(i = 0; i < this.inputData.getPattArr().length; i++) {
-					this.inputData.getPattArr()[i].setBackground(Color.WHITE);
-				}
+				inputData.resetBoard();
 			}
 			else{
 				if(Algorithm.stack.size() == 1)	{
-					this.inputData.getPrevBtn().setEnabled(false);
+					inputData.getPrevBtn().setEnabled(false);
 					inputData.setDepth(depth);
 				}
 				if(depth == 0 ) {
@@ -59,28 +50,23 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				}
 				int tmp = stack.peek();
 				while (tmp >= depth) {
-					this.step();
+					step();
 				}
-				this.depth--;
+				depth--;
 			}
 		}
 	}
 
 	@Override
 	public void step() {
-		int i;
-		for(i = 0; i < this.inputData.getInputArr().length; i++) {
-			this.inputData.getInputArr()[i].setBackground(Color.WHITE);
-		}
-		for(i = 0; i < this.inputData.getPattArr().length; i++) {
-			this.inputData.getPattArr()[i].setBackground(Color.WHITE);
-		}
 		if(!bool) {
 			bool = true;
 			return;
 		}
+		inputData.resetBoard();
+		outputData.setInputData(inputData);
 		boolean tmp = false;
-		int indexToPaint = Indexlist.size() - this.depth;
+		int indexToPaint = Indexlist.size() -depth;
 		int patternLen = 0;
 		int inputLength = input.input().length();
 		if(indexToPaint < 0)
@@ -92,33 +78,37 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				inputData.setDepth(inputData.getDepth()-1);
 			patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
 			if(input.input().length()<=indexToStartFrom ) {
-				this.inputData.getNxtBtn().setEnabled(false);
+				inputData.getNxtBtn().setEnabled(false);
 				indexToStartFrom = input.input().length() -1;
 			}
 			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
 			if(inpt_ch == patt_ch) {
-				this.inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
-				this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
+				outputData.addLocation(indexToStartFrom);
+				outputData.addLocationPattern(patternLen);
+				outputData.isGreen(true);
+				outputData.show(container);
 				patternLen++;
 				indexToStartFrom++;
 				while(patternLen < input.pattern().length()) {
 					patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
 					if(input.input().length()<=indexToStartFrom ) {
-						this.inputData.getNxtBtn().setEnabled(false);
+						inputData.getNxtBtn().setEnabled(false);
 						indexToStartFrom = input.input().length() -1;
 					}
 					inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
 					if(inpt_ch == patt_ch ) {
-						this.inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
-						this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
+						outputData.addLocation(indexToStartFrom);
+						outputData.addLocationPattern(patternLen);
+						outputData.isGreen(true);
+						outputData.show(container);
 						tmp = false;
 					}else  {
 
 						if (inputData.getIsManual() == 0){
-							if(!this.inputData.isPrev()) {
+							if(!inputData.isPrev()) {
 								inputData.setDepth(inputData.getDepth()-1);
 							}
-							else if (this.inputData.isPrev()) {
+							else if (inputData.isPrev()) {
 								inputData.setDepth(inputData.getDepth()+1);
 							}
 						}
@@ -134,46 +124,48 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 						stack.push(depth);
 				}
 			}else if (inputData.getIsManual() == 0){
-				if(!this.inputData.isPrev()) {
+				if(!inputData.isPrev()) {
 					inputData.setDepth(inputData.getDepth()-1);
 				}
-				else if (this.inputData.isPrev()) {
+				else if (inputData.isPrev()) {
 					inputData.setDepth(inputData.getDepth()+1);
 				}
 			}
 			if (inputData.getIsManual() == 1 && inpt_ch != patt_ch) {
 				if (!inputData.isPrev())
 					stack.push(depth);
-				this.inputData.getPattArr()[patternLen].setBackground(Color.RED);
-				this.inputData.getInputArr()[indexToStartFrom].setBackground(Color.RED);
+				outputData.addLocation(indexToStartFrom);
+				outputData.addLocationPattern(patternLen);
+				outputData.isGreen(false);
+				outputData.show(container);
 			}
-			if(!this.inputData.isPrev()) {
-				this.depth --;
+			if(!inputData.isPrev()) {
+				depth --;
 			}
-			else this.depth++;
+			else depth++;
 			nextDepth = depth;
 			// finding the next step to enable the next button 
 			if(patt_ch==inpt_ch) {
 				boolean index = false;
 				if(nextDepth >= Indexlist.size()) nextDepth--;
-				int indexToPaint2 = Indexlist.size() - this.nextDepth;
+				int indexToPaint2 = Indexlist.size() - nextDepth;
 				int patternLen2 = 0;
 				if(Indexlist.size()<=indexToPaint2 ) {
-					this.inputData.getNxtBtn().setEnabled(false);
+					inputData.getNxtBtn().setEnabled(false);
 					indexToPaint2 = Indexlist.size() -1;
 				}
 				int indexToStartFrom2 = Indexlist.get(indexToPaint2);
 				if(input.input().length()<=indexToStartFrom2 ) {
-					this.inputData.getNxtBtn().setEnabled(false);
+					inputData.getNxtBtn().setEnabled(false);
 					indexToStartFrom2 = input.input().length() -1;
 				}
 				patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
 				inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom2);
 				while (patt_ch!=inpt_ch) {
 					nextDepth--;
-					indexToPaint2 = Indexlist.size() - this.nextDepth;
+					indexToPaint2 = Indexlist.size() - nextDepth;
 					if(Indexlist.size() <= indexToPaint2 ) {
-						this.inputData.getNxtBtn().setEnabled(false);
+						inputData.getNxtBtn().setEnabled(false);
 						index = true;
 						break;
 					}
@@ -190,29 +182,24 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			nextDepth--;
 			if( ((nextDepth < input.pattern().length() && depth!=inputData.getPattern().length()) || indexToStartFrom ==  inputData.getText().length()) 
 					&&!inputData.isPrev() && inputData.getIsManual() == 0) {
-				this.inputData.getNxtBtn().setEnabled(false);
+				inputData.getNxtBtn().setEnabled(false);
 			}
 		}
 		else {
-			if(!this.inputData.isPrev())
-				this.depth --;
-			else this.depth++;
+			if(!inputData.isPrev())
+				depth --;
+			else depth++;
 		}
 	}
 
 	@Override
 	public void reset(Input<Problem> input) {
 		this.input=input;
-		inputData = this.input.getSSMI();
+		inputData = input.getSSMI();
 		if(inputData.isRst()) {
-			for(JButton btn: inputData.getPattArr())
-				btn.setBackground(Color.WHITE);
-
-			for(JButton btn: inputData.getInputArr())
-				btn.setBackground(Color.WHITE);
-			
-			this.inputData.getPrevBtn().setEnabled(false);
-			this.clear();
+			inputData.resetBoard();
+			inputData.getPrevBtn().setEnabled(false);
+			clear();
 			depth = 0;
 		}
 		KMPSearch(input.pattern(),inputData.getText());
@@ -221,7 +208,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public State<Algorithm<Problem>> getState() {
-		return this.state;
+		return state;
 	}
 
 	@Override
@@ -231,16 +218,8 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public Output<Problem> getOutput() {
-		this.output.show(container);
+		output.show(container);
 		return output;
-	}
-
-	public void colorBoard(int index, Color color) {
-		int i;
-		for(i = 0; i < this.inputData.getPattern().length(); i++) {
-			this.inputData.getPattArr()[i].setBackground(color);
-			this.inputData.getInputArr()[index - i + 1].setBackground(color);
-		}
 	}
 
 	public void KMPSearch(String pat, String txt){
@@ -251,18 +230,18 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		lps = computeLPSArray(pat, M);
 
 		int i = 0; // index for txt[]
-		this.updateNextState(0);
-		this.depth++;
+		updateNextState(0);
+		depth++;
 		while (i < N) {
 			if (pat.toUpperCase().charAt(j) == txt.toUpperCase().charAt(i)) {
 				j++;
 				i++;
 			}
 			if (j == M) {
-				this.updateNextState((i - j));
+				updateNextState((i - j));
 				if(i != 0)
-					this.updateNextState(i);
-				this.depth+=2;
+					updateNextState(i);
+				depth+=2;
 				j = lps[j - 1];
 			}
 
@@ -272,15 +251,15 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					j = lps[j - 1];
 				}
 				i = i + 1;
-				this.updateNextState(i);
-				this.depth++;
+				updateNextState(i);
+				depth++;
 			}
 		}
 
 		for(i= 0 ; i < Indexlist.size()-1;i++) {
 			if(Indexlist.get(i) == Indexlist.get(i+1)){
 				Indexlist.remove(i+1);
-				this.depth--;
+				depth--;
 			}
 		} 
 		inputData.setDepth(depth);

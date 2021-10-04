@@ -1,10 +1,8 @@
 package il.ac.telhai.algorithm;
-import java.awt.Color;
 import java.awt.Container;
 
-import javax.swing.JButton;
-
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
+import il.ac.telhai.stringSearchMultiple.StringSearchMultipleOutput;
 
 public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
@@ -14,6 +12,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	private int depth = 0;
 	private Container container ;
 	private StringSearchMultipleInput inputData ;
+	private StringSearchMultipleOutput outputData = new StringSearchMultipleOutput();
 	private boolean bool = false;
 	private int nextDepth = 0;
 
@@ -26,12 +25,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		this.input=input;
 		inputData = this.input.getSSMI();
 		if(inputData.isRst()) {
-			for(JButton btn: inputData.getPattArr())
-				btn.setBackground(Color.WHITE);
-
-			for(JButton btn: inputData.getInputArr())
-				btn.setBackground(Color.WHITE);
-			
+			inputData.resetBoard();
 			inputData.getPrevBtn().setEnabled(false);
 			clear();
 			depth = 0;
@@ -50,17 +44,12 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public void step() {
-		int i;
-		for(i = 0; i < inputData.getInputArr().length; i++) {
-			inputData.getInputArr()[i].setBackground(Color.WHITE);
-		}
-		for(i = 0; i < inputData.getPattArr().length; i++) {
-			inputData.getPattArr()[i].setBackground(Color.WHITE);
-		}
 		if(!bool) {
 			bool = true;
 			return;
 		}
+		inputData.resetBoard();
+		outputData.setInputData(inputData);
 		int indexToPaint = Indexlist.size() - depth;
 		if(Indexlist.size() == indexToPaint)
 			indexToPaint--;
@@ -81,16 +70,20 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					else if(depth!=stack.peek())
 						stack.push(depth);
 				}
-				inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
-				inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
+				outputData.addLocation(indexToStartFrom);
+				outputData.addLocationPattern(patternLen);
+				outputData.isGreen(true);
+				outputData.show(container);
 				patternLen--;
 				indexToStartFrom--;
 				while(patternLen > -1) {
 					patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
 					inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
 					if(inpt_ch == patt_ch ) {
-						inputData.getPattArr()[patternLen].setBackground(Color.GREEN);
-						inputData.getInputArr()[indexToStartFrom].setBackground(Color.GREEN);
+						outputData.addLocation(indexToStartFrom);
+						outputData.addLocationPattern(patternLen);
+						outputData.isGreen(true);
+						outputData.show(container);
 					}else break;
 					patternLen--;
 					indexToStartFrom--;
@@ -106,8 +99,10 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			if (inputData.getIsManual() == 1 && inpt_ch != patt_ch) {
 				if (!inputData.isPrev())
 					stack.push(depth);
-				inputData.getPattArr()[patternLen].setBackground(Color.RED);
-				inputData.getInputArr()[indexToStartFrom].setBackground(Color.RED);
+				outputData.addLocation(indexToStartFrom);
+				outputData.addLocationPattern(patternLen);
+				outputData.isGreen(false);
+				outputData.show(container);
 			}
 			if(!inputData.isPrev()) {
 				depth --;
@@ -222,14 +217,6 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		return vals;
 	}
 
-	public void colorBoard(int index, Color color) {
-		int i;
-		for(i = 0; i < inputData.getPattern().length(); i++) {
-			inputData.getPattArr()[i].setBackground(color);
-			inputData.getInputArr()[index - i + 1].setBackground(color);
-		}
-	}
-
 	@Override
 	public Output<Problem> getOutput() {
 		output.show(container);
@@ -269,13 +256,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			if(depth != 0 && !stack.isEmpty()) 
 				stack.pop();
 			if(stack.isEmpty()) { 
-				int i;
-				for(i = 0; i < inputData.getInputArr().length; i++) {
-					inputData.getInputArr()[i].setBackground(Color.WHITE);
-				}
-				for(i = 0; i < inputData.getPattArr().length; i++) {
-					inputData.getPattArr()[i].setBackground(Color.WHITE);
-				}
+			     inputData.resetBoard();
 			}
 			else{
 				if(stack.size() == 1)	{
