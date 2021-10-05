@@ -12,7 +12,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	private int depth = 0;
 	private Container container ;
 	private StringSearchMultipleInput inputData ;
-	private StringSearchMultipleOutput outputData = new StringSearchMultipleOutput();
+	private final StringSearchMultipleOutput outputData = new StringSearchMultipleOutput();
 	private boolean bool = false;
 	private int nextDepth = 0;
 

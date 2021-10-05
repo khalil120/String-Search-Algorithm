@@ -11,7 +11,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	private int depth = 0;
 	private Container container ;
 	private StringSearchMultipleInput inputData ;
-	private StringSearchMultipleOutput outputData = new StringSearchMultipleOutput();
+	private final StringSearchMultipleOutput outputData = new StringSearchMultipleOutput();
 	private boolean bool = false;
 	private int nextDepth = 0;
 	private int[] lps;
@@ -65,7 +65,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		}
 		inputData.resetBoard();
 		outputData.setInputData(inputData);
-		boolean tmp = false;
+		boolean matchFound = false;
 		int indexToPaint = Indexlist.size() -depth;
 		int patternLen = 0;
 		int inputLength = input.input().length();
@@ -101,7 +101,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 						outputData.addLocationPattern(patternLen);
 						outputData.isGreen(true);
 						outputData.show(container);
-						tmp = false;
+						matchFound = false;
 					}else  {
 
 						if (inputData.getIsManual() == 0){
@@ -112,13 +112,13 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 								inputData.setDepth(inputData.getDepth()+1);
 							}
 						}
-						tmp = true;
+						matchFound = true;
 						break;
 					}
 					patternLen++;
 					indexToStartFrom++;
 				}
-				if (!inputData.isPrev() && !tmp) {
+				if (!inputData.isPrev() && !matchFound) {
 					if(stack.isEmpty()) stack.push(depth);
 					else if(depth!=stack.peek())
 						stack.push(depth);
@@ -297,9 +297,6 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		 * to search from
 		 */
 		Indexlist.add(index);
-	}
-	public boolean isEmpty() {
-		return Indexlist.isEmpty();
 	}
 
 	public void clear() {

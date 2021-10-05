@@ -11,6 +11,7 @@ public class StringSearchMultipleOutput implements Output<StringSearchMultiple> 
 	private Container container;
 	private StringSearchMultipleInput inputData;
 	private boolean isGreen;
+	private final int firstIndex = 0;
 	
 	public void addLocation(int index) {
 		this.locations.add(index);
@@ -24,10 +25,10 @@ public class StringSearchMultipleOutput implements Output<StringSearchMultiple> 
 		Color color ;
 		if(!isGreen) color = Color.RED ;
 		else color = Color.GREEN ;
-		inputData.getPattArr()[locationsPattern.get(0)].setBackground(color);
-		inputData.getInputArr()[locations.get(0)].setBackground(color);
-        locations.remove(0);
-        locationsPattern.remove(0);
+		inputData.getPattArr()[locationsPattern.get(firstIndex)].setBackground(color);
+		inputData.getInputArr()[locations.get(firstIndex)].setBackground(color);
+        locations.remove(firstIndex);
+        locationsPattern.remove(firstIndex);
 
 	}
 
@@ -51,8 +52,8 @@ public class StringSearchMultipleOutput implements Output<StringSearchMultiple> 
 		this.inputData=inputData;
 	}
 
-	public void isGreen(boolean b) {
-		isGreen = b;
+	public void isGreen(boolean bool) {
+		isGreen = bool;
 
 	}
 

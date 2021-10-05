@@ -26,14 +26,14 @@ import il.ac.telhai.stringSearchMultiple.StringSearchMultipleOutput;
 
 public class MainGUI implements ActionListener{
 
-	private JPanel selectAlg;
+	private final JPanel selectAlg;
 	private static final String[] Actions = {"CHOOSE ALGORITHM: " , "Run Type: ", "Input: ", "Start"};
 	private static final String[] radioBtnAlgorithimOptoins = {"A) BM " , "B) KMP "};
 	private static final String[] radioBtnRunTypeOptoins = {"A) Automatic", "B) Manual "};
 	private static final String[] radioBtnInputOptoins = {"Current File", "Manual Input"};
-	private JRadioButton[] selectAlgRadioBtn;
-	private JRadioButton[] runTypeRadioBtn;
-	private JRadioButton[] inputRadioBtn;
+	private final JRadioButton[] selectAlgRadioBtn;
+	private final JRadioButton[] runTypeRadioBtn;
+	private final JRadioButton[] inputRadioBtn;
 	private JTextField inputField;
 	private JTextField patField;
 	private static final int AutomaticDepth = 0;
@@ -213,14 +213,11 @@ public class MainGUI implements ActionListener{
 	}
 
 	private String readFromFile() {
-		String data = ""; 
-		try {
-			//get working directory
-			String fileDirectory = System.getProperty("user.dir");
-			if(fileDirectory != null)
-				fileDirectory += "\\src\\input.txt";
 
-			File myObj = new File(fileDirectory);
+		String data = "";
+		try {
+
+			File myObj = new File(getWorkingDirectory());
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
@@ -231,7 +228,9 @@ public class MainGUI implements ActionListener{
 		}
 		return data;
 	}
-
+	private String getWorkingDirectory(){
+		return System.getProperty("user.dir") + "\\src\\input.txt";
+	}
 	public static void main(String[] args) {
 
 		MainGUI GUI = new MainGUI();
