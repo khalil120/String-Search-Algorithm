@@ -22,7 +22,7 @@ import il.ac.telhai.algorithm.KMP;
 import il.ac.telhai.algorithm.Runner;
 import il.ac.telhai.stringSearchMultiple.StringSearchMultiple;
 import il.ac.telhai.stringSearchMultiple.StringSearchMultipleInput;
-import il.ac.telhai.stringSearchMultiple.StringSearchMultipleOutput;
+
 
 public class MainGUI implements ActionListener{
 
@@ -55,10 +55,10 @@ public class MainGUI implements ActionListener{
 	}
 
 	private void init() {
-		 initAlgSection(0);
-		 initRunTypeSection(1);
-		 initInputSection(2);
-		 initStartBtn(3);
+		initAlgSection(0);
+		initRunTypeSection(1);
+		initInputSection(2);
+		initStartBtn(3);
 	}
 
 	public void initRadioButtons(JRadioButton[] buttons, String[] str, JPanel panel) {
@@ -137,7 +137,6 @@ public class MainGUI implements ActionListener{
 		frame.setVisible(true); 
 
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(!isFirstTime) {
@@ -149,66 +148,42 @@ public class MainGUI implements ActionListener{
 			isFirstTime = false;
 		}
 
+		StringSearchMultipleInput input;
+		if(inputRadioBtn[0].isSelected()) {
+			input = new StringSearchMultipleInput(readFromFile(),patField.getText());
+		}else {
+			input = new StringSearchMultipleInput(inputField.getText(),patField.getText());
+		}
+		
+		frame.setSize(1850,900);
+		Container container = frame.getContentPane();
+		input.show(container);
+		Class<Algorithm<StringSearchMultiple>> algorithmClass;
+		
+		input.getNxtBtn().addActionListener(input);
+		input.getPrevBtn().addActionListener(input);
+		input.getRstBtn().addActionListener(input);
+
 		if (selectAlgRadioBtn[0].isSelected()) { //BM Algorithm selected	
-
-			// showing the input & buttons in the problem
-			StringSearchMultipleInput input;
-			if(inputRadioBtn[0].isSelected()) {
-				input = new StringSearchMultipleInput(readFromFile(),patField.getText());
-			}else {
-				input = new StringSearchMultipleInput(inputField.getText(),patField.getText());
-			}
-			frame.setSize(1850,900);
-			Container container = frame.getContentPane();
-			input.show(container);
 			input.printCharTable(input.getPattern(),container,input.getXCord(),input.getYCord());
-			Class<Algorithm<StringSearchMultiple>> algorithmClass = cls[0] ;
+			algorithmClass = cls[0] ;
 			try {
 				run = new Runner<StringSearchMultiple>(algorithmClass, input, container);
-				if(runTypeRadioBtn[0].isSelected()) {
-					//Automatic Search Method -> depth = 0
-					input.isManual(AutomaticDepth);
-					input.setRun(run);
-				}else {
-					input.isManual(AutomaticDepth+1);
-					input.setRun(run);
-				}
-				input.getNxtBtn().addActionListener(input);
-                input.getPrevBtn().addActionListener(input);
-                input.getRstBtn().addActionListener(input);
-       
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-
+			} catch (Exception e1) {	e1.printStackTrace();}
 		}else {  // KMP Algorithm selected
-			StringSearchMultipleInput input;
-			if(inputRadioBtn[0].isSelected()) {
-				input = new StringSearchMultipleInput(readFromFile(),patField.getText());
-			}else {
-				input = new StringSearchMultipleInput(inputField.getText(),patField.getText());
-			}
-			frame.setSize(1850,900);
-			Container container = frame.getContentPane();
-			input.show(container);
 			input.printLps(input.getPattern(),container,input.getXCord(), input.getYCord(), input.computeLPSArray(input.getPattern(),input.getPattern().length()));
-			Class<Algorithm<StringSearchMultiple>> algorithmClass = cls[1] ;
+			algorithmClass = cls[1] ;
 			try {
 				run = new Runner<StringSearchMultiple>(algorithmClass, input, container);
-				if(runTypeRadioBtn[0].isSelected()) {
-					//Automatic Search Method -> depth = 0
-					input.isManual(AutomaticDepth);
-					input.setRun(run);
-				}else {
-					input.isManual(AutomaticDepth+1);
-					input.setRun(run);
-				}
-				input.getNxtBtn().addActionListener(input);
-                input.getPrevBtn().addActionListener(input);
-                input.getRstBtn().addActionListener(input);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+			} catch (Exception e1) {e1.printStackTrace();}
+		}
+		//Manual or Automatic
+		if(runTypeRadioBtn[0].isSelected()) {
+			input.isManual(AutomaticDepth);
+			input.setRun(run);
+		}else {
+			input.isManual(AutomaticDepth+1);
+			input.setRun(run);
 		}
 	}
 
@@ -216,16 +191,12 @@ public class MainGUI implements ActionListener{
 
 		String data = "";
 		try {
-
 			File myObj = new File(getWorkingDirectory());
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine())
 				data += myReader.nextLine();
 			myReader.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred." + e.getMessage());
-			e.printStackTrace();
-		}
+		} catch (FileNotFoundException e) {e.printStackTrace();	}
 		return data;
 	}
 	private String getWorkingDirectory(){
