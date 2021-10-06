@@ -32,6 +32,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public void show(Container c) {
+		int stackHead;
 		if(inputData.isPrev() ) {
 			if(depth != 0  & !stack.isEmpty() ) 
 				stack.pop();
@@ -48,8 +49,8 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					inputData.setDepth(depth);
 					stack.pop();
 				}
-				int tmp = stack.peek();
-				while (tmp >= depth) {
+				stackHead = stack.peek();
+				while (stackHead >= depth) {
 					step();
 				}
 				depth--;
@@ -59,20 +60,25 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public void step() {
+
+		boolean matchFound = false;
+		int indexToPaint = Indexlist.size() -depth;
+		int patternLen = 0;
+		int indexToStartFrom;
+		int inputLength = input.input().length();
+		int patt_ch, inpt_ch;
+
 		if(!bool) {
 			bool = true;
 			return;
 		}
 		inputData.resetBoard();
 		outputData.setInputData(inputData);
-		boolean matchFound = false;
-		int indexToPaint = Indexlist.size() -depth;
-		int patternLen = 0;
-		int inputLength = input.input().length();
+
 		if(indexToPaint < 0)
 			indexToPaint = 0;
-		int indexToStartFrom = Indexlist.get(indexToPaint);
-		int patt_ch, inpt_ch;
+		indexToStartFrom = Indexlist.get(indexToPaint);
+
 		if(indexToStartFrom <= inputLength) {
 			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isPrev())
 				inputData.setDepth(inputData.getDepth()-1);

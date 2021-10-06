@@ -29,7 +29,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	JButton rstBtn;
 	boolean nxt = false;
 	boolean prv = false;
-	private int ismanual;
+	private int isManual;
 	private Runner<StringSearchMultiple> run;
 	private int depth;
 	private boolean rst = false;
@@ -114,7 +114,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		int i,j; 
 		yCord += 80;
 		char[] chars = str.toCharArray();
-		Set<Character> charSet = new LinkedHashSet<Character>();
+		Set<Character> charSet = new LinkedHashSet<>();
 		for (char c : chars) {
 			charSet.add(c);
 		}
@@ -124,7 +124,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 			sb.append(character);
 		}
 
-		JButton array[] =  new JButton[str.length()];
+		JButton[] array =  new JButton[str.length()];
 		int x = 500  , width = 50  , height = 50;
 
 		JLabel patternLbl = new JLabel("BAD CHAR TABLE: ");
@@ -148,13 +148,11 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 			cc.add(array[i]);
 		}
 
-		int c = 0;
-		String s;
-		int vals[] = new int[str.length()];
 
+		String s;
+		int[] vals = new int[str.length()];
 		for( i = 0 ; i < str.length() ; i++) {
-			c = Math.max(1, str.length()-i-1);
-			vals[i] = c;
+			vals[i] = Math.max(1, str.length()-i-1);
 		}
 
 		for( i = 0 ; i < str.length() ; i++) {
@@ -177,7 +175,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		myOutput.setBounds(500, yCord, width*2, height);
 		cc.add(myOutput);
 		x = x + 150;
-		JButton arr[] =  new JButton[str.length()];
+		JButton[] arr =  new JButton[str.length()];
 		for( i = 0 ; i < str.length() ; i++) {
 			if(vals[i]!=0) {
 				int k = vals[i];
@@ -232,7 +230,7 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 		int i; 
 		yCord += 80;
 		char[] chars = str.toCharArray();
-		Set<Character> charSet = new LinkedHashSet<Character>();
+		Set<Character> charSet = new LinkedHashSet<>();
 		for (char c : chars) {
 			charSet.add(c);
 		}
@@ -381,11 +379,11 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	
 	@Override
 	public void isManual(int num) {
-		this.ismanual = num;
+		this.isManual = num;
 	}
 
 	public int getIsManual() {
-		return ismanual;
+		return isManual;
 	}
 
 	public void setRun(Runner<StringSearchMultiple> run) {

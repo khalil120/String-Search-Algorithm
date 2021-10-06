@@ -44,19 +44,25 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public void step() {
+
+		int indexToPaint = Indexlist.size() - depth;
+		int patternLen = input.pattern().length() - 1;
+		int inputLength = input.input().length();
+		int indexToStartFrom = Indexlist.get(indexToPaint);
+		int patternLen2, indexToStartFrom2;
+		int patt_ch, inpt_ch;
+		boolean index;
+
 		if(!bool) {
 			bool = true;
 			return;
 		}
 		inputData.resetBoard();
 		outputData.setInputData(inputData);
-		int indexToPaint = Indexlist.size() - depth;
+
 		if(Indexlist.size() == indexToPaint)
 			indexToPaint--;
-		int patternLen = input.pattern().length() - 1;
-		int inputLength = input.input().length();
-		int indexToStartFrom = Indexlist.get(indexToPaint);
-		int patt_ch, inpt_ch;
+
 		if(indexToStartFrom <= inputLength) {
 			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isPrev())
 				inputData.setDepth(inputData.getDepth()-1);
@@ -111,13 +117,13 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			nextDepth = depth;
 			// finding the next step to enable the next button 
 			if(patt_ch==inpt_ch) {
-				boolean index = false;
+				index = false;
 				if(nextDepth >= Indexlist.size()) nextDepth--;
 				int indexToPaint2 = Indexlist.size() - nextDepth;
 				if(Indexlist.size() == indexToPaint2)
 					indexToPaint2--;
-				int patternLen2 = input.pattern().length() - 1;
-				int indexToStartFrom2 = Indexlist.get(indexToPaint2);
+				patternLen2 = input.pattern().length() - 1;
+				indexToStartFrom2 = Indexlist.get(indexToPaint2);
 				patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
 				inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom2);
 				while (patt_ch != inpt_ch) {
@@ -152,9 +158,9 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		char [] pat = input.pattern().toUpperCase().toCharArray();
 		char [] txt = input.input().toUpperCase().toCharArray();
 		int patLen = input.pattern().length();
-		int[] badchar;
+		int[] badCharTable;
 		int txtLen = input.input().length();
-		badchar = badCharTable(pat, patLen); 
+		badCharTable = badCharTable(pat, patLen);
 
 		int s = patLen -1 ;
 
@@ -172,7 +178,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		while(s < txtLen-1) {
 			for(j = 0 ; j < patLen ; j++) {
 				if(txt[s] == pat[j]) {
-					s+= badchar[j];
+					s+= badCharTable[j];
 					depth++;
 					updateNextState(s);
 					bool = false;
@@ -252,6 +258,9 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public void show(Container c) {
+
+		int stackHead;
+
 		if(inputData.isPrev() ) {
 			if(depth != 0 && !stack.isEmpty()) 
 				stack.pop();
@@ -268,8 +277,8 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 					inputData.setDepth(depth);
 					stack.pop();
 				}
-				int tmp = stack.peek();
-				while (tmp >= depth) {
+				stackHead = stack.peek();
+				while (stackHead >= depth) {
 					step();
 				}
 				depth--;

@@ -7,7 +7,7 @@ import il.ac.telhai.algorithm.Output;
 
 public class StringSearchMultipleOutput implements Output<StringSearchMultiple> {
 	private List<Integer> locations = new LinkedList<>(); // this list for input coloring
-	private List<Integer> locationsPattern = new LinkedList<>(); // this list for pattern coloring
+	private final List<Integer> locationsPattern = new LinkedList<>(); // this list for pattern coloring
 	private Container container;
 	private StringSearchMultipleInput inputData;
 	private boolean isGreen;
@@ -20,6 +20,7 @@ public class StringSearchMultipleOutput implements Output<StringSearchMultiple> 
 	public void addLocationPattern(int index) {
 		this.locationsPattern.add(index);
 	}
+
 	@Override
 	public void show(Container c) {
 		Color color ;
@@ -29,9 +30,7 @@ public class StringSearchMultipleOutput implements Output<StringSearchMultiple> 
 		inputData.getInputArr()[locations.get(firstIndex)].setBackground(color);
         locations.remove(firstIndex);
         locationsPattern.remove(firstIndex);
-
 	}
-
 
 	public List<Integer> getLocations() {
 		return locations;
@@ -44,6 +43,7 @@ public class StringSearchMultipleOutput implements Output<StringSearchMultiple> 
 	public Container getContainer() {
 		return container;
 	}
+
 	public void setContainer(Container container) {
 		this.container = container;
 	}
@@ -54,7 +54,6 @@ public class StringSearchMultipleOutput implements Output<StringSearchMultiple> 
 
 	public void isGreen(boolean bool) {
 		isGreen = bool;
-
 	}
 
 }
