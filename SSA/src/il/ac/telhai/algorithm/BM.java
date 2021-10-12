@@ -18,6 +18,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	public BM() {
 		state = this;
+		this.clear();
 	}
 
 	@Override
@@ -28,7 +29,6 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			inputData.resetBoard();
 			inputData.getPrevBtn().setEnabled(false);
 			clear();
-			depth = 0;
 		}
 		calcMaxDepth();
 	}
@@ -244,6 +244,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	public void clear() {
 		Indexlist.clear();
 		stack.clear();
+		depth = 0;
 	}
 
 	@Override

@@ -19,6 +19,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	
 	public KMP() {
 		state = this;
+		this.clear();
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				inputData.setDepth(inputData.getDepth()-1);
 			patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
 			if(input.input().length()<=indexToStartFrom ) {
-			//	inputData.getNxtBtn().setEnabled(false);
+				inputData.getNxtBtn().setEnabled(false);
 				indexToStartFrom = input.input().length() -1;
 			}
 			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
@@ -116,7 +117,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			inputData.resetBoard();
 			inputData.getPrevBtn().setEnabled(false);
 			clear();
-			depth = 0;
+
 		}
 		KMPSearch(input.pattern(),inputData.getText());
 	}
@@ -218,6 +219,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	public void clear() {
 		Indexlist.clear();
 		stack.clear();
+		depth = 0;
 	}
 
 	public int getNextDepth() {
