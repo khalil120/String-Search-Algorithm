@@ -33,6 +33,8 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	private Runner<StringSearchMultiple> run;
 	private int depth;
 	private boolean rst = false;
+	private int nextDepth;
+	private int indexToStartFrom;
 
 	public StringSearchMultipleInput(String text, String pattern) {
 		super();
@@ -403,4 +405,23 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 	public boolean isRst() {
 		return rst ;
 	}
+
+	public void setNextDepth(int nextDepth) {
+		this.nextDepth= nextDepth;
+	}
+
+	public void setIndexToStartFrom(int indexToStartFrom) {
+	   this.indexToStartFrom = indexToStartFrom ;
+	}
+
+	public int getNextDepth() {
+		return nextDepth;
+	}
+
+	public int getIndexToStartFrom() {
+		return indexToStartFrom;
+	}
+
+	
+	
 }
