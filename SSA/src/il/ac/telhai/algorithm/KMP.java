@@ -44,7 +44,6 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			}
 			else{
 				if(Algorithm.stack.size() == 1)	{
-					///inputData.getPrevBtn().setEnabled(false);
 					inputData.setDepth(depth);
 				}
 				if(depth == 0 ) {
@@ -89,7 +88,6 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				inputData.setDepth(inputData.getDepth()-1);
 			patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
 			if(input.input().length()<=indexToStartFrom ) {
-				inputData.getNxtBtn().setEnabled(false);
 				indexToStartFrom = input.input().length() -1;
 			}
 			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);

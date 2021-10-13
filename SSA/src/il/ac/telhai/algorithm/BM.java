@@ -34,24 +34,14 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	}
 
 	@Override
-	public State<Algorithm<Problem>> getState() {
-		return this.state;
-	}
-	public void setState(State<Algorithm<Problem>> state) {
-		this.state = state;
-	}
-
-
-	@Override
 	public void step() {
 
 		int indexToPaint = Indexlist.size() - depth;
 		int patternLen = input.pattern().length() - 1;
 		int inputLength = input.input().length();
 		int indexToStartFrom = Indexlist.get(indexToPaint);
-		int patternLen2, indexToStartFrom2;
+		int patternLen2 = 0, indexToStartFrom2 = 0;
 		int patt_ch, inpt_ch;
-		boolean index;
 
 		if(!bool) {
 			bool = true;
@@ -59,10 +49,8 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		}
 		inputData.resetBoard();
 		outputData.setInputData(inputData);
-
 		if(Indexlist.size() == indexToPaint)
 			indexToPaint--;
-
 		if(indexToStartFrom <= inputLength) {
 			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isPrev())
 				inputData.setDepth(inputData.getDepth()-1);
@@ -70,82 +58,15 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			if(indexToStartFrom >=input.input().length())
 				indexToStartFrom = input.input().length()-1;
 			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom); 
-			if(inpt_ch == patt_ch) {
-				if (!inputData.isPrev()) {
-					if(stack.isEmpty()) stack.push(depth);
-					else if(depth!=stack.peek())
-						stack.push(depth);
-				}
-				outputData.addLocation(indexToStartFrom);
-				outputData.addLocationPattern(patternLen);
-				outputData.isGreen(true);
-				outputData.show(container);
-				patternLen--;
-				indexToStartFrom--;
-				while(patternLen > -1) {
-					patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen);
-					inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom);
-					if(inpt_ch == patt_ch ) {
-						outputData.addLocation(indexToStartFrom);
-						outputData.addLocationPattern(patternLen);
-						outputData.isGreen(true);
-						outputData.show(container);
-					}else break;
-					patternLen--;
-					indexToStartFrom--;
-				}
-			}else if (inputData.getIsManual() == 0){
-				if(!inputData.isPrev()) {
-					inputData.setDepth(inputData.getDepth()-1);
-				}
-				else if (inputData.isPrev()) {
-					inputData.setDepth(inputData.getDepth()+1);
-				}
-			}
-			if (inputData.getIsManual() == 1 && inpt_ch != patt_ch) {
-				if (!inputData.isPrev())
-					stack.push(depth);
-				outputData.addLocation(indexToStartFrom);
-				outputData.addLocationPattern(patternLen);
-				outputData.isGreen(false);
-				outputData.show(container);
-			}
+			outputData.findMatchingBM(patt_ch, inpt_ch, indexToStartFrom, patternLen, input, stack, depth);
 			if(!inputData.isPrev()) {
 				depth --;
 			}
 			else depth++;
 			nextDepth = depth;
-			// finding the next step to enable the next button 
-			if(patt_ch==inpt_ch) {
-				index = false;
-				if(nextDepth >= Indexlist.size()) nextDepth--;
-				int indexToPaint2 = Indexlist.size() - nextDepth;
-				if(Indexlist.size() == indexToPaint2)
-					indexToPaint2--;
-				patternLen2 = input.pattern().length() - 1;
-				indexToStartFrom2 = Indexlist.get(indexToPaint2);
-				patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
-				inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom2);
-				while (patt_ch != inpt_ch) {
-					nextDepth--;
-					indexToPaint2 = Indexlist.size() - nextDepth;
-					if(Indexlist.size() <= indexToPaint2  ) {
-						inputData.getNxtBtn().setEnabled(false);
-						index = true;
-						break;
-					}
-					if(!index) {
-						patternLen2 = input.pattern().length() - 1;
-						indexToStartFrom2 = Indexlist.get(indexToPaint2);
-						patt_ch = (int)input.pattern().toUpperCase().charAt(patternLen2);
-						if(input.input().length()<indexToStartFrom2)
-							indexToStartFrom2  = input.input().length()-1;
-						inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom2);
-					}
-				}
-			}
+			outputData.findNextBM(patt_ch, inpt_ch, Indexlist, input,nextDepth,patternLen2, indexToStartFrom2);
 			nextDepth--;
-			if( nextDepth < 0 )	inputData.getNxtBtn().setEnabled(false);
+			outputData.enableNextButtonBM(nextDepth);
 		}
 		else {
 			if(!inputData.isPrev())
@@ -229,26 +150,11 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		return output;
 	}
 
-	
-	public void updateNextState(Integer index) {
-		/*
-		 * This list used to save the indexes that the Algorithm will start
-		 * to search from
-		 */
-		Indexlist.add(index);
-	}
-	public boolean isEmpty() {
-		return Indexlist.isEmpty();
-	}
 
-	public void clear() {
-		Indexlist.clear();
-		stack.clear();
-		depth = 0;
-	}
 
 	@Override
 	public int getDepth() { 
+		//System.out.println(inputData.getDepth() + "  "  + depth + "    " + nextDepth);
 		if((inputData.getDepth() == nextDepth || depth == nextDepth) && inputData.getIsManual() == 1)
 	    	depth--;
 		if (depth == inputData.getDepth()&& inputData.getIsManual() == 0)
@@ -287,5 +193,29 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		}
 	}
 
+	@Override
+	public State<Algorithm<Problem>> getState() {
+		return this.state;
+	}
+	public void setState(State<Algorithm<Problem>> state) {
+		this.state = state;
+	}
+	
+	public void updateNextState(Integer index) {
+		/*
+		 * This list used to save the indexes that the Algorithm will start
+		 * to search from
+		 */
+		Indexlist.add(index);
+	}
+	public boolean isEmpty() {
+		return Indexlist.isEmpty();
+	}
+
+	public void clear() {
+		Indexlist.clear();
+		stack.clear();
+		depth = 0;
+	}
 
 }
