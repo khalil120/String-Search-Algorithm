@@ -28,8 +28,8 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			depth--;
 		if (depth == inputData.getDepth()&& inputData.getIsManual() == 0)
 			return depth;
+		if(depth == nextDepth && inputData.getIsManual() == 0 ) return depth--;
 		else if (inputData.getIsManual() == 1 && depth == inputData.getDepth())  return depth;
-		if(depth == nextDepth) {return depth--;}
 		return 0;
 	}
 
@@ -58,6 +58,7 @@ public class KMP implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				depth--;
 			}
 		}
+
 		inputData.setNextDepth(nextDepth);
 		inputData.setIndexToStartFrom(indexToStartFrom);
 	}

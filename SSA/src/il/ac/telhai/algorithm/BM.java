@@ -15,6 +15,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 	private final StringSearchMultipleOutput outputData = new StringSearchMultipleOutput();
 	private boolean bool = false;
 	private int nextDepth = 0;
+	private int indexToStartFrom;
 
 	public BM() {
 		state = this;
@@ -39,10 +40,11 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		int indexToPaint = Indexlist.size() - depth;
 		int patternLen = input.pattern().length() - 1;
 		int inputLength = input.input().length();
-		int indexToStartFrom = Indexlist.get(indexToPaint);
+		int indexToStartFrom;
 		int patternLen2 = 0, indexToStartFrom2 = 0;
 		int patt_ch, inpt_ch;
-
+		boolean matchFound = false;
+		
 		if(!bool) {
 			bool = true;
 			return;
@@ -51,6 +53,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 		outputData.setInputData(inputData);
 		if(Indexlist.size() == indexToPaint)
 			indexToPaint--;
+		indexToStartFrom = Indexlist.get(indexToPaint);
 		if(indexToStartFrom <= inputLength) {
 			if(!stack.isEmpty() && stack.peek() == depth && !inputData.isPrev())
 				inputData.setDepth(inputData.getDepth()-1);
@@ -58,7 +61,7 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			if(indexToStartFrom >=input.input().length())
 				indexToStartFrom = input.input().length()-1;
 			inpt_ch = (int)input.input().toUpperCase().charAt(indexToStartFrom); 
-			outputData.findMatchingBM(patt_ch, inpt_ch, indexToStartFrom, patternLen, input, stack, depth);
+			outputData.findMatchingBM(patt_ch, inpt_ch, indexToStartFrom, patternLen, input, stack, depth,matchFound);
 			if(!inputData.isPrev()) {
 				depth --;
 			}
@@ -154,11 +157,11 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 
 	@Override
 	public int getDepth() { 
-		//System.out.println(inputData.getDepth() + "  "  + depth + "    " + nextDepth);
 		if((inputData.getDepth() == nextDepth || depth == nextDepth) && inputData.getIsManual() == 1)
 	    	depth--;
-		if (depth == inputData.getDepth()&& inputData.getIsManual() == 0)
+		if (depth == inputData.getDepth() && inputData.getIsManual() == 0) {
 			return depth;
+		}if(depth == nextDepth && inputData.getIsManual() == 0 ) return depth--;
 		else if (inputData.getIsManual() == 1 && depth == inputData.getDepth())  return depth;
 		return 0;
 	}
@@ -176,7 +179,6 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 			}
 			else{
 				if(stack.size() == 1)	{
-					inputData.getPrevBtn().setEnabled(false);
 					inputData.setDepth(depth);
 				}
 				if(depth == 0 ) {
@@ -191,6 +193,8 @@ public class BM implements Algorithm<Problem>, State<Algorithm<Problem>> {
 				depth--;
 			}
 		}
+		inputData.setNextDepth(nextDepth);
+		inputData.setIndexToStartFrom(indexToStartFrom);
 	}
 
 	@Override
