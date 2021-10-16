@@ -149,7 +149,18 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 			array[i].setForeground(Color.BLACK);
 			cc.add(array[i]);
 		}
-
+        if(sb.length() > 2 ) {
+        	i = sb.length();
+        	char c = str.charAt(i);
+			String s  = String.valueOf(c);  
+			array[i] = new JButton(s);
+			array[i].setBounds(x,yCord,width,height); 
+			x+=width;
+			array[i].setBackground(Color.WHITE);
+			array[i].setForeground(Color.BLACK);
+			cc.add(array[i]);
+        }
+        
 
 		String s;
 		int[] vals = new int[str.length()];
@@ -190,6 +201,17 @@ public class StringSearchMultipleInput implements Input<StringSearchMultiple>, A
 				cc.add(arr[i]);
 			}
 		}
+	      if(str.length() > 2 ) {
+	    	  i--;
+				int k = vals[i];
+				s  = String.valueOf(k);
+				arr[i] = new JButton(s);
+				arr[i].setBounds(x,yCord,width,height); 
+				x+=width;
+				arr[i].setBackground(Color.WHITE);
+				arr[i].setForeground(Color.BLACK);
+				cc.add(arr[i]);
+	        }
 		// if there is no match char
 		int k = str.length();
 		s  = String.valueOf(k);
